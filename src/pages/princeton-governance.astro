@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+
+const posts = await getCollection('posts', ({ data }) =>
+  !data.draft && data.section === 'Princeton Governance'
+);
+
+const sortedPosts = posts.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<Layout title="Princeton Governance | The Princeton Journal">
+  <main class="mx-auto max-w-5xl px-6 py-16">
+    <h1 class="text-4xl font-bold tracking-tight">Princeton Governance</h1>
+
+    <p class="mt-4 text-lg text-gray-700">
+      Reporting and analysis on Princeton city government, public meetings, development, policy, and accountability.
+    </p>
+
+    <div class="mt-10 grid gap-6">
+      {sortedPosts.map((post) => (
+        <ArticleCard
+          title={post.data.title}
+          description={post.data.description}
+          href={`/posts/${post.id.replace(/\.md$/, '')}`}
+        />
+      ))}
+    </div>
+  </main>
+</Layout>
