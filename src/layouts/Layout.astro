@@ -1,6 +1,10 @@
 ---
 import '../styles/global.css';
-const { title = "The Princeton Journal" } = Astro.props;
+const {
+  title = "The Princeton Journal",
+  description = "The Princeton Journal is Princeton Texas’s leading independent source for local news, city government coverage, and community reporting.",
+  url = "https://theprincetonjournal.com"
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -19,21 +23,19 @@ const { title = "The Princeton Journal" } = Astro.props;
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="q2FhOIt2RvOTMfmnH1qgdFheMFXS6RNchAsDJliiDWY" />
 
-  <title>{title}</title>
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={url} />
 
-  <meta
-    name="description"
-    content="The Princeton Journal is Princeton Texas’s leading independent source for local news, city government coverage, and community reporting."
-  />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={url} />
 
-  <meta property="og:title" content="The Princeton Journal" />
-  <meta property="og:description" content="Independent local news serving Princeton Texas." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://theprincetonjournal.com" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="The Princeton Journal" />
-  <meta name="twitter:description" content="Independent local news serving Princeton Texas." />
 </head>
 
 <body class="bg-white text-black">
