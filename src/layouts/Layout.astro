@@ -6,29 +6,34 @@ const { title = "The Princeton Journal" } = Astro.props;
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-R726F2LG18"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-R726F2LG18');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R726F2LG18"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R726F2LG18');
+  </script>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="q2FhOIt2RvOTMfmnH1qgdFheMFXS6RNchAsDJliiDWY" />
+
   <title>{title}</title>
-<meta name="description" content="The Princeton Journal is Princeton Texas’s leading independent source for local news, city government coverage, and community reporting." />
 
-<meta property="og:title" content="The Princeton Journal" />
-<meta property="og:description" content="Independent local news serving Princeton Texas." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://theprincetonjournal.com" />
+  <meta
+    name="description"
+    content="The Princeton Journal is Princeton Texas’s leading independent source for local news, city government coverage, and community reporting."
+  />
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="The Princeton Journal" />
-<meta name="twitter:description" content="Independent local news serving Princeton Texas." />
+  <meta property="og:title" content="The Princeton Journal" />
+  <meta property="og:description" content="Independent local news serving Princeton Texas." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://theprincetonjournal.com" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Princeton Journal" />
+  <meta name="twitter:description" content="Independent local news serving Princeton Texas." />
 </head>
 
 <body class="bg-white text-black">
