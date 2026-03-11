@@ -44,13 +44,16 @@ const articleSchema = {
 };
 ---
 
-<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}>
+</script>
 
 <ArticleLayout
   title={post.data.title}
   section={post.data.section}
   author={post.data.author}
   date={post.data.date}
+  description={post.data.description}
+  url={articleUrl}
 >
   <Content />
 </ArticleLayout>
