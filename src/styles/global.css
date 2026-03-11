@@ -105,6 +105,22 @@
     display: block;
   }
 }
-.logo {
-  white-space: nowrap;
+@media (max-width: 768px) {
+  .site-header-inner {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .logo {
+    font-size: 1rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    max-width: calc(100% - 3rem);
+    overflow: hidden;
+  }
+
+  .menu-toggle {
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+  }
 }
