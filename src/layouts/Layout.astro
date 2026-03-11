@@ -36,6 +36,17 @@ const {
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "The Princeton Journal",
+  "url": "https://theprincetonjournal.com",
+  "logo": "https://theprincetonjournal.com/tpj-logo.jpg",
+  "sameAs": [
+    "https://www.facebook.com/profile.php?id=61581999665231"
+  ]
+})} />
+
 </head>
 
 <body class="bg-white text-black">
