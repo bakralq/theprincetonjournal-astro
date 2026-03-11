@@ -105,3 +105,6 @@
     display: block;
   }
 }
+.logo {
+  white-space: nowrap;
+}
