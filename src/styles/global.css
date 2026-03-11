@@ -89,7 +89,10 @@
 }
 
 .mobile-menu {
-  display: none;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease;
 }
 
 @media (max-width: 768px) {
@@ -102,9 +105,11 @@
   }
 
   .mobile-menu.open {
-    display: block;
+    max-height: 500px;
+    opacity: 1;
   }
 }
+
 @media (max-width: 768px) {
   .site-header-inner {
     padding-left: 1rem;
