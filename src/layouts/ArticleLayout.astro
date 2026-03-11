@@ -1,15 +1,11 @@
 ---
 import Layout from './Layout.astro';
 
-const {
-  title,
-  section,
-  author,
-  date
-} = Astro.props;
+const { title, section, author, date, description, url } = Astro.props;
+
 ---
 
-<Layout title={`${title} | The Princeton Journal`}>
+<Layout title={`${title} | The Princeton Journal`} description={description} url={url}>
   <main class="mx-auto max-w-3xl px-6 py-16">
     <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
       {section}
