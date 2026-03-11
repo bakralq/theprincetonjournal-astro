@@ -2,6 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
+const SITE_URL = 'https://theprincetonjournal.com';
+
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
 
@@ -13,7 +15,36 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const slug = post.id.replace(/\.md$/, '');
+const articleUrl = `${SITE_URL}/posts/${slug}`;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "datePublished": post.data.date,
+  "dateModified": post.data.date,
+  "author": {
+    "@type": "Person",
+    "name": post.data.author
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "The Princeton Journal",
+    "url": SITE_URL
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": articleUrl
+  },
+  "url": articleUrl,
+  "articleSection": post.data.section
+};
 ---
+
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
 
 <ArticleLayout
   title={post.data.title}
