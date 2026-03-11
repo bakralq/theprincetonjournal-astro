@@ -80,3 +80,28 @@
   line-height: 1.25rem;
   color: #6b7280;
 }
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: #000;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .mobile-menu.open {
+    display: block;
+  }
+}

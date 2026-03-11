@@ -13,13 +13,33 @@ const { title = "The Princeton Journal" } = Astro.props;
 
 <body class="bg-white text-black">
 
-<header class="border-b border-gray-200">
-  <div class="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+<header class="site-header border-b border-gray-200">
+  <div class="site-header-inner mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
     <a href="/" class="logo text-xl">
       The Princeton Journal
     </a>
 
-    <nav class="flex gap-6 text-sm font-medium">
+    <button
+      class="menu-toggle text-2xl"
+      aria-label="Open navigation"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      type="button"
+    >
+      ☰
+    </button>
+
+    <nav class="desktop-nav flex gap-6 text-sm font-medium">
+      <a href="/">Home</a>
+      <a href="/princeton-governance">Princeton Governance</a>
+      <a href="/us-news">US News</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+
+  <div id="mobile-menu" class="mobile-menu border-t border-gray-200">
+    <nav class="mobile-nav mx-auto max-w-6xl px-6 py-4 flex flex-col gap-4 text-sm font-medium">
       <a href="/">Home</a>
       <a href="/princeton-governance">Princeton Governance</a>
       <a href="/us-news">US News</a>
