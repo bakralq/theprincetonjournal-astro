@@ -8,8 +8,21 @@ const posts = await getCollection('posts', ({ data }) =>
 );
 
 const sortedPosts = posts.sort(
-  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  (a, b) =>
+    new Date(`${b.data.date}T12:00:00`).getTime() -
+    new Date(`${a.data.date}T12:00:00`).getTime()
 );
+
+const uniqueDates = [
+  ...new Set(sortedPosts.map((post) => post.data.date))
+].sort((a, b) => new Date(`${b}T12:00:00`).getTime() - new Date(`${a}T12:00:00`).getTime());
+
+const formatDate = (date) =>
+  new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 ---
 
 <Layout title="Princeton Governance | The Princeton Journal">
@@ -20,14 +33,99 @@ const sortedPosts = posts.sort(
       Reporting and analysis on Princeton city government, public meetings, development, policy, and accountability.
     </p>
 
-    <div class="mt-10 grid gap-6">
-      {sortedPosts.map((post) => (
-        <ArticleCard
-          title={post.data.title}
-          description={post.data.description}
-          href={`/posts/${post.id.replace(/\.md$/, '')}`}
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      <div>
+        <label for="searchInput" class="mb-2 block text-sm font-medium text-gray-700">
+          Search articles
+        </label>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search by title or description"
+          class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
         />
+      </div>
+
+      <div>
+        <label for="dateFilter" class="mb-2 block text-sm font-medium text-gray-700">
+          Filter by date
+        </label>
+        <select
+          id="dateFilter"
+          class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
+        >
+          <option value="">All dates</option>
+          {uniqueDates.map((date) => (
+            <option value={date}>{formatDate(date)}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+
+    <p id="resultsCount" class="mt-6 text-sm text-gray-500">
+      Showing {sortedPosts.length} articles
+    </p>
+
+    <div id="articlesList" class="mt-6 grid gap-6">
+      {sortedPosts.map((post) => (
+        <div
+          class="article-item"
+          data-title={post.data.title.toLowerCase()}
+          data-description={post.data.description.toLowerCase()}
+          data-date={post.data.date}
+        >
+          <ArticleCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/posts/${post.id.replace(/\.md$/, '')}`}
+            date={post.data.date}
+          />
+        </div>
       ))}
     </div>
+
+    <p id="noResultsMessage" class="mt-8 hidden text-gray-500">
+      No articles found.
+    </p>
   </main>
 </Layout>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const dateFilter = document.getElementById('dateFilter');
+  const resultsCount = document.getElementById('resultsCount');
+  const noResultsMessage = document.getElementById('noResultsMessage');
+  const articleItems = Array.from(document.querySelectorAll('.article-item'));
+
+  function updateFilters() {
+    const searchValue = searchInput.value.trim().toLowerCase();
+    const selectedDate = dateFilter.value;
+    let visibleCount = 0;
+
+    articleItems.forEach((item) => {
+      const title = item.dataset.title || '';
+      const description = item.dataset.description || '';
+      const date = item.dataset.date || '';
+
+      const matchesSearch =
+        searchValue === '' ||
+        title.includes(searchValue) ||
+        description.includes(searchValue);
+
+      const matchesDate =
+        selectedDate === '' || date === selectedDate;
+
+      const shouldShow = matchesSearch && matchesDate;
+
+      item.style.display = shouldShow ? '' : 'none';
+
+      if (shouldShow) visibleCount++;
+    });
+
+    resultsCount.textContent = `Showing ${visibleCount} article${visibleCount === 1 ? '' : 's'}`;
+    noResultsMessage.classList.toggle('hidden', visibleCount !== 0);
+  }
+
+  searchInput?.addEventListener('input', updateFilters);
+  dateFilter?.addEventListener('change', updateFilters);
+</script>

@@ -6,64 +6,89 @@ import ArticleCard from '../components/ArticleCard.astro';
 const posts = await getCollection('posts', ({ data }) => !data.draft);
 
 const sortedPosts = posts.sort(
-  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  (a, b) =>
+    new Date(`${b.data.date}T12:00:00`).getTime() -
+    new Date(`${a.data.date}T12:00:00`).getTime()
 );
 
 const topPost = sortedPosts[0];
+
+const princetonGovernancePosts = sortedPosts
+  .filter((post) => post.data.section === 'Princeton Governance')
+  .slice(0, 3);
+
+const usNewsPosts = sortedPosts
+  .filter((post) => post.data.section === 'US News')
+  .slice(0, 3);
 ---
 
 <Layout title="The Princeton Journal">
-  <main class="mx-auto max-w-6xl px-6 py-16">
-    <section class="border-b border-gray-200 pb-10">
-      <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
-        Princeton, Texas
-      </p>
-
-      <h1 class="mt-3 text-5xl font-bold tracking-tight">
-        The Princeton Journal
-      </h1>
-
-      <p class="mt-4 max-w-2xl text-lg text-gray-700">
-        Local reporting, accountability journalism, and policy coverage for Princeton, Texas.
-      </p>
-    </section>
-
-    <section class="mt-10 grid gap-10 md:grid-cols-[2fr_1fr]">
-      <div>
+  <main class="mx-auto max-w-6xl px-6 py-8">
+    {topPost && (
+      <section class="mt-0">
         <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
           Top Story
         </p>
 
-        <div class="mt-4">
-          {topPost && (
-            <ArticleCard
-              title={topPost.data.title}
-              description={topPost.data.description}
-              href={`/posts/${topPost.id.replace(/\.md$/, '')}`}
-            />
-          )}
-        </div>
+        <a
+          href={`/posts/${topPost.id.replace(/\.md$/, '')}`}
+          class="mt-4 block rounded-2xl border border-gray-200 p-8 transition hover:border-gray-300"
+        >
+          <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+            {topPost.data.section}
+          </p>
+
+          <h1 class="mt-3 text-3xl font-bold tracking-tight">
+            {topPost.data.title}
+          </h1>
+
+          <p class="mt-3 text-gray-600">
+            {topPost.data.description}
+          </p>
+        </a>
+      </section>
+    )}
+
+    <section class="mt-16">
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold tracking-tight">
+          Latest Princeton Governance
+        </h2>
+        <a href="/princeton-governance" class="text-sm font-medium text-gray-600 hover:text-black">
+          View all
+        </a>
       </div>
 
-      <aside>
-        <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
-          Sections
-        </p>
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        {princetonGovernancePosts.map((post) => (
+          <ArticleCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/posts/${post.id.replace(/\.md$/, '')}`}
+          />
+        ))}
+      </div>
+    </section>
 
-        <div class="mt-4 space-y-3">
-          <a href="/princeton-governance" class="block rounded-xl border border-gray-200 px-4 py-3 hover:bg-gray-50">
-            Princeton Governance
-          </a>
+    <section class="mt-16">
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold tracking-tight">
+          Latest U.S. News
+        </h2>
+        <a href="/us-news" class="text-sm font-medium text-gray-600 hover:text-black">
+          View all
+        </a>
+      </div>
 
-          <a href="/us-news" class="block rounded-xl border border-gray-200 px-4 py-3 hover:bg-gray-50">
-            US News
-          </a>
-
-          <a href="/about" class="block rounded-xl border border-gray-200 px-4 py-3 hover:bg-gray-50">
-            About
-          </a>
-        </div>
-      </aside>
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        {usNewsPosts.map((post) => (
+          <ArticleCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/posts/${post.id.replace(/\.md$/, '')}`}
+          />
+        ))}
+      </div>
     </section>
   </main>
 </Layout>

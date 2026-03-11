@@ -1,4 +1,18 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "GrenzeGotisch";
+  src: url("/fonts/GrenzeGotisch-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+.logo {
+  font-family: "GrenzeGotisch", serif;
+  font-weight: 700;
+  font-size: 2.6rem;
+  letter-spacing: 0.02em;
+}
 .article-content p {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;

@@ -15,7 +15,7 @@ const { title = "The Princeton Journal" } = Astro.props;
 
 <header class="border-b border-gray-200">
   <div class="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-    <a href="/" class="text-xl font-bold">
+    <a href="/" class="logo text-xl">
       The Princeton Journal
     </a>
 
@@ -24,17 +24,27 @@ const { title = "The Princeton Journal" } = Astro.props;
       <a href="/princeton-governance">Princeton Governance</a>
       <a href="/us-news">US News</a>
       <a href="/about">About</a>
+      <a href="/contact">Contact</a>
     </nav>
   </div>
 </header>
 
-<main>
+<main class="mx-auto max-w-6xl px-6">
   <slot />
 </main>
 
 <footer class="border-t border-gray-200 mt-20">
-  <div class="mx-auto max-w-6xl px-6 py-10 text-sm text-gray-500">
-    © {new Date().getFullYear()} The Princeton Journal
+  <div class="mx-auto max-w-6xl px-6 py-10">
+    <div class="flex flex-wrap gap-6 text-sm font-medium text-gray-700">
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/contact">Contact</a>
+      <a href="/subscribe">Subscribe</a>
+    </div>
+
+    <div class="mt-6 text-sm text-gray-500">
+      © {new Date().getFullYear()} The Princeton Journal
+    </div>
   </div>
 </footer>
 

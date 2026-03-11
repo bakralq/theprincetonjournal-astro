@@ -1,9 +1,21 @@
 ---
-const { title, description, href } = Astro.props;
+const { title, description, href, date } = Astro.props;
+
+const formattedDate = date
+  ? new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
 ---
 
 <a href={href} class="block border border-gray-200 rounded-xl p-6 hover:shadow-lg transition">
-  <h2 class="text-xl font-semibold">{title}</h2>
+  {formattedDate && (
+    <p class="text-sm text-gray-500">{formattedDate}</p>
+  )}
+
+  <h2 class="mt-1 text-xl font-semibold">{title}</h2>
 
   <p class="mt-2 text-gray-600 text-sm">
     {description}
