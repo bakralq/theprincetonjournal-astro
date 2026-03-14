@@ -4,6 +4,7 @@ description: "TxDOT plans to widen FM 982 from US 380 to FM 546, adding four lan
 date: "2025-11-22"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/fm-982-expansion-princeton.jpg
 draft: false
 ---
 

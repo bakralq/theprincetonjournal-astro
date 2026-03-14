@@ -4,6 +4,7 @@ description: "TxDOT is advancing a major US 380 project through Princeton and Co
 date: "2025-12-19"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/us-380-princeton-freeway-reality.jpg
 draft: false
 ---
 

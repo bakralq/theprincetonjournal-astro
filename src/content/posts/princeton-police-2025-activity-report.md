@@ -4,6 +4,7 @@ description: "City Council is set to hear a presentation on the Princeton Police
 date: "2026-01-25"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-police-2025-activity-report.jpg
 draft: false
 ---
 

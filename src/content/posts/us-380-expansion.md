@@ -4,6 +4,7 @@ description: "Night construction begins October 6 as TxDOT launches the long-pla
 date: "2025-10-03"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/us-380-expansion.jpg
 draft: false
 ---
 

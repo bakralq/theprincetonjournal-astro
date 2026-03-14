@@ -4,6 +4,7 @@ description: "Three Public Improvement District actions tied to Windmore, Southr
 date: "2025-10-27"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-pid-developments-windmore-southridge-eastridge.jpg
 draft: false
 ---
 

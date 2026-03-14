@@ -4,6 +4,7 @@ description: "An analysis of Princeton Police Department activity from January t
 date: "2025-11-25"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-crime-trends-2025.jpg
 draft: false
 ---
 

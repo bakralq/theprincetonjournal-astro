@@ -4,6 +4,7 @@ description: "A Collin County jury sentenced a Princeton resident to life in pri
 date: "2025-10-18"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-life-sentence-indecency-case.jpg
 draft: false
 ---
 

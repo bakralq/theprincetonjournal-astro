@@ -4,6 +4,7 @@ description: "A full investigation into Princeton’s water and sewer billing, i
 date: "2025-11-01"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-water-investigation.jpg
 draft: false
 ---
 

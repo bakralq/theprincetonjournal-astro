@@ -4,6 +4,7 @@ description: "A Prosper, Texas, father was not charged after the fatal shooting 
 date: "2026-02-11"
 section: "US News"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/lucy-harrison-prosper-case-update.jpg
 draft: false
 ---
 

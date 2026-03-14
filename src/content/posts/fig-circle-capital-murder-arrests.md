@@ -4,6 +4,7 @@ description: "A July 2025 homicide south of Princeton returned to public attenti
 date: "2026-01-20"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/fig-circle-capital-murder-arrests.jpg
 draft: false
 ---
 

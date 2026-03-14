@@ -4,6 +4,7 @@ description: "Residents were told the budget was too tight for a forensic audit.
 date: "2025-09-15"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/office-audit.jpg
 draft: false
 ---
 

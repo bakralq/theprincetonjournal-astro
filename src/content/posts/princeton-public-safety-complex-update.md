@@ -4,6 +4,7 @@ description: "Princeton City Council approved site selection, land control, and 
 date: "2025-12-12"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-public-safety-complex-update.jpg
 draft: false
 ---
 

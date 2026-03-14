@@ -69,7 +69,11 @@ const usNewsPosts = sortedPosts
             title={post.data.title}
             description={post.data.description}
             href={`/posts/${post.id.replace(/\.md$/, '')}`}
-          />
+         
+date={post.data.date}
+  image={post.data.image}
+  variant="stacked"
+ />
         ))}
       </div>
     </section>
@@ -90,6 +94,10 @@ const usNewsPosts = sortedPosts
             title={post.data.title}
             description={post.data.description}
             href={`/posts/${post.id.replace(/\.md$/, '')}`}
+date={post.data.date}
+  image={post.data.image}
+  variant="stacked"
+
           />
         ))}
       </div>

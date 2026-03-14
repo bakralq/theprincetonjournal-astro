@@ -4,6 +4,7 @@ description: "A breakdown of Princeton’s rural fire coverage transition, the E
 date: "2025-10-12"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/collin-county-esd-fire-coverage.jpg
 draft: false
 ---
 

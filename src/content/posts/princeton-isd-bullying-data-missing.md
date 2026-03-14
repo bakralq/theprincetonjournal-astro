@@ -4,6 +4,7 @@ description: "Princeton ISD has anti-bullying policies and reporting tools, but 
 date: "2026-01-13"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-isd-bullying-data-missing.webp
 draft: false
 ---
 

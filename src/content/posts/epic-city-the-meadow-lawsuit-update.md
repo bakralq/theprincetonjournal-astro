@@ -4,6 +4,7 @@ description: "A status update on the EPIC City, now The Meadow, lawsuit and deve
 date: "2026-01-16"
 section: "US News"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/epic-city-the-meadow-lawsuit-update.jpg
 draft: false
 ---
 

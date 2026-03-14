@@ -4,6 +4,7 @@ description: "Gov. Greg Abbott began the 2026 campaign cycle with more than $105
 date: "2026-01-16"
 section: "US News"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/abbott-2026-war-chest.jpg
 draft: false
 ---
 

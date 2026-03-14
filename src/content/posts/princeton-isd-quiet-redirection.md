@@ -4,6 +4,7 @@ description: "Public board records show Princeton ISD gradually restructuring le
 date: "2025-10-17"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-isd-quiet-redirection.jpg
 draft: false
 ---
 

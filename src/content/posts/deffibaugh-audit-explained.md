@@ -4,6 +4,7 @@ description: "A plain-English breakdown of what Weaver reviewed, what Phase One 
 date: "2026-03-02"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/deffibaugh-audit-explained.jpeg
 draft: false
 ---
 

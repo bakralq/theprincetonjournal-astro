@@ -4,6 +4,7 @@ description: "A single-vehicle crash involving a Tesla outside Harper Elementary
 date: "2025-11-21"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/harper-elementary-fatal-crash.avif
 draft: false
 ---
 

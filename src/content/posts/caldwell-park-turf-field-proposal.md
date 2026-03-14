@@ -4,6 +4,7 @@ description: "A proposed $4.35 million project would replace three grass fields 
 date: "2025-10-27"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/caldwell-park-turf-field-proposal.jpg
 draft: false
 ---
 

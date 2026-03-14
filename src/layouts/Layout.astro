@@ -3,7 +3,9 @@ import '../styles/global.css';
 const {
   title = "The Princeton Journal",
   description = "The Princeton Journal is Princeton Texas’s leading independent source for local news, city government coverage, and community reporting.",
-  url = "https://theprincetonjournal.com"
+  url = "https://theprincetonjournal.com",
+  ogImage = "https://theprincetonjournal.com/tpj-logo.jpg",
+  ogType = "website"
 } = Astro.props;
 ---
 
@@ -26,15 +28,17 @@ const {
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={url} />
-
+<link rel="alternate" type="application/rss+xml" title="The Princeton Journal RSS Feed" href="https://theprincetonjournal.com/rss.xml" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:url" content={url} />
+<meta property="og:image" content={ogImage} />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
 
 <script type="application/ld+json" set:html={JSON.stringify({
   "@context": "https://schema.org",
@@ -87,15 +91,14 @@ const {
   </div>
 </header>
 
-<main class="mx-auto max-w-6xl px-6">
-  <slot />
-</main>
+<slot />
 
 <footer class="border-t border-gray-200 mt-20">
   <div class="mx-auto max-w-6xl px-6 py-10">
     <div class="flex flex-wrap gap-6 text-sm font-medium text-gray-700">
       <a href="/about">About</a>
       <a href="/privacy">Privacy Policy</a>
+<a href="/terms">Terms of Service</a>
       <a href="/contact">Contact</a>
       <a href="/subscribe">Subscribe</a>
     </div>

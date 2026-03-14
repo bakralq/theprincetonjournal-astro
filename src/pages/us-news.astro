@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import ArticleCard from '../components/ArticleCard.astro';
 
 const posts = await getCollection('posts', ({ data }) =>
   !data.draft && data.section === 'US News'
@@ -13,9 +12,21 @@ const sortedPosts = posts.sort(
     new Date(`${a.data.date}T12:00:00`).getTime()
 );
 
+const postsData = sortedPosts.map((post) => ({
+  title: post.data.title,
+  description: post.data.description,
+  date: post.data.date,
+  image: post.data.image || null,
+  href: `/posts/${post.id.replace(/\.md$/, '')}`
+}));
+
 const uniqueDates = [
   ...new Set(sortedPosts.map((post) => post.data.date))
-].sort((a, b) => new Date(`${b}T12:00:00`).getTime() - new Date(`${a}T12:00:00`).getTime());
+].sort(
+  (a, b) =>
+    new Date(`${b}T12:00:00`).getTime() -
+    new Date(`${a}T12:00:00`).getTime()
+);
 
 const formatDate = (date) =>
   new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
@@ -39,7 +50,7 @@ const formatDate = (date) =>
 
     <div class="mt-8 grid gap-4 md:grid-cols-2">
       <div>
-        <label for="searchInput" class="mb-2 block text-sm font-medium text-gray-700">
+        <label class="mb-2 block text-sm font-medium text-gray-700">
           Search articles
         </label>
         <input
@@ -51,7 +62,7 @@ const formatDate = (date) =>
       </div>
 
       <div>
-        <label for="dateFilter" class="mb-2 block text-sm font-medium text-gray-700">
+        <label class="mb-2 block text-sm font-medium text-gray-700">
           Filter by date
         </label>
         <select
@@ -66,31 +77,11 @@ const formatDate = (date) =>
       </div>
     </div>
 
-    <p id="resultsCount" class="mt-6 text-sm text-gray-500">
-      Showing {sortedPosts.length} articles
-    </p>
+    <p id="resultsCount" class="mt-6 text-sm text-gray-500"></p>
 
-    <div id="articlesList" class="mt-6 grid gap-6">
-      {sortedPosts.length > 0 ? (
-        sortedPosts.map((post) => (
-          <div
-            class="article-item"
-            data-title={post.data.title.toLowerCase()}
-            data-description={post.data.description.toLowerCase()}
-            data-date={post.data.date}
-          >
-            <ArticleCard
-              title={post.data.title}
-              description={post.data.description}
-              href={`/posts/${post.id.replace(/\.md$/, '')}`}
-              date={post.data.date}
-            />
-          </div>
-        ))
-      ) : (
-        <p class="text-gray-500">No US News articles yet.</p>
-      )}
-    </div>
+    <div id="articlesList" class="mt-6 grid gap-6"></div>
+
+    <div id="pagination" class="mt-10 flex justify-center gap-2 text-sm"></div>
 
     <p id="noResultsMessage" class="mt-8 hidden text-gray-500">
       No articles found.
@@ -98,42 +89,145 @@ const formatDate = (date) =>
   </main>
 </Layout>
 
-<script>
+<script define:vars={{ postsData }}>
+  const posts = postsData;
+  const pageSize = 10;
+
+  let filteredPosts = [...posts];
+  let currentPage = 1;
+
   const searchInput = document.getElementById('searchInput');
   const dateFilter = document.getElementById('dateFilter');
+  const articlesList = document.getElementById('articlesList');
+  const pagination = document.getElementById('pagination');
   const resultsCount = document.getElementById('resultsCount');
   const noResultsMessage = document.getElementById('noResultsMessage');
-  const articleItems = Array.from(document.querySelectorAll('.article-item'));
 
-  function updateFilters() {
-    const searchValue = searchInput.value.trim().toLowerCase();
-    const selectedDate = dateFilter.value;
-    let visibleCount = 0;
-
-    articleItems.forEach((item) => {
-      const title = item.dataset.title || '';
-      const description = item.dataset.description || '';
-      const date = item.dataset.date || '';
-
-      const matchesSearch =
-        searchValue === '' ||
-        title.includes(searchValue) ||
-        description.includes(searchValue);
-
-      const matchesDate =
-        selectedDate === '' || date === selectedDate;
-
-      const shouldShow = matchesSearch && matchesDate;
-
-      item.style.display = shouldShow ? '' : 'none';
-
-      if (shouldShow) visibleCount++;
+  function formatPrettyDate(date) {
+    return new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
-
-    resultsCount.textContent = `Showing ${visibleCount} article${visibleCount === 1 ? '' : 's'}`;
-    noResultsMessage.classList.toggle('hidden', visibleCount !== 0);
   }
 
-  searchInput?.addEventListener('input', updateFilters);
-  dateFilter?.addEventListener('change', updateFilters);
+  function renderCards(pagePosts) {
+    articlesList.innerHTML = '';
+
+    pagePosts.forEach((post) => {
+      const wrapper = document.createElement('div');
+
+      wrapper.innerHTML = `
+        <a
+          href="${post.href}"
+          class="block overflow-hidden rounded-xl border border-gray-200 hover:shadow-lg transition"
+        >
+          <div class="flex flex-col sm:flex-row">
+            ${post.image ? `
+              <div class="sm:w-1/4 shrink-0">
+                <img
+                  src="${post.image}"
+                  alt="${post.title}"
+                  class="h-48 w-full object-cover sm:h-full"
+                />
+              </div>
+            ` : ''}
+
+            <div class="p-6 ${post.image ? 'sm:w-3/4' : 'w-full'}">
+              <p class="text-sm text-gray-500">${formatPrettyDate(post.date)}</p>
+              <h2 class="mt-1 text-xl font-semibold">${post.title}</h2>
+              <p class="mt-2 text-gray-600 text-sm">${post.description}</p>
+            </div>
+          </div>
+        </a>
+      `;
+
+      articlesList.appendChild(wrapper);
+    });
+  }
+
+  function renderPagination(totalPages) {
+    pagination.innerHTML = '';
+
+    if (totalPages <= 1) return;
+
+    const prevBtn = document.createElement('button');
+    prevBtn.textContent = '←';
+    prevBtn.className = 'px-3 py-1 border rounded hover:bg-gray-100 disabled:opacity-50';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => {
+      if (currentPage > 1) {
+        currentPage--;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    pagination.appendChild(prevBtn);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.className = `px-3 py-1 border rounded ${
+        i === currentPage ? 'bg-black text-white' : 'hover:bg-gray-100'
+      }`;
+      btn.onclick = () => {
+        currentPage = i;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+      pagination.appendChild(btn);
+    }
+
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = '→';
+    nextBtn.className = 'px-3 py-1 border rounded hover:bg-gray-100 disabled:opacity-50';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    pagination.appendChild(nextBtn);
+  }
+
+  function render() {
+    const start = (currentPage - 1) * pageSize;
+    const pagePosts = filteredPosts.slice(start, start + pageSize);
+    const totalPages = Math.ceil(filteredPosts.length / pageSize);
+
+    renderCards(pagePosts);
+    renderPagination(totalPages);
+
+    resultsCount.textContent =
+      `Showing ${filteredPosts.length} article${filteredPosts.length === 1 ? '' : 's'}`;
+
+    noResultsMessage.classList.toggle('hidden', filteredPosts.length !== 0);
+  }
+
+  function applyFilters() {
+    const searchValue = searchInput.value.trim().toLowerCase();
+    const dateValue = dateFilter.value;
+
+    filteredPosts = posts.filter((post) => {
+      const matchesSearch =
+        searchValue === '' ||
+        post.title.toLowerCase().includes(searchValue) ||
+        post.description.toLowerCase().includes(searchValue);
+
+      const matchesDate =
+        dateValue === '' || post.date === dateValue;
+
+      return matchesSearch && matchesDate;
+    });
+
+    currentPage = 1;
+    render();
+  }
+
+  searchInput?.addEventListener('input', applyFilters);
+  dateFilter?.addEventListener('change', applyFilters);
+
+  render();
 </script>

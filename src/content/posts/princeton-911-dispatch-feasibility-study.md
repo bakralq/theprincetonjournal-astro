@@ -4,6 +4,7 @@ description: "City Council will vote on funding a feasibility study examining wh
 date: "2026-03-03"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-911-dispatch-feasibility-study.jpg
 draft: false
 ---
 

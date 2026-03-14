@@ -4,6 +4,7 @@ description: "A proposed rezoning on Longneck Road would shift a one-acre site f
 date: "2025-12-16"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/longneck-road-zoning-decision.JPG
 draft: false
 ---
 

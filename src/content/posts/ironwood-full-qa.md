@@ -4,6 +4,7 @@ description: "A full meeting-based breakdown of questions and answers about the 
 date: "2026-02-22"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/ironwood-full-qa.jpeg
 draft: false
 ---
 

@@ -4,6 +4,7 @@ description: "The City of Princeton announced plans for what it says will be the
 date: "2026-03-08"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-first-medical-office-project.jpg
 draft: false
 ---
 

@@ -4,6 +4,7 @@ description: "Crash data from the Texas Department of Transportation show that m
 date: "2025-11-03"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-speeding-crash-analysis.jpg
 draft: false
 ---
 

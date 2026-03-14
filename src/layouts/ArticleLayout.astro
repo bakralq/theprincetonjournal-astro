@@ -1,11 +1,17 @@
 ---
 import Layout from './Layout.astro';
 
-const { title, section, author, date, description, url } = Astro.props;
+const { title, section, author, date, description, url, image } = Astro.props;
 
 ---
 
-<Layout title={`${title} | The Princeton Journal`} description={description} url={url}>
+<Layout
+  title={`${title} | The Princeton Journal`}
+  description={description}
+  url={url}
+  ogImage={image ? `https://theprincetonjournal.com${image}` : "https://theprincetonjournal.com/tpj-logo.jpg"}
+  ogType="article"
+>
   <main class="mx-auto max-w-3xl px-6 py-16">
     <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
       {section}
@@ -29,6 +35,15 @@ const { title, section, author, date, description, url } = Astro.props;
     })}
   </p>
 )}
+
+{image && (
+  <img
+    src={image}
+    alt={title}
+    class="mt-8 w-full rounded-xl border border-gray-200 object-cover"
+  />
+)}
+
 <article class="article-content mt-10 text-lg leading-8 text-gray-800">      <slot />
     </article>
   </main>

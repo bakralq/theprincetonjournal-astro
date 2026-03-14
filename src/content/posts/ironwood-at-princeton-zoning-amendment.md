@@ -4,6 +4,7 @@ description: "Princeton City Council is set to consider a zoning amendment for t
 date: "2026-01-07"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/ironwood-at-princeton-zoning-amendment.webp
 draft: false
 ---
 

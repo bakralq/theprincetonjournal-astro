@@ -4,6 +4,7 @@ description: "Princeton Economic Development Corporation is requesting a rezonin
 date: "2025-12-13"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/bois-darc-professional-park-rezoning.jpg
 draft: false
 ---
 

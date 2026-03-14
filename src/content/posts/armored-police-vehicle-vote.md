@@ -4,6 +4,7 @@ description: "Princeton City Council is set to vote on accepting $355,066 from t
 date: "2026-03-08"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/armored-police-vehicle-vote.png
 draft: false
 ---
 

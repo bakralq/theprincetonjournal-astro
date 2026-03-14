@@ -4,6 +4,7 @@ description: "A review of Princeton’s public procurement framework, payment re
 date: "2026-01-22"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-vendor-transparency-review.jpg
 draft: false
 ---
 

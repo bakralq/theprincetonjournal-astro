@@ -4,6 +4,7 @@ description: "A 7-Eleven-branded gas station and convenience store is proposed a
 date: "2026-01-14"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/7-eleven-myrick-beauchamp.jpg
 draft: false
 ---
 

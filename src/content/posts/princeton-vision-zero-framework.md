@@ -4,6 +4,7 @@ description: "Princeton City Council is set to review a Vision Zero presentation
 date: "2026-01-08"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-vision-zero-framework.jpeg
 draft: false
 ---
 

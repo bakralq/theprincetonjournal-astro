@@ -4,6 +4,7 @@ description: "A look at the planned Princeton Town Center retail development at 
 date: "2025-10-24"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-town-center-sneak-peek.jpg
 draft: false
 ---
 

@@ -4,6 +4,7 @@ description: "Princeton City Council is set to consider an ordinance that would 
 date: "2026-01-09"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/winter-averaging-returns-sewer-billing.jpg
 draft: false
 ---
 

@@ -4,6 +4,7 @@ description: "Public engineering documents show unresolved drainage review items
 date: "2026-02-18"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-town-center-drainage-review-update.jpeg
 draft: false
 ---
 

@@ -4,6 +4,7 @@ description: "TxDOT crash data show reported crashes along US-380 through Prince
 date: "2025-11-02"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/us-380-lane-shift-crash-reduction.jpg
 draft: false
 ---
 

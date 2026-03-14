@@ -4,6 +4,7 @@ description: "A winter storm warning and extreme cold warning are in effect for 
 date: "2026-01-24"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-winter-storm-update-jan24.jpeg
 draft: false
 ---
 

@@ -4,6 +4,7 @@ description: "Princeton City Council is considering an ordinance that would chan
 date: "2025-12-07"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-winter-quarter-averaging-sewer.jpg
 draft: false
 ---
 

@@ -4,6 +4,7 @@ description: "Princeton’s first quarter FY 2025–2026 budget report shows str
 date: "2026-02-07"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/princeton-q1-budget-report-fy2025-2026.jpeg
 draft: false
 ---
 

@@ -42,18 +42,30 @@ import Layout from '../layouts/Layout.astro';
           />
         </div>
 
-        <div>
-          <label class="mb-2 block text-sm font-medium text-gray-700">
-            Subject
-          </label>
-          <input
-            type="text"
-            name="subject"
-            required
-            placeholder="What is this about?"
-            class="w-full rounded-xl border border-gray-300 px-4 py-3 text-base outline-none focus:border-black"
-          />
-        </div>
+<div>
+  <label class="mb-2 block text-sm font-medium text-gray-700">
+    Subject
+  </label>
+  <select
+    name="subject"
+    required
+    class="w-full rounded-xl border border-gray-300 px-4 py-3 text-base outline-none focus:border-black bg-white"
+  >
+    <option value="">Select a subject</option>
+    <option value="News Tip">News Tip</option>
+    <option value="Correction Request">Correction Request</option>
+    <option value="Clarification Request">Clarification Request</option>
+    <option value="Document Submission">Document Submission</option>
+    <option value="Public Records / FOIA">Public Records / FOIA</option>
+    <option value="Story Idea">Story Idea</option>
+    <option value="Interview / Comment Request">Interview / Comment Request</option>
+    <option value="Partnership / Collaboration">Partnership / Collaboration</option>
+    <option value="Advertising / Sponsorship">Advertising / Sponsorship</option>
+    <option value="Technical Issue">Technical Issue</option>
+    <option value="General Inquiry">General Inquiry</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
 
         <div>
           <label class="mb-2 block text-sm font-medium text-gray-700">

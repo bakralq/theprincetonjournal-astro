@@ -4,6 +4,7 @@ description: "City Council approved multiple development and governance items on
 date: "2025-10-17"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/october-14-city-council-major-approvals.jpg
 draft: false
 ---
 

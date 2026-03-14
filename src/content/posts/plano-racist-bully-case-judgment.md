@@ -4,6 +4,7 @@ description: "A Collin County civil jury awarded $3.2 million in damages after o
 date: "2026-02-16"
 section: "US News"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/plano-racist-bully-case-judgment.jpg
 draft: false
 ---
 
