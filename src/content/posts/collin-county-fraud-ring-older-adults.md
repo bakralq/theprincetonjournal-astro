@@ -6,6 +6,11 @@ section: "US News"
 author: "Bakr Al Qaraghuli, Editor"
 draft: false
 ---
+<img src="/images/collin-county-scam.jpg" alt="Collin County fraud investigation locations" class="mt-6 rounded-lg" />
+
+<p class="mt-2 text-sm text-gray-500">
+  Locations where search and arrest warrants were executed.
+</p>
 
 ## What Happened
 

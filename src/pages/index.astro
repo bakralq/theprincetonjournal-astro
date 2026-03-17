@@ -68,15 +68,17 @@ const usNewsPosts = sortedPosts
     )}
 
     <section class="mt-16">
-      <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-bold tracking-tight">
-          Latest Princeton Governance
-        </h2>
-        <a href="/princeton-governance" class="text-sm font-medium text-gray-600 hover:text-black">
-          View all
-        </a>
-      </div>
-
+<div class="flex items-center justify-between gap-2">
+  <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
+    Latest Princeton Governance
+  </h2>
+  <a
+    href="/princeton-governance"
+    class="text-sm font-medium text-gray-600 hover:text-black whitespace-nowrap shrink-0"
+  >
+    View all
+  </a>
+</div>
       <div class="mt-6 grid gap-6 md:grid-cols-3">
         {princetonGovernancePosts.map((post) => (
           <ArticleCard
@@ -92,15 +94,17 @@ const usNewsPosts = sortedPosts
     </section>
 
     <section class="mt-16">
-      <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-bold tracking-tight">
-          Latest U.S. News
-        </h2>
-        <a href="/us-news" class="text-sm font-medium text-gray-600 hover:text-black">
-          View all
-        </a>
-      </div>
-
+<div class="flex items-center justify-between gap-2">
+  <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
+    Latest U.S. News
+  </h2>
+  <a
+    href="/us-news"
+    class="text-sm font-medium text-gray-600 hover:text-black whitespace-nowrap shrink-0"
+  >
+    View all
+  </a>
+</div>
       <div class="mt-6 grid gap-6 md:grid-cols-3">
         {usNewsPosts.map((post) => (
           <ArticleCard
