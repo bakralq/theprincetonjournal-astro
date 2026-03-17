@@ -92,7 +92,10 @@ const formatDate = (date) =>
 <script define:vars={{ postsData }}>
   const posts = postsData;
   const pageSize = 10;
-
+function truncateDescription(text, limit = 140) {
+  if (!text || text.length <= limit) return text;
+  return text.slice(0, limit).trimEnd() + '...';
+}
   let filteredPosts = [...posts];
   let currentPage = 1;
 
@@ -136,7 +139,7 @@ const formatDate = (date) =>
             <div class="p-6 ${post.image ? 'sm:w-3/4' : 'w-full'}">
               <p class="text-sm text-gray-500">${formatPrettyDate(post.date)}</p>
               <h2 class="mt-1 text-xl font-semibold">${post.title}</h2>
-              <p class="mt-2 text-gray-600 text-sm">${post.description}</p>
+<p class="mt-2 text-gray-600 text-sm">${truncateDescription(post.description, 140)}</p>
             </div>
           </div>
         </a>

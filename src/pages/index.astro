@@ -12,7 +12,10 @@ const sortedPosts = posts.sort(
 );
 
 const topPost = sortedPosts[0];
-
+const truncateDescription = (text, limit = 140) => {
+  if (!text || text.length <= limit) return text;
+  return text.slice(0, limit).trimEnd() + '...';
+};
 const princetonGovernancePosts = sortedPosts
   .filter(
     (post) =>
@@ -57,7 +60,7 @@ const usNewsPosts = sortedPosts
             </h1>
 
             <p class="mt-3 text-gray-600">
-              {topPost.data.description}
+  {truncateDescription(topPost.data.description, 140)}
             </p>
           </div>
         </a>

@@ -15,6 +15,13 @@ const formattedDate = date
       day: 'numeric',
     })
   : null;
+
+const truncateDescription = (text, limit = 140) => {
+  if (!text || text.length <= limit) return text;
+  return text.slice(0, limit).trimEnd() + '...';
+};
+
+const shortDescription = truncateDescription(description, 140);
 ---
 
 {variant === 'horizontal' ? (
@@ -40,12 +47,9 @@ const formattedDate = date
 
         <h2 class="mt-1 text-xl font-semibold">{title}</h2>
 
-<p
-  class="mt-2 text-sm text-gray-600 overflow-hidden"
-  style="-webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box;"
->
-  {description}
-</p>
+        <p class="mt-2 text-sm text-gray-600">
+          {shortDescription}
+        </p>
       </div>
     </div>
   </a>
@@ -69,8 +73,8 @@ const formattedDate = date
 
       <h2 class="mt-1 text-xl font-semibold">{title}</h2>
 
-      <p class="mt-2 text-gray-600 text-sm">
-        {description}
+      <p class="mt-2 text-sm text-gray-600">
+        {shortDescription}
       </p>
     </div>
   </a>
