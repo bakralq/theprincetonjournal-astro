@@ -14,11 +14,19 @@ const sortedPosts = posts.sort(
 const topPost = sortedPosts[0];
 
 const princetonGovernancePosts = sortedPosts
-  .filter((post) => post.data.section === 'Princeton Governance')
+  .filter(
+    (post) =>
+      post.data.section === 'Princeton Governance' &&
+      post.id !== topPost?.id
+  )
   .slice(0, 3);
 
 const usNewsPosts = sortedPosts
-  .filter((post) => post.data.section === 'US News')
+  .filter(
+    (post) =>
+      post.data.section === 'US News' &&
+      post.id !== topPost?.id
+  )
   .slice(0, 3);
 ---
 
@@ -36,19 +44,22 @@ const usNewsPosts = sortedPosts
 
         <a
           href={`/posts/${topPost.id.replace(/\.md$/, '')}`}
-          class="mt-4 block rounded-2xl border border-gray-200 p-8 transition hover:border-gray-300"
+          class="mt-4 block overflow-hidden rounded-2xl border border-gray-200 transition hover:border-gray-300"
         >
-          <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
-            {topPost.data.section}
-          </p>
 
-          <h1 class="mt-3 text-3xl font-bold tracking-tight">
-            {topPost.data.title}
-          </h1>
+          <div class="p-8">
+            <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+              {topPost.data.section}
+            </p>
 
-          <p class="mt-3 text-gray-600">
-            {topPost.data.description}
-          </p>
+            <h1 class="mt-3 text-3xl font-bold tracking-tight">
+              {topPost.data.title}
+            </h1>
+
+            <p class="mt-3 text-gray-600">
+              {topPost.data.description}
+            </p>
+          </div>
         </a>
       </section>
     )}
@@ -69,11 +80,10 @@ const usNewsPosts = sortedPosts
             title={post.data.title}
             description={post.data.description}
             href={`/posts/${post.id.replace(/\.md$/, '')}`}
-         
-date={post.data.date}
-  image={post.data.image}
-  variant="stacked"
- />
+            date={post.data.date}
+            image={post.data.image}
+            variant="stacked"
+          />
         ))}
       </div>
     </section>
@@ -94,10 +104,9 @@ date={post.data.date}
             title={post.data.title}
             description={post.data.description}
             href={`/posts/${post.id.replace(/\.md$/, '')}`}
-date={post.data.date}
-  image={post.data.image}
-  variant="stacked"
-
+            date={post.data.date}
+            image={post.data.image}
+            variant="stacked"
           />
         ))}
       </div>
