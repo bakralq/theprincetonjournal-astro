@@ -7,9 +7,7 @@ author: "Bakr Al Qaraghuli, Editor"
 image: /images/collin-county-scam.jpg
 draft: false
 ---
-<p class="mt-2 text-sm text-gray-500">
-  Locations where search and arrest warrants were executed.
-</p>
+<p class="article-hero-caption">Locations where search and arrest warrants were executed.</p>
 
 ## What Happened
 

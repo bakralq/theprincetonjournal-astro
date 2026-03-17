@@ -155,3 +155,17 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.article-hero-caption {
+  margin-top: -2.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #6b7280;
+}
+.article-content .article-hero-caption {
+  margin-top: -1.25rem !important;
+  margin-bottom: 1.5rem !important;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #6b7280;
+}
