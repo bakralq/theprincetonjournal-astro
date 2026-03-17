@@ -149,3 +149,9 @@
   line-height: 1.4;
   color: #6b7280;
 }
+.card-description-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
