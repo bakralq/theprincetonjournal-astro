@@ -4,10 +4,9 @@ description: "Investigators say a North Texas fraud and money laundering scheme 
 date: "2026-02-14"
 section: "US News"
 author: "Bakr Al Qaraghuli, Editor"
+image: /images/collin-county-scam.jpg
 draft: false
 ---
-<img src="/images/collin-county-scam.jpg" alt="Collin County fraud investigation locations" class="mt-6 rounded-lg" />
-
 <p class="mt-2 text-sm text-gray-500">
   Locations where search and arrest warrants were executed.
 </p>
