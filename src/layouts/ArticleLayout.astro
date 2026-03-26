@@ -21,11 +21,11 @@ const { title, section, author, date, description, url, image } = Astro.props;
       {title}
     </h1>
 
-    {author && (
-      <p class="mt-4 text-sm text-gray-600">
-        By {author}
-      </p>
-    )}
+{author && (
+  <p class="mt-4 text-sm text-gray-600">
+    By <a href="/staff" class="no-underline hover:underline">{author}</a>
+  </p>
+)}
 {date && (
   <p class="mt-1 text-sm text-gray-500">
     {new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
