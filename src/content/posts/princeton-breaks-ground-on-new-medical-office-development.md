@@ -1,6 +1,6 @@
 ---
 title: "Princeton Breaks Ground on New Medical Office Development"
-description: "What it is, where it’s going, and why it matters for a fast-growing city."
+description: "Princeton breaks ground on a new medical office development aimed at expanding local healthcare access as the city continues rapid growth."
 date: "2026-03-26"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
