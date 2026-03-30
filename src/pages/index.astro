@@ -10,6 +10,10 @@ const sortedPosts = posts.sort(
     new Date(`${b.data.date}T12:00:00`).getTime() -
     new Date(`${a.data.date}T12:00:00`).getTime()
 );
+const getReadingTime = (content) => {
+  const wordCount = (content || '').trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(wordCount / 200));
+};
 
 const topPost = sortedPosts[0];
 const truncateDescription = (text, limit = 140) => {
@@ -87,6 +91,7 @@ const usNewsPosts = sortedPosts
             href={`/posts/${post.id.replace(/\.md$/, '')}`}
             date={post.data.date}
             image={post.data.image}
+  readingTime={getReadingTime(post.body)}
             variant="stacked"
           />
         ))}
@@ -113,6 +118,7 @@ const usNewsPosts = sortedPosts
             href={`/posts/${post.id.replace(/\.md$/, '')}`}
             date={post.data.date}
             image={post.data.image}
+  readingTime={getReadingTime(post.body)}
             variant="stacked"
           />
         ))}

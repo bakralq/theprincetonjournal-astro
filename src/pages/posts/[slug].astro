@@ -16,8 +16,40 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
+// --- Reading Time Calculation ---
+const rawContent = post.body || '';
+const wordCount = rawContent.split(/\s+/).length;
+const readingTime = Math.max(1, Math.ceil(wordCount / 200)); // 200 wpm
+
 const slug = post.id.replace(/\.md$/, '');
 const articleUrl = `${SITE_URL}/posts/${slug}`;
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+
+const sortedPosts = allPosts.sort(
+  (a, b) =>
+    new Date(`${b.data.date}T12:00:00`).getTime() -
+    new Date(`${a.data.date}T12:00:00`).getTime()
+);
+
+const currentIndex = sortedPosts.findIndex(
+  (p) => p.id.replace(/\.md$/, '') === slug
+);
+
+let nextPost = null;
+
+if (currentIndex === 0) {
+  nextPost = sortedPosts[1] ?? null;
+} else {
+  nextPost = sortedPosts[0] ?? null;
+}
+
+const nextPostData = nextPost
+  ? {
+      title: nextPost.data.title,
+      href: `/posts/${nextPost.id.replace(/\.md$/, '')}`,
+    }
+  : null;
 
 const articleSchema = {
   "@context": "https://schema.org",
@@ -54,7 +86,9 @@ const articleSchema = {
   date={post.data.date}
   description={post.data.description}
   url={articleUrl}
-image={post.data.image}
+  image={post.data.image}
+  readingTime={readingTime}
+  nextPost={nextPostData}
 >
   <Content />
 </ArticleLayout>
