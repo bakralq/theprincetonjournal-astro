@@ -38,23 +38,19 @@ const { title, section, author, date, description, url, image, imageCaption, nex
     )}
 
 {image && (
-  <div class="relative mt-8 overflow-hidden rounded-xl border border-gray-200">
+  <>
     <img
       src={image}
       alt={title}
-      class="w-full object-cover"
+      class="mt-8 w-full rounded-xl border border-gray-200 object-cover"
     />
-
     {imageCaption && (
-      <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent px-4 pb-4 pt-12">
-        <p class="text-sm leading-5 text-white">
-          {imageCaption}
-        </p>
-      </div>
+      <p class="mt-2 text-sm text-gray-500">
+        {imageCaption}
+      </p>
     )}
-  </div>
+  </>
 )}
-
 
     {preview ? (
       <>
