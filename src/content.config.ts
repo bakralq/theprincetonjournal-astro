@@ -7,7 +7,8 @@ const postsCollection = defineCollection({
     date: z.string(),
     section: z.string(),
     author: z.string(),
-image: z.string().optional(),
+    image: z.string().optional(),
+    preview: z.string().optional(),
     draft: z.boolean().optional().default(false),
   }),
 });
@@ -15,4 +16,3 @@ image: z.string().optional(),
 export const collections = {
   posts: postsCollection,
 };
-

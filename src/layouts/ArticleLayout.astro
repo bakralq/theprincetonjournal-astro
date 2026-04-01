@@ -1,7 +1,7 @@
 ---
 import Layout from './Layout.astro';
 
-const { title, section, author, date, description, url, image, nextPost, readingTime } = Astro.props;
+const { title, section, author, date, description, url, image, nextPost, readingTime, preview } = Astro.props;
 ---
 
 <Layout
@@ -26,16 +26,16 @@ const { title, section, author, date, description, url, image, nextPost, reading
       </p>
     )}
 
-{date && (
-  <p class="mt-1 text-sm text-gray-500">
-    {new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })}
-    {readingTime && ` • ${readingTime} min read`}
-  </p>
-)}
+    {date && (
+      <p class="mt-1 text-sm text-gray-500">
+        {new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+        {readingTime && ` • ${readingTime} min read`}
+      </p>
+    )}
 
     {image && (
       <img
@@ -45,9 +45,49 @@ const { title, section, author, date, description, url, image, nextPost, reading
       />
     )}
 
-    <article class="article-content mt-10 text-lg leading-8 text-gray-800">
-      <slot />
-    </article>
+    {preview ? (
+      <>
+        <div class="article-content mt-10 text-lg leading-8 text-gray-800">
+          <p>{preview}</p>
+        </div>
+
+        <div class="relative mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-white">
+          <div class="pointer-events-none max-h-64 overflow-hidden px-6 pt-6 pb-20 opacity-75 blur-[2px]">
+            <article class="article-content text-lg leading-8 text-gray-800">
+              <slot />
+            </article>
+          </div>
+
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-white via-white/95 to-transparent px-6 pb-6 pt-16 text-center">
+            <button
+              id="readMoreButton"
+              class="inline-flex items-center rounded-xl border border-black bg-black px-6 py-3 text-base font-semibold text-white transition hover:bg-white hover:text-black"
+            >
+              Read more
+            </button>
+          </div>
+        </div>
+
+        <article id="fullArticle" class="article-content mt-10 hidden text-lg leading-8 text-gray-800">
+          <slot />
+        </article>
+
+        <script>
+          const button = document.getElementById('readMoreButton');
+          const fullArticle = document.getElementById('fullArticle');
+
+          button?.addEventListener('click', () => {
+            const previewBlock = button.closest('.relative');
+            if (previewBlock) previewBlock.remove();
+            fullArticle?.classList.remove('hidden');
+          });
+        </script>
+      </>
+    ) : (
+      <article class="article-content mt-10 text-lg leading-8 text-gray-800">
+        <slot />
+      </article>
+    )}
 
     {nextPost && (
       <section class="mt-14 border-t border-gray-200 pt-8">
@@ -57,11 +97,38 @@ const { title, section, author, date, description, url, image, nextPost, reading
 
         <a
           href={nextPost.href}
-          class="mt-3 block rounded-xl border border-gray-200 p-6 transition hover:border-gray-300 hover:shadow-sm"
+          class="mt-3 block overflow-hidden rounded-xl border border-gray-200 transition hover:border-gray-300 hover:shadow-sm"
         >
-          <h2 class="text-2xl font-semibold tracking-tight">
-            {nextPost.title}
-          </h2>
+          <div class="flex flex-col sm:flex-row">
+            {nextPost.image && (
+              <div class="sm:w-1/4 shrink-0">
+                <img
+                  src={nextPost.image}
+                  alt={nextPost.title}
+                  class="h-40 w-full object-cover"
+                />
+              </div>
+            )}
+
+            <div class={`p-6 ${nextPost.image ? 'sm:w-3/4' : 'w-full'}`}>
+              {(nextPost.date || nextPost.readingTime) && (
+                <p class="text-sm text-gray-500">
+                  {nextPost.date &&
+                    new Date(`${nextPost.date}T12:00:00`).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  {nextPost.date && nextPost.readingTime ? ' • ' : ''}
+                  {nextPost.readingTime ? `${nextPost.readingTime} min read` : ''}
+                </p>
+              )}
+
+              <h2 class="mt-1 text-xl font-semibold tracking-tight">
+                {nextPost.title}
+              </h2>
+            </div>
+          </div>
         </a>
       </section>
     )}

@@ -7,6 +7,16 @@ const {
   ogImage = "https://theprincetonjournal.com/tpj-logo.jpg",
   ogType = "website"
 } = Astro.props;
+
+const websiteSchema =
+  ogType === "website" && url === "https://theprincetonjournal.com"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "The Princeton Journal",
+        "url": "https://theprincetonjournal.com/"
+      }
+    : null;
 ---
 
 <!DOCTYPE html>
@@ -24,20 +34,34 @@ const {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="q2FhOIt2RvOTMfmnH1qgdFheMFXS6RNchAsDJliiDWY" />
+
 <link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<link rel="shortcut icon" href="/favicon-32.png?v=4" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=4" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=4" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4" />
+<link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png?v=4" />
+<meta name="application-name" content="The Princeton Journal" />
+<meta name="apple-mobile-web-app-title" content="The Princeton Journal" />
+<meta property="og:site_name" content="The Princeton Journal" />
 
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={url} />
 <link rel="alternate" type="application/rss+xml" title="The Princeton Journal RSS Feed" href="https://theprincetonjournal.com/rss.xml" />
-<link rel="alternate" type="application/rss+xml" title="The Princeton Journal RSS Feed" href="/rss.xml">
 <meta property="og:title" content={title} />
+
 <meta property="og:description" content={description} />
 <meta property="og:type" content={ogType} />
 <meta property="og:url" content={url} />
 <meta property="og:image" content={ogImage} />
 <meta property="fb:app_id" content="1600725191074059" />
+
+{websiteSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+)}
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
