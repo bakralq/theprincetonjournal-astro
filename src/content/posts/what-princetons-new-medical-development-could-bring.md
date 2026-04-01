@@ -5,12 +5,9 @@ date: "2026-04-02"
 section: "Princeton Governance"
 author: "Bakr Al Qaraghuli, Editor"
 image: "/images/princeton-medical-development-ceremony.jpg"
+imageCaption: "City officials and project representatives gathered for the ceremonial groundbreaking of Princeton’s new medical office development. (Image: City of Princeton Government, Facebook)"
 preview: "Princeton has already broken ground on its first true medical office development, but the bigger story goes beyond the start of construction. This project offers one of the clearest signs yet of what kind of city Princeton is trying to become."
 ---
-
-<p class="article-hero-caption">
-  City officials and project representatives gathered for the ceremonial groundbreaking of Princeton’s new medical office development. (Image: City of Princeton Government, Facebook)
-</p>
 
 ## From doctors’ offices to imaging and family care, here’s what Princeton’s first major medical office project appears designed to bring
 

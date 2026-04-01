@@ -1,7 +1,7 @@
 ---
 import Layout from './Layout.astro';
 
-const { title, section, author, date, description, url, image, nextPost, readingTime, preview } = Astro.props;
+const { title, section, author, date, description, url, image, imageCaption, nextPost, readingTime, preview } = Astro.props;
 ---
 
 <Layout
@@ -37,13 +37,24 @@ const { title, section, author, date, description, url, image, nextPost, reading
       </p>
     )}
 
-    {image && (
-      <img
-        src={image}
-        alt={title}
-        class="mt-8 w-full rounded-xl border border-gray-200 object-cover"
-      />
+{image && (
+  <div class="relative mt-8 overflow-hidden rounded-xl border border-gray-200">
+    <img
+      src={image}
+      alt={title}
+      class="w-full object-cover"
+    />
+
+    {imageCaption && (
+      <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent px-4 pb-4 pt-12">
+        <p class="text-sm leading-5 text-white">
+          {imageCaption}
+        </p>
+      </div>
     )}
+  </div>
+)}
+
 
     {preview ? (
       <>
