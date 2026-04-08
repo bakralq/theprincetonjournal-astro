@@ -162,10 +162,6 @@ Residents in public comments are reporting proximity concerns near schools and n
 
 Specific amendments have not yet been publicly detailed in the agenda
 
-Bottom line:
-
-The issue is now formally on the record, but the real question is how far the city can actually go within state law.
-
 ## Final point
 
 The issue is now formally on the record.
