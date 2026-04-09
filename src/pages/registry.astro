@@ -1,0 +1,692 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { registryRecords } from '../data/registry';
+
+const registryData = JSON.stringify(registryRecords);
+const officialRegistryZipUrl = 'https://sor.dps.texas.gov/Search/Default/SearchByZipCode';
+const registryLastReviewed = 'April 8, 2026';
+---
+
+<Layout
+  title="Princeton TX Sex Offender Registry Lookup | The Princeton Journal"
+  description="Search registered sex offenders in Princeton, Texas using public registry data. View risk levels, status, and official records."
+  url="https://theprincetonjournal.com/registry"
+>
+  <main class="registry-page mx-auto max-w-6xl px-6 py-8">
+    <section class="registry-banner" aria-label="Mandatory registry disclaimer">
+      <div class="registry-banner-head">
+        <p class="registry-banner-title">Important Notice</p>
+        <p class="registry-banner-summary">
+          This page displays publicly available registry data. Expand the important notice for source, accuracy, and
+          responsible-use information.
+        </p>
+      </div>
+
+      <details class="registry-banner-disclosure">
+        <summary>View important notice</summary>
+
+        <div class="registry-banner-body">
+          <p>
+            This tool displays publicly available information from the Texas Department of Public Safety Sex Offender
+            Registry. The Princeton Journal does not create, verify, or maintain these records.
+          </p>
+          <p>
+            Information may change at any time. Users should confirm all details through the official state registry.
+          </p>
+          <p>
+            This page presents publicly available registry data to help residents understand how the system works and
+            access official records. It is not a substitute for the official state registry.
+          </p>
+          <p>
+            This page is designed to make publicly available registry data easier to access while directing users to
+            the official state source for confirmation.
+          </p>
+          <p>
+            This page is provided for public information and safety education. Public registry data and state-provided
+            records must not be used for harassment, threats, intimidation, discrimination, or any other misuse.
+          </p>
+          <div class="registry-banner-links">
+            <a href={officialRegistryZipUrl} target="_blank" rel="noopener noreferrer">Official Texas DPS registry</a>
+            <a href="/registry-data-guide">How to understand this data</a>
+            <a href="/registry-disclaimer">Registry disclaimer</a>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="registry-hero">
+      <div>
+        <p class="registry-eyebrow">Public Records</p>
+        <h1 class="registry-title">Princeton Sex Offender Registry Lookup</h1>
+        <p class="registry-summary">
+          Search records, filter by status or risk level, and explore the Princeton map. Select a marker to open the full record details.
+        </p>
+        <p class="registry-summary registry-summary-secondary">
+          Need help reading status terms or understanding how public registry data works?
+          <a href="/registry-data-guide">Read the quick guide</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="registry-toolbar" aria-label="Registry search controls">
+      <label class="registry-search">
+        <span class="sr-only">Search records</span>
+        <input
+          id="registry-search"
+          type="search"
+          placeholder="Search by name, street, ZIP, neighborhood, or offense"
+          autocomplete="off"
+        />
+      </label>
+
+      <label class="registry-filter">
+        <span class="sr-only">Filter by risk level</span>
+        <select id="registry-risk-filter">
+          <option value="ALL">All risk levels</option>
+          <option value="LOW">Low</option>
+          <option value="MODERATE">Moderate</option>
+          <option value="HIGH">High</option>
+          <option value="NOT REPORTED">Not reported</option>
+        </select>
+      </label>
+
+      <label class="registry-filter">
+        <span class="sr-only">Filter by verification status</span>
+        <select id="registry-status-filter">
+          <option value="ALL">All statuses</option>
+          <option value="Verified">Verified</option>
+          <option value="Reported Information Not Verified">Reported Information Not Verified</option>
+          <option value="Relocation">Relocation</option>
+        </select>
+      </label>
+
+      <label class="registry-filter">
+        <span class="sr-only">Filter by offense</span>
+        <select id="registry-offense-filter">
+          <option value="ALL">All offenses</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="registry-layout">
+      <div class="registry-map-panel">
+        <div class="registry-map-header">
+          <div>
+            <p class="registry-panel-label">Map</p>
+            <h2>Princeton overview</h2>
+          </div>
+          <p id="registry-results-count" class="registry-results-count">0 records</p>
+        </div>
+
+        <div class="registry-map-shell">
+          <div id="registry-live-map" class="registry-live-map" aria-label="Princeton map"></div>
+          <div id="registry-map-empty" class="registry-map-empty">
+            No mapped records loaded yet. Add `location.lat` and `location.lng` values in the registry data file to place markers on the Princeton map.
+          </div>
+        </div>
+
+        <p class="registry-map-note">
+          The map centers on Princeton, Texas and automatically plots any records that include latitude and longitude values.
+          Records marked as relocation are intentionally left off the map when the official registry does not provide a
+          current confirmed mappable address.
+        </p>
+      </div>
+
+      <section class="registry-list-panel">
+        <div class="registry-panel-heading">
+          <p class="registry-panel-label">Records</p>
+          <h2>Search results</h2>
+        </div>
+        <div id="registry-list" class="registry-list"></div>
+        <div id="registry-list-empty" class="registry-empty-state">
+          No matching records found.
+        </div>
+      </section>
+
+      <aside class="registry-detail-panel">
+        <div class="registry-panel-heading">
+          <p class="registry-panel-label">Details</p>
+          <h2 id="registry-detail-title">Select a record</h2>
+        </div>
+
+        <div id="registry-detail-empty" class="registry-empty-state">
+          Click a marker on the map to open that record here.
+        </div>
+
+        <div id="registry-detail" class="registry-detail" hidden>
+          <div class="registry-detail-hero">
+            <div class="registry-photo-panel">
+              <div class="registry-photo-frame">
+                <img id="detail-photo-image" alt="" hidden />
+                <div id="detail-photo-empty" class="registry-photo-empty">
+                  No photo available
+                </div>
+              </div>
+              <div class="registry-photo-meta">
+                <span class="registry-detail-label">Photo reported</span>
+                <p id="detail-photo-reported"></p>
+              </div>
+            </div>
+
+            <div class="registry-detail-summary">
+          <div class="registry-detail-grid">
+            <div>
+              <span class="registry-detail-label">Primary name</span>
+              <p id="detail-name"></p>
+            </div>
+            <div>
+              <span class="registry-detail-label">Risk level</span>
+              <p id="detail-risk"></p>
+            </div>
+            <div>
+              <span class="registry-detail-label">Address</span>
+              <p id="detail-address"></p>
+            </div>
+            <div>
+              <span class="registry-detail-label">Verification</span>
+              <p id="detail-verification"></p>
+            </div>
+            <div>
+              <span class="registry-detail-label">Status</span>
+              <p id="detail-status"></p>
+            </div>
+            <div>
+              <span class="registry-detail-label">Last updated</span>
+              <p id="detail-updated"></p>
+            </div>
+          </div>
+            </div>
+          </div>
+
+          <div class="registry-detail-section">
+            <span class="registry-detail-label">Aliases</span>
+            <p id="detail-aliases"></p>
+          </div>
+
+          <div class="registry-detail-section">
+            <span class="registry-detail-label">Physical description</span>
+            <p id="detail-physical"></p>
+          </div>
+
+          <div class="registry-detail-columns">
+            <div class="registry-detail-section">
+              <span class="registry-detail-label">Offenses</span>
+              <div id="detail-offenses" class="registry-detail-stack"></div>
+            </div>
+
+            <div class="registry-detail-section">
+              <span class="registry-detail-label">Agency events</span>
+              <div id="detail-events" class="registry-detail-stack"></div>
+            </div>
+          </div>
+
+          <div class="registry-record-disclaimer">
+            <p><strong>Source:</strong> Texas Department of Public Safety</p>
+            <p>This information is reproduced from the official registry.</p>
+            <p>Accuracy and updates are determined by the registering agency.</p>
+            <p>
+              <a href={officialRegistryZipUrl} target="_blank" rel="noopener noreferrer">
+                View official record (search for 75407 zipcode)
+              </a>
+            </p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="registry-footer" aria-label="Registry information and legal resources">
+      <div class="registry-resource-grid">
+        <article class="registry-resource-card">
+          <p class="registry-panel-label">Guide</p>
+          <h2>How To Understand This Data</h2>
+          <p>
+            Learn what “verified,” “reported not verified,” and “relocation” mean, how state-provided records update,
+            and why registry inclusion does not equal a current threat assessment.
+          </p>
+          <a href="/registry-data-guide">Read the guide</a>
+        </article>
+
+        <article class="registry-resource-card">
+          <p class="registry-panel-label">Legal</p>
+          <h2>Registry Disclaimer</h2>
+          <p>
+            Review the registry-specific legal notice covering source attribution, accuracy limits, misuse
+            restrictions, and why the official Texas DPS registry remains the authoritative source.
+          </p>
+          <a href="/registry-disclaimer">Read the disclaimer</a>
+        </article>
+
+        <article class="registry-resource-card">
+          <p class="registry-panel-label">Support</p>
+          <h2>Report A Correction Or Concern</h2>
+          <p>
+            If you believe this page displays a mismatched image, an issue with public registry data presentation, a
+            removal concern, or another issue, use the contact page and include the SID and details.
+          </p>
+          <a href="/contact">Go to contact page</a>
+        </article>
+      </div>
+
+      <div class="registry-meta-footer">
+        <p class="registry-meta-note">
+          This page uses public registry data and state-provided records for public information and safety education.
+          The official Texas Department of Public Safety registry remains the authoritative source.
+        </p>
+        <p class="registry-last-checked">
+          Last reviewed against the Texas Department of Public Safety registry: {registryLastReviewed}
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script type="application/json" id="registry-data" set:html={registryData}></script>
+  <script>
+    const dataElement = document.getElementById('registry-data');
+    const records = dataElement ? JSON.parse(dataElement.textContent || '[]') : [];
+
+    const searchInput = document.getElementById('registry-search');
+    const riskFilter = document.getElementById('registry-risk-filter');
+    const statusFilter = document.getElementById('registry-status-filter');
+    const offenseFilter = document.getElementById('registry-offense-filter');
+    const resultsCount = document.getElementById('registry-results-count');
+    const list = document.getElementById('registry-list');
+    const listEmpty = document.getElementById('registry-list-empty');
+    const mapContainer = document.getElementById('registry-live-map');
+    const mapEmpty = document.getElementById('registry-map-empty');
+    const detailTitle = document.getElementById('registry-detail-title');
+    const detailPanel = document.getElementById('registry-detail');
+    const detailEmpty = document.getElementById('registry-detail-empty');
+    const detailPhotoImage = document.getElementById('detail-photo-image');
+    const detailPhotoEmpty = document.getElementById('detail-photo-empty');
+
+    let activeId = null;
+    let leafletMap = null;
+    let leafletLayer = null;
+    let markerGroup = [];
+
+    const offenseOptions = Array.from(
+      new Set(
+        records
+          .flatMap((record) => (record.offenses || []).map((offense) => offense.offense))
+          .filter(Boolean)
+      )
+    ).sort((a, b) => a.localeCompare(b));
+
+    if (offenseFilter) {
+      offenseOptions.forEach((offense) => {
+        const option = document.createElement('option');
+        option.value = offense;
+        option.textContent = offense;
+        offenseFilter.appendChild(option);
+      });
+    }
+
+    const formatText = (value, fallback = 'Not provided') => value || fallback;
+
+    const renderDetail = (record) => {
+      if (!record || !detailPanel || !detailEmpty || !detailTitle) {
+        return;
+      }
+
+      detailTitle.textContent = record.name;
+      detailPanel.hidden = false;
+      detailEmpty.hidden = true;
+
+      document.getElementById('detail-name').textContent = record.name;
+      document.getElementById('detail-risk').innerHTML = `<span class="registry-risk-pill" data-risk="${formatText(record.riskLevel)}">${formatText(record.riskLevel)}</span>`;
+      const addressLine = [record.address, [record.city, record.state, record.zip].filter(Boolean).join(' ')].filter(
+        (value) => value && String(value).trim()
+      );
+      document.getElementById('detail-address').textContent = addressLine.join(', ');
+      document.getElementById('detail-verification').textContent = formatText(record.verificationRequirement);
+      document.getElementById('detail-status').textContent = formatText(record.status);
+      document.getElementById('detail-updated').textContent = formatText(record.lastUpdated);
+      document.getElementById('detail-photo-reported').textContent = formatText(record.photo?.reportedDate);
+      document.getElementById('detail-aliases').textContent = record.aliases?.length ? record.aliases.join(', ') : 'No aliases listed';
+
+      if (detailPhotoImage && detailPhotoEmpty) {
+        if (record.photo?.imageUrl) {
+          detailPhotoImage.src = record.photo.imageUrl;
+          detailPhotoImage.alt = `${record.name} registry photo`;
+          detailPhotoImage.hidden = false;
+          detailPhotoEmpty.hidden = true;
+        } else {
+          detailPhotoImage.hidden = true;
+          detailPhotoImage.removeAttribute('src');
+          detailPhotoImage.alt = '';
+          detailPhotoEmpty.hidden = false;
+        }
+      }
+
+      const physical = [
+        record.physicalDescription?.height,
+        record.physicalDescription?.weight,
+        record.physicalDescription?.hairColor && `Hair: ${record.physicalDescription.hairColor}`,
+        record.physicalDescription?.eyeColor && `Eyes: ${record.physicalDescription.eyeColor}`,
+        record.physicalDescription?.shoeSize && `Shoe: ${record.physicalDescription.shoeSize}`,
+      ].filter(Boolean).join(' • ');
+
+      document.getElementById('detail-physical').textContent = physical || 'No physical description listed';
+
+      const offenseContainer = document.getElementById('detail-offenses');
+      offenseContainer.innerHTML = '';
+      (record.offenses || []).forEach((offense) => {
+        const item = document.createElement('div');
+        item.className = 'registry-stack-card';
+        item.innerHTML = `
+          <strong>${formatText(offense.offense)}</strong>
+          <span>${formatText(offense.statute)}</span>
+          <span>${[offense.victimSex && `Victim sex: ${offense.victimSex}`, offense.victimAge && `Victim age: ${offense.victimAge}`, offense.dispositionDate && `Disposition: ${offense.dispositionDate}`, offense.judgment && `Judgment: ${offense.judgment}`].filter(Boolean).join(' • ')}</span>
+        `;
+        offenseContainer.appendChild(item);
+      });
+
+      const eventContainer = document.getElementById('detail-events');
+      eventContainer.innerHTML = '';
+      (record.events || []).forEach((event) => {
+        const item = document.createElement('div');
+        item.className = 'registry-stack-card';
+        item.innerHTML = `
+          <strong>${formatText(event.date)}</strong>
+          <span>${formatText(event.type)}</span>
+          <span>${formatText(event.agency)}</span>
+        `;
+        eventContainer.appendChild(item);
+      });
+    };
+
+    const createListCard = (record) => {
+      const button = document.createElement('div');
+      button.className = 'registry-record-card';
+      if (record.id === activeId) {
+        button.dataset.active = 'true';
+      }
+
+      const offenseSummary = record.offenses?.[0]?.offense || 'No offense listed';
+      const areaSummary = [record.neighborhood, record.zip].filter(Boolean).join(' • ');
+
+      button.innerHTML = `
+        <span class="registry-card-topline">
+          <span class="registry-risk-pill" data-risk="${formatText(record.riskLevel)}">${formatText(record.riskLevel)}</span>
+          <span>${formatText(record.status, 'Status unavailable')}</span>
+        </span>
+        <strong>${record.name}</strong>
+        <span>${offenseSummary}</span>
+        <span>${[record.address, areaSummary].filter(Boolean).join(' • ')}</span>
+      `;
+
+      return button;
+    };
+
+    const loadLeaflet = async () => {
+      if (window.L) {
+        return window.L;
+      }
+
+      if (!document.getElementById('leaflet-stylesheet')) {
+        const stylesheet = document.createElement('link');
+        stylesheet.id = 'leaflet-stylesheet';
+        stylesheet.rel = 'stylesheet';
+        stylesheet.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+        document.head.appendChild(stylesheet);
+      }
+
+      if (!document.getElementById('leaflet-cluster-stylesheet')) {
+        const clusterStylesheet = document.createElement('link');
+        clusterStylesheet.id = 'leaflet-cluster-stylesheet';
+        clusterStylesheet.rel = 'stylesheet';
+        clusterStylesheet.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css';
+        document.head.appendChild(clusterStylesheet);
+      }
+
+      if (!document.getElementById('leaflet-cluster-default-stylesheet')) {
+        const clusterDefaultStylesheet = document.createElement('link');
+        clusterDefaultStylesheet.id = 'leaflet-cluster-default-stylesheet';
+        clusterDefaultStylesheet.rel = 'stylesheet';
+        clusterDefaultStylesheet.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css';
+        document.head.appendChild(clusterDefaultStylesheet);
+      }
+
+      await new Promise((resolve, reject) => {
+        const existingScript = document.getElementById('leaflet-script');
+        if (existingScript) {
+          existingScript.addEventListener('load', resolve, { once: true });
+          existingScript.addEventListener('error', reject, { once: true });
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.id = 'leaflet-script';
+        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+      });
+
+      return window.L;
+    };
+
+    const loadLeafletCluster = async () => {
+      if (window.L?.markerClusterGroup) {
+        return;
+      }
+
+      await new Promise((resolve, reject) => {
+        const existingScript = document.getElementById('leaflet-cluster-script');
+        if (existingScript) {
+          existingScript.addEventListener('load', resolve, { once: true });
+          existingScript.addEventListener('error', reject, { once: true });
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.id = 'leaflet-cluster-script';
+        script.src = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js';
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+      });
+    };
+
+    const createDivIcon = (record) => window.L.divIcon({
+      className: 'registry-leaflet-icon',
+      html: `<span class="registry-marker-dot${record.id === activeId ? ' is-active' : ''}" data-risk="${formatText(record.riskLevel)}"></span>`,
+      iconSize: [18, 18],
+      iconAnchor: [9, 9],
+    });
+
+    const expandBounds = (L, bounds, latPadding, lngPadding) => {
+      const southWest = bounds.getSouthWest();
+      const northEast = bounds.getNorthEast();
+
+      return L.latLngBounds(
+        [southWest.lat - latPadding, southWest.lng - lngPadding],
+        [northEast.lat + latPadding, northEast.lng + lngPadding]
+      );
+    };
+
+    const initializeMap = async () => {
+      if (!mapContainer || leafletMap) {
+        return;
+      }
+
+      try {
+        const L = await loadLeaflet();
+        await loadLeafletCluster();
+        const allMappedRecords = records.filter(
+          (record) =>
+            record.location &&
+            typeof record.location.lat === 'number' &&
+            typeof record.location.lng === 'number'
+        );
+        const allMappedPoints = allMappedRecords.map((record) => [record.location.lat, record.location.lng]);
+        const registryBounds =
+          allMappedPoints.length > 0
+            ? expandBounds(L, L.latLngBounds(allMappedPoints), 0.06, 0.08)
+            : L.latLngBounds(
+                [33.04, -96.64],
+                [33.31, -96.35]
+              );
+
+        leafletMap = L.map(mapContainer, {
+          zoomControl: true,
+          scrollWheelZoom: true,
+          minZoom: 10,
+          maxBounds: registryBounds,
+          maxBoundsViscosity: 1,
+        }).setView([33.1809, -96.4986], 12);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap contributors',
+        }).addTo(leafletMap);
+
+        leafletLayer = L.markerClusterGroup({
+          showCoverageOnHover: false,
+          spiderfyOnMaxZoom: true,
+          disableClusteringAtZoom: 16,
+          maxClusterRadius: 44,
+        });
+        leafletMap.addLayer(leafletLayer);
+
+        setTimeout(() => {
+          leafletMap.invalidateSize();
+        }, 50);
+      } catch (error) {
+        if (mapEmpty) {
+          mapEmpty.hidden = false;
+          mapEmpty.textContent = 'The live map could not load. Check your connection and try again.';
+        }
+      }
+    };
+
+    const renderMap = (filtered, activeRecord) => {
+      if (!leafletMap || !leafletLayer || !mapEmpty) {
+        return;
+      }
+
+      leafletLayer.clearLayers();
+      markerGroup = [];
+
+      const mappedRecords = filtered.filter(
+        (record) =>
+          record.location &&
+          typeof record.location.lat === 'number' &&
+          typeof record.location.lng === 'number'
+      );
+
+      if (!mappedRecords.length) {
+        mapEmpty.hidden = false;
+        return;
+      }
+
+      mapEmpty.hidden = true;
+
+      mappedRecords.forEach((record) => {
+        const marker = window.L
+          .marker([record.location.lat, record.location.lng], {
+            icon: createDivIcon(record),
+          })
+          .bindTooltip(record.name, {
+            direction: 'top',
+            offset: [0, -8],
+          });
+
+        marker.on('click', () => {
+          activeId = record.id;
+          render();
+        });
+
+        markerGroup.push(marker);
+      });
+
+      markerGroup.forEach((marker) => leafletLayer.addLayer(marker));
+
+      const bounds = leafletLayer.getBounds();
+      if (bounds.isValid()) {
+        if (mappedRecords.length === 1 && activeRecord?.location) {
+          leafletMap.setView([activeRecord.location.lat, activeRecord.location.lng], 15, {
+            animate: false,
+          });
+        } else {
+          leafletMap.fitBounds(bounds.pad(0.16), { animate: false, maxZoom: 13 });
+        }
+      }
+    };
+
+    const getFilteredRecords = () => {
+      const query = (searchInput?.value || '').trim().toLowerCase();
+      const risk = riskFilter?.value || 'ALL';
+      const status = statusFilter?.value || 'ALL';
+      const offense = offenseFilter?.value || 'ALL';
+
+      return records.filter((record) => {
+        const haystack = [
+          record.name,
+          ...(record.aliases || []),
+          record.address,
+          record.city,
+          record.zip,
+          record.neighborhood,
+          record.riskLevel,
+          record.status,
+          ...(record.offenses || []).map((item) => `${item.offense} ${item.statute}`),
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+
+        const matchesQuery = !query || haystack.includes(query);
+        const matchesRisk = risk === 'ALL' || record.riskLevel === risk;
+        const matchesStatus = status === 'ALL' || (record.status || '') === status;
+        const matchesOffense =
+          offense === 'ALL' ||
+          (record.offenses || []).some((item) => item.offense === offense);
+
+        return matchesQuery && matchesRisk && matchesStatus && matchesOffense;
+      });
+    };
+
+    const render = () => {
+      if (!list || !resultsCount || !listEmpty || !mapEmpty) {
+        return;
+      }
+
+      const filtered = getFilteredRecords();
+      const activeRecord = filtered.find((record) => record.id === activeId) || null;
+
+      if (activeRecord) {
+        renderDetail(activeRecord);
+      } else if (detailPanel && detailEmpty && detailTitle) {
+        detailPanel.hidden = true;
+        detailEmpty.hidden = false;
+        detailTitle.textContent = 'Select a record';
+      }
+
+      resultsCount.textContent = `${filtered.length} ${filtered.length === 1 ? 'record' : 'records'}`;
+
+      list.innerHTML = '';
+      filtered.forEach((record) => {
+        const card = createListCard(record);
+        card.addEventListener('click', () => {
+          activeId = record.id;
+          render();
+        });
+        list.appendChild(card);
+      });
+      listEmpty.hidden = filtered.length > 0;
+
+      renderMap(filtered, activeRecord);
+    };
+
+    searchInput?.addEventListener('input', render);
+    riskFilter?.addEventListener('change', render);
+    statusFilter?.addEventListener('change', render);
+    offenseFilter?.addEventListener('change', render);
+    initializeMap().finally(() => {
+      render();
+    });
+  </script>
+</Layout>

@@ -3,7 +3,7 @@ title: "Princeton reviewing sex offender ordinance changes after public pressure
 description: "Princeton City Council is set to review proposed enhancements to the city’s sex offender ordinance on April 13 after mounting public pressure and calls for stronger restrictions."
 date: "2026-04-07"
 section: "Princeton Governance"
-author: "Bakr Al Qaraghuli, Editor"
+author: "Christian J. Remington, Editor"
 image: "/images/princeton-sex-offender-ordinance-april-13.png"
 preview: "In fast-growing cities, most people don’t notice policy until it gets close to home—near a school, a neighborhood street, or someone they know. In Princeton, that shift is now visible."
 ---

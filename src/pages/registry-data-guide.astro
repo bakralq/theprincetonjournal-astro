@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const officialRegistryZipUrl = 'https://sor.dps.texas.gov/Search/Default/SearchByZipCode';
+---
+
+<Layout
+  title="How To Understand Registry Data | The Princeton Journal"
+  description="Guide to understanding public registry data and state-provided records shown on The Princeton Journal."
+  url="https://theprincetonjournal.com/registry-data-guide"
+>
+  <main class="mx-auto max-w-4xl px-6 py-10">
+    <p class="text-sm font-medium uppercase tracking-wide text-gray-500">Registry Data Guide</p>
+    <h1 class="mt-3 text-4xl font-bold tracking-tight">How To Understand This Data</h1>
+
+    <div class="mt-8 space-y-6 text-lg leading-8 text-gray-800">
+      <p>
+        This page explains how to read public registry data and state-provided records shown on the registry page. It
+        is meant to help readers understand what certain labels mean and what they do not mean.
+      </p>
+
+      <div class="rounded-2xl border border-gray-200 bg-gray-50 p-6">
+        <p class="text-sm font-semibold uppercase tracking-wide text-gray-600">Before You Use It</p>
+        <ul class="mt-3 list-disc space-y-3 pl-5 text-base leading-7 text-gray-700">
+          <li>Status labels and risk labels come from official registry records, not from The Princeton Journal.</li>
+          <li>Public registry data can change. Always confirm the latest information through the official Texas DPS registry.</li>
+          <li>Registry inclusion is not the same thing as a real-time assessment of present danger or current conduct.</li>
+        </ul>
+      </div>
+
+      <h2 class="text-2xl font-bold tracking-tight">What “Verified” Means</h2>
+      <p>
+        “Verified” is an administrative status term from the official registry. In general, it indicates that the
+        registering agency reported the record as verified for the relevant reporting cycle. It does not mean The
+        Princeton Journal independently verified the record, and it should not be read as a guarantee that every detail
+        is current at the exact moment a user views the page.
+      </p>
+
+      <h2 class="text-2xl font-bold tracking-tight">What “Reported Information Not Verified” Means</h2>
+      <p>
+        This label generally means information has been reported to the official registry, but local verification is not
+        reflected as complete in the state-provided record. It does not automatically mean the record is false. It
+        means the official registry is indicating an unverified administrative status.
+      </p>
+
+      <h2 class="text-2xl font-bold tracking-tight">What “Relocation” Means</h2>
+      <p>
+        “Relocation” is a status label from the official registry that can indicate a move-related or transition status.
+        When that label appears, an address may be unavailable, changing, or no longer suitable to treat as a current
+        residence. It should not be read as confirmation of a present address.
+      </p>
+
+      <h2 class="text-2xl font-bold tracking-tight">How Often Data Updates</h2>
+      <p>
+        Update timing depends on the official registry, the registering agency, statutory reporting intervals, and
+        agency processing time. Some records may update after annual verification cycles, some after quarterly cycles,
+        and some after a status change or administrative action. A page review date on this site may not match the
+        precise time a registering agency updated the official registry.
+      </p>
+
+      <h2 class="text-2xl font-bold tracking-tight">Why Registry Inclusion Does Not Equal A Current Threat Level</h2>
+      <p>
+        Registry inclusion is a legal status. It is not a real-time statement about current conduct, immediate danger,
+        or current intent. Risk labels shown on the page are part of the official record and should not be treated as a
+        substitute for context, lawful public safety judgment, or the official registry itself.
+      </p>
+
+      <h2 class="text-2xl font-bold tracking-tight">Use Responsibly</h2>
+      <p>
+        This material is provided for public information and safety education. It must not be used for harassment,
+        threats, intimidation, discrimination, or any other misuse. If you believe a public registry record is being
+        displayed incorrectly on this site, use the <a class="font-semibold underline" href="/contact">contact page</a> and
+        include the SID, the name, and the specific issue.
+      </p>
+
+      <p>
+        Confirm details through the
+        <a class="font-semibold underline" href={officialRegistryZipUrl} target="_blank" rel="noopener noreferrer">official Texas DPS registry</a>.
+      </p>
+    </div>
+  </main>
+</Layout>

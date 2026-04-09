@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const termsLastUpdated = 'April 8, 2026';
 ---
 
 <Layout title="Terms of Service | The Princeton Journal">
@@ -14,7 +16,7 @@ import Layout from '../layouts/Layout.astro';
     </h1>
 
     <p class="mt-6 text-gray-700">
-      Last updated: {new Date().toLocaleDateString('en-US')}
+      Last updated: {termsLastUpdated}
     </p>
 
     <div class="mt-8 space-y-6 text-lg leading-8 text-gray-800">
@@ -45,6 +47,23 @@ import Layout from '../layouts/Layout.astro';
 
       <p>
         If an error is identified, corrections or clarifications may be issued within the relevant article or through updates to published material.
+      </p>
+
+      <h2 class="text-2xl font-bold tracking-tight">
+        Public Registry Data
+      </h2>
+
+      <p>
+        Certain pages on this website may display public registry data or other state-provided records for public
+        information and safety education. The Princeton Journal is not the source of those records and does not create,
+        verify, or maintain them.
+      </p>
+
+      <p>
+        The official government source identified on the relevant page remains the authoritative record. Users must not
+        rely on this website as a substitute for the official source and must not use public registry data or
+        state-provided records for harassment, intimidation, threats, doxxing, discrimination, vigilantism, or any
+        other misuse.
       </p>
 
       <h2 class="text-2xl font-bold tracking-tight">

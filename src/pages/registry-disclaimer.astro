@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const officialRegistryZipUrl = 'https://sor.dps.texas.gov/Search/Default/SearchByZipCode';
+---
+
+<Layout
+  title="Registry Disclaimer | The Princeton Journal"
+  description="Legal and source disclaimer for The Princeton Journal registry page."
+  url="https://theprincetonjournal.com/registry-disclaimer"
+>
+  <main class="mx-auto max-w-4xl px-6 py-10">
+    <p class="text-sm font-medium uppercase tracking-wide text-gray-500">Registry Disclaimer</p>
+    <h1 class="mt-3 text-4xl font-bold tracking-tight">Registry Disclaimer</h1>
+
+    <div class="mt-8 space-y-6 text-lg leading-8 text-gray-800">
+      <p>
+        The Princeton Journal publishes public registry data and state-provided records for public information and
+        safety education. The Princeton Journal is not the source of these records and does not create, verify, or
+        maintain them.
+      </p>
+
+      <div class="rounded-2xl border border-gray-300 bg-gray-50 p-6">
+        <p class="text-sm font-semibold uppercase tracking-wide text-gray-700">Important Notice</p>
+        <ul class="mt-3 list-disc space-y-3 pl-5 text-base leading-7 text-gray-800">
+          <li>The Princeton Journal does not guarantee the accuracy, completeness, or current status of public registry data shown on this site.</li>
+          <li>State-provided records may be updated, corrected, or changed at any time by the registering agency or the Texas Department of Public Safety.</li>
+          <li>The official Texas Department of Public Safety registry is the authoritative source and should be used to confirm all details.</li>
+          <li>This site must not be used to harass, threaten, intimidate, discriminate against, or otherwise misuse information about any person.</li>
+          <li>Registry inclusion is a legal status and public record matter. It is not a statement by The Princeton Journal about any person’s present conduct or current threat level.</li>
+        </ul>
+      </div>
+
+      <h2 class="text-2xl font-bold tracking-tight">Source And Accuracy</h2>
+      <p>
+        Public registry data shown on this site is reproduced from the Texas Department of Public Safety sex offender
+        registry and related state-provided records. Accuracy, availability, and update timing are determined by the
+        registering agency and Texas DPS, not by The Princeton Journal.
+      </p>
+
+      <p>
+        A name, address, status label, photo, or map location on this site should not be treated as independently
+        verified by The Princeton Journal. Users should always compare any detail with the official registry before
+        relying on it.
+      </p>
+
+      <h2 class="text-2xl font-bold tracking-tight">Responsible Use</h2>
+      <p>
+        This page is intended for lawful public information and safety education. It is not an instruction, invitation,
+        or endorsement to engage in harassment, vigilantism, intimidation, discrimination, doxxing, threats, or any
+        unlawful conduct.
+      </p>
+
+      <p>
+        If a person believes this site displays a mismatched image, a display error, a removal concern, or another
+        issue concerning how a public registry record appears on this site, they may contact The Princeton Journal for
+        review. Questions about the underlying official registry record should also be directed to Texas DPS or the
+        registering agency because those entities control the authoritative source record.
+      </p>
+
+      <h2 class="text-2xl font-bold tracking-tight">Official Registry And Contact</h2>
+      <p>
+        Official registry: <a class="font-semibold underline" href={officialRegistryZipUrl} target="_blank" rel="noopener noreferrer">Texas Department of Public Safety search by ZIP code</a>
+      </p>
+
+      <p>
+        Contact for corrections, removal concerns, or other issues about how a public registry record appears on this
+        site:
+        <a class="font-semibold underline" href="/contact">Contact The Princeton Journal</a>
+      </p>
+
+      <p class="text-base text-gray-600">
+        This page is an informational notice and not legal advice.
+      </p>
+    </div>
+  </main>
+</Layout>
