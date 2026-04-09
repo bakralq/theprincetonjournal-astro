@@ -1,5 +1,6 @@
 ---
 import Layout from './Layout.astro';
+import AdSlot from '../components/AdSlot.astro';
 
 const { title, section, author, date, description, url, image, imageCaption, nextPost, readingTime, preview } = Astro.props;
 ---
@@ -52,6 +53,11 @@ const { title, section, author, date, description, url, image, imageCaption, nex
   </>
 )}
 
+    <AdSlot
+      slot={import.meta.env.PUBLIC_ADSENSE_ARTICLE_TOP_SLOT}
+      className="mt-10 max-w-2xl"
+    />
+
     {preview ? (
       <>
         <div class="article-content mt-10 text-lg leading-8 text-gray-800">
@@ -95,6 +101,11 @@ const { title, section, author, date, description, url, image, imageCaption, nex
         <slot />
       </article>
     )}
+
+    <AdSlot
+      slot={import.meta.env.PUBLIC_ADSENSE_ARTICLE_BOTTOM_SLOT}
+      className="mt-12 max-w-2xl"
+    />
 
     {nextPost && (
       <section class="mt-14 border-t border-gray-200 pt-8">

@@ -44,3 +44,27 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## AdSense notes
+
+The global AdSense site script is installed in the shared layout for `theprincetonjournal.com`.
+
+Manual placements are available through these optional environment variables:
+
+- `PUBLIC_ADSENSE_HOME_SLOT`
+- `PUBLIC_ADSENSE_ARTICLE_TOP_SLOT`
+- `PUBLIC_ADSENSE_ARTICLE_BOTTOM_SLOT`
+
+To enable those placements:
+
+1. Copy `.env.example` to `.env`
+2. Create the matching ad units in AdSense
+3. Paste the slot IDs into `.env`
+4. Rebuild or redeploy the site
+
+Recommended setup:
+
+- Keep Auto ads on for desktop side rails and general optimization
+- Use the homepage slot between the hero/top sections
+- Use the two article slots after the hero and near the end of articles
+- Keep privacy, terms, contact, staff, subscribe, and registry-style utility pages ad-light or ad-free

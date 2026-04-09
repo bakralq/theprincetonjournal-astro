@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import SubscribeModal from '../components/SubscribeModal.astro';
 const {
   title = "The Princeton Journal",
   description = "The Princeton Journal is Princeton Texas’s leading independent source for local news, city government coverage, and community reporting.",
@@ -7,6 +8,30 @@ const {
   ogImage = "https://theprincetonjournal.com/tpj-logo.jpg",
   ogType = "website"
 } = Astro.props;
+
+const pathname = Astro.url.pathname;
+const showSubscribeModal = ![
+  '/subscribe',
+  '/subscribe-thank-you',
+  '/thank-you',
+].includes(pathname);
+
+const adExcludedPaths = [
+  '/about',
+  '/contact',
+  '/privacy',
+  '/registry',
+  '/registry-disclaimer',
+  '/staff',
+  '/subscribe',
+  '/subscribe-thank-you',
+  '/terms',
+  '/thank-you',
+];
+
+const adsEnabled = !adExcludedPaths.some(
+  (path) => pathname === path || pathname.startsWith(`${path}/`)
+);
 
 const websiteSchema =
   ogType === "website" && url === "https://theprincetonjournal.com"
@@ -24,6 +49,13 @@ const websiteSchema =
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R726F2LG18"></script>
+  {adsEnabled && (
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2859976110504673"
+      crossorigin="anonymous"
+    ></script>
+  )}
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -101,27 +133,27 @@ const websiteSchema =
 
     <nav class="desktop-nav flex gap-6 text-sm font-medium">
       <a href="/">Home</a>
+      <a href="/city-council-tracker">Council Tracker</a>
       <a href="/registry">Registry</a>
       <a href="/princeton-governance">Princeton Governance</a>
       <a href="/us-news">US News</a>
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
     </nav>
   </div>
 
   <div id="mobile-menu" class="mobile-menu border-t border-gray-200">
     <nav class="mobile-nav mx-auto max-w-6xl px-6 py-4 flex flex-col gap-4 text-sm font-medium">
       <a href="/">Home</a>
+      <a href="/city-council-tracker">Council Tracker</a>
       <a href="/registry">Registry</a>
       <a href="/princeton-governance">Princeton Governance</a>
       <a href="/us-news">US News</a>
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
     </nav>
   </div>
 </header>
 
 <slot />
+
+<SubscribeModal enabled={showSubscribeModal} />
 
 <footer class="border-t border-gray-200 mt-20">
   <div class="mx-auto max-w-6xl px-6 py-10">

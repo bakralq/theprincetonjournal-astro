@@ -2,6 +2,8 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { cityCouncilMeetings } from '../data/cityCouncilTracker';
 
 const posts = await getCollection('posts', ({ data }) => !data.draft);
 
@@ -35,6 +37,40 @@ const usNewsPosts = sortedPosts
       post.id !== topPost?.id
   )
   .slice(0, 3);
+
+const upcomingCouncilMeeting = [...cityCouncilMeetings]
+  .filter((meeting) => meeting.status === 'upcoming')
+  .sort(
+    (a, b) =>
+      new Date(`${a.date}T12:00:00`).getTime() -
+      new Date(`${b.date}T12:00:00`).getTime()
+  )[0];
+
+const latestCouncilMeeting = [...cityCouncilMeetings].sort(
+  (a, b) =>
+    new Date(`${b.date}T12:00:00`).getTime() -
+    new Date(`${a.date}T12:00:00`).getTime()
+)[0];
+
+const featuredCouncilMeeting = upcomingCouncilMeeting || latestCouncilMeeting;
+
+const trackerHighlights = featuredCouncilMeeting
+  ? featuredCouncilMeeting.agendaItems
+      .filter((item) => item.importance === 'high')
+      .slice(0, 4)
+  : [];
+
+const formatMeetingDate = (date) =>
+  new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+const getMeetingStatusClasses = (status) =>
+  status === 'upcoming'
+    ? 'border-amber-200 bg-amber-50 text-amber-900'
+    : 'border-emerald-200 bg-emerald-50 text-emerald-900';
 ---
 
 <Layout
@@ -43,33 +79,122 @@ const usNewsPosts = sortedPosts
   url="https://theprincetonjournal.com"
 >
   <main class="mx-auto max-w-6xl px-6 py-8">
-    {topPost && (
-      <section class="mt-0">
-        <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
-          Top Story
-        </p>
+    <section class="grid gap-8 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+      {topPost && (
+        <div>
+          <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
+            Top Story
+          </h2>
 
-        <a
-          href={`/posts/${topPost.id.replace(/\.md$/, '')}`}
-          class="mt-4 block overflow-hidden rounded-2xl border border-gray-200 transition hover:border-gray-300"
-        >
+          <a
+            href={`/posts/${topPost.id.replace(/\.md$/, '')}`}
+            class="mt-4 block overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:border-gray-300 hover:shadow-sm"
+          >
+            {topPost.data.image && (
+              <img
+                src={topPost.data.image}
+                alt={topPost.data.title}
+                class="h-72 w-full object-cover sm:h-80"
+              />
+            )}
 
-          <div class="p-8">
-            <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
-              {topPost.data.section}
-            </p>
+            <div class="p-8">
+              <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+                {topPost.data.section}
+              </p>
 
-            <h1 class="mt-3 text-3xl font-bold tracking-tight">
-              {topPost.data.title}
-            </h1>
+              <h1 class="mt-3 text-3xl font-bold tracking-tight">
+                {topPost.data.title}
+              </h1>
 
-            <p class="mt-3 text-gray-600">
-  {truncateDescription(topPost.data.description, 140)}
-            </p>
+              <p class="mt-3 text-sm text-gray-500">
+                {new Date(`${topPost.data.date}T12:00:00`).toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })} • {getReadingTime(topPost.body)} min read
+              </p>
+
+              <p class="mt-4 text-gray-600">
+                {truncateDescription(topPost.data.description, 170)}
+              </p>
+            </div>
+          </a>
+        </div>
+      )}
+
+      {featuredCouncilMeeting && (
+        <aside>
+          <div class="flex items-center justify-between gap-2">
+            <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
+              City Council Tracker
+            </h2>
+            <a
+              href="/city-council-tracker"
+              class="text-sm font-medium text-gray-600 hover:text-black whitespace-nowrap shrink-0"
+            >
+              View all
+            </a>
           </div>
-        </a>
-      </section>
-    )}
+
+          <a
+            href={`/city-council-tracker/${featuredCouncilMeeting.slug}`}
+            class="mt-4 block overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:border-gray-300 hover:shadow-sm"
+          >
+            <div class="p-6">
+              <div class="flex flex-wrap items-center gap-3">
+                <span
+                  class={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] ${getMeetingStatusClasses(featuredCouncilMeeting.status)}`}
+                >
+                  {featuredCouncilMeeting.status}
+                </span>
+                <span class="text-sm text-gray-500">
+                  {formatMeetingDate(featuredCouncilMeeting.date)}
+                </span>
+              </div>
+
+              <h3 class="mt-4 text-2xl font-bold tracking-tight">
+                {featuredCouncilMeeting.title}
+              </h3>
+
+              <p class="mt-3 text-gray-600">
+                {featuredCouncilMeeting.summary}
+              </p>
+
+              <div class="mt-5 flex flex-wrap gap-3 text-sm text-gray-600">
+                <span class="rounded-full bg-gray-100 px-3 py-1">
+                  Work session {featuredCouncilMeeting.workSessionTime}
+                </span>
+                <span class="rounded-full bg-gray-100 px-3 py-1">
+                  Regular meeting {featuredCouncilMeeting.regularMeetingTime}
+                </span>
+              </div>
+
+              <div class="mt-6 rounded-2xl border border-gray-200 bg-gray-50 p-5">
+                <p class="text-sm font-semibold uppercase tracking-[0.16em] text-gray-500">
+                  Worth Watching
+                </p>
+                <ul class="mt-4 space-y-3 text-sm text-gray-700">
+                  {trackerHighlights.map((item) => (
+                    <li class="leading-6">
+                      <span class="mr-2 inline-flex min-w-[2.4rem] justify-center rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-gray-500">
+                        {item.code}
+                      </span>
+                      {item.title}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </a>
+        </aside>
+      )}
+    </section>
+
+    <AdSlot
+      slot={import.meta.env.PUBLIC_ADSENSE_HOME_SLOT}
+      className="mx-auto mt-12 max-w-4xl"
+    />
 
     <section class="mt-16">
 <div class="flex items-center justify-between gap-2">

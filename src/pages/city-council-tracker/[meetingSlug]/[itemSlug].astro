@@ -1,0 +1,293 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import {
+  cityCouncilMeetings,
+  getCityCouncilMeeting,
+  getCouncilAgendaItem,
+} from '../../../data/cityCouncilTracker';
+
+export async function getStaticPaths() {
+  return cityCouncilMeetings.flatMap((meeting) =>
+    meeting.agendaItems.map((item) => ({
+      params: {
+        meetingSlug: meeting.slug,
+        itemSlug: item.slug,
+      },
+    }))
+  );
+}
+
+const meeting = getCityCouncilMeeting(Astro.params.meetingSlug || '');
+
+if (!meeting) {
+  throw new Error('City council meeting not found.');
+}
+
+const item = getCouncilAgendaItem(meeting, Astro.params.itemSlug || '');
+
+if (!item) {
+  throw new Error('City council agenda item not found.');
+}
+
+const formatDate = (date: string) =>
+  new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+const getImportanceClasses = (importance: string) => {
+  if (importance === 'high') return 'border-red-200 bg-red-50 text-red-800';
+  if (importance === 'medium') return 'border-amber-200 bg-amber-50 text-amber-900';
+  return 'border-gray-200 bg-gray-50 text-gray-700';
+};
+
+const getVoteModeLabel = (voteMode: string) => {
+  if (voteMode === 'recorded-vote') return 'Recorded vote';
+  if (voteMode === 'discussion') return 'Discussion item';
+  if (voteMode === 'public-hearing') return 'Public hearing';
+  if (voteMode === 'ceremonial') return 'Ceremonial item';
+  if (voteMode === 'procedural') return 'Procedural item';
+  return 'Vote expected';
+};
+
+const showMemberVoteGrid =
+  item.voteMode === 'recorded-vote' || item.voteMode === 'upcoming';
+
+const trackerSectionTitle =
+  item.voteMode === 'recorded-vote' ? 'Vote Tracker' : 'Item Status';
+
+const voteRecords =
+  item.voteRecords ||
+  meeting.councilMembers.map((member) => ({
+    name: member.name,
+    seat: member.seat,
+    role: member.role,
+    status:
+      member.status === 'vacant'
+        ? 'vacant'
+        : meeting.status === 'completed' && item.voteMode !== 'recorded-vote'
+          ? 'not-voting'
+          : 'upcoming',
+  }));
+
+const getVoteStatusClasses = (status: string) => {
+  if (status === 'yes') return 'border-emerald-200 bg-emerald-50 text-emerald-900';
+  if (status === 'no') return 'border-red-200 bg-red-50 text-red-800';
+  if (status === 'abstain') return 'border-slate-200 bg-slate-50 text-slate-700';
+  if (status === 'absent') return 'border-orange-200 bg-orange-50 text-orange-900';
+  if (status === 'vacant') return 'border-gray-200 bg-gray-50 text-gray-700';
+  if (status === 'not-voting') return 'border-slate-200 bg-slate-50 text-slate-700';
+  if (status === 'not-confirmed') return 'border-blue-200 bg-blue-50 text-blue-800';
+  return 'border-amber-200 bg-amber-50 text-amber-900';
+};
+
+const getVoteStatusLabel = (status: string) => {
+  if (status === 'yes') return 'yes';
+  if (status === 'no') return 'no';
+  if (status === 'abstain') return 'abstain';
+  if (status === 'absent') return 'absent';
+  if (status === 'vacant') return 'vacant';
+  if (status === 'not-voting') return 'not voting';
+  if (status === 'not-confirmed') return 'not confirmed';
+  return 'upcoming';
+};
+
+const trackerNote =
+  meeting.status === 'completed'
+    ? 'This tracker entry is based on the official agenda and the meeting notes currently captured by The Princeton Journal. If official minutes, video, or backup records clarify anything further, the tracker can be updated to match the final record.'
+    : `This explainer is anchored to the agenda language publicly posted for ${formatDate(meeting.date)}. If the city later publishes fuller backup material or changes the motion on the floor, the tracker can be updated to match the actual vote and final wording.`;
+---
+
+<Layout
+  title={`${item.title} | City Council Tracker | The Princeton Journal`}
+  description={item.summary}
+  url={`https://theprincetonjournal.com/city-council-tracker/${meeting.slug}/${item.slug}`}
+>
+  <main class="mx-auto max-w-5xl px-6 py-16">
+    <div class="flex flex-wrap gap-4 text-sm font-medium text-gray-500">
+      <a href="/city-council-tracker" class="transition hover:text-black">
+        City Council Tracker
+      </a>
+      <span>/</span>
+      <a
+        href={`/city-council-tracker/${meeting.slug}`}
+        class="transition hover:text-black"
+      >
+        {formatDate(meeting.date)}
+      </a>
+    </div>
+
+    <section class="mt-6">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-500">
+          {item.code}
+        </span>
+        <span
+          class={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] ${getImportanceClasses(item.importance)}`}
+        >
+          {item.importance} priority
+        </span>
+        <span class="inline-flex rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-gray-600">
+          {getVoteModeLabel(item.voteMode)}
+        </span>
+      </div>
+
+      <h1 class="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
+        {item.title}
+      </h1>
+
+      <p class="mt-5 max-w-4xl text-lg leading-8 text-gray-700">
+        {item.summary}
+      </p>
+    </section>
+
+    <section class="mt-10 grid items-start gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(280px,0.95fr)]">
+      <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">
+          {trackerSectionTitle}
+        </p>
+        <h2 class="mt-2 text-2xl font-bold tracking-tight">{item.voteHeadline}</h2>
+        <p class="mt-4 text-base leading-8 text-gray-700">
+          {item.voteNote}
+        </p>
+
+        {showMemberVoteGrid && (
+          <div class="mt-5 grid gap-3 sm:grid-cols-2">
+            {voteRecords.map((record) => (
+              <article class="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                <div class="flex flex-col gap-3">
+                  <div>
+                    <p class="text-sm font-semibold text-black">{record.name}</p>
+                    <p class="mt-1 text-xs uppercase tracking-[0.16em] text-gray-500">
+                      {record.seat}
+                    </p>
+                  </div>
+                  <span
+                    class={`inline-flex w-fit rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${getVoteStatusClasses(record.status)}`}
+                  >
+                    {getVoteStatusLabel(record.status)}
+                  </span>
+                </div>
+                {record.note && (
+                  <p class="mt-3 text-sm leading-6 text-gray-600">{record.note}</p>
+                )}
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <aside class="rounded-3xl border border-gray-200 bg-gray-50 p-6">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">
+          Meeting Context
+        </p>
+        <dl class="mt-5 grid gap-4 text-sm text-gray-700">
+          <div>
+            <dt class="font-semibold text-black">Meeting date</dt>
+            <dd class="mt-1">{formatDate(meeting.date)}</dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-black">Agenda section</dt>
+            <dd class="mt-1">{item.category}</dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-black">Meeting times</dt>
+            <dd class="mt-1">Work session {meeting.workSessionTime}</dd>
+            <dd>Regular meeting {meeting.regularMeetingTime}</dd>
+          </div>
+          {item.presenter && (
+            <div>
+              <dt class="font-semibold text-black">Presenter</dt>
+              <dd class="mt-1">{item.presenter}</dd>
+            </div>
+          )}
+        </dl>
+      </aside>
+    </section>
+
+    <section class="mt-10 rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
+      <p class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">
+        Why This Matters
+      </p>
+      <p class="mt-4 text-base leading-8 text-gray-700">
+        {item.explainer}
+      </p>
+      <div class="mt-5 rounded-2xl border border-gray-200 bg-gray-50 p-4 text-sm leading-7 text-gray-700">
+        <span class="font-semibold text-black">Why we flagged it:</span>{' '}
+        {item.watchReason}
+      </div>
+    </section>
+
+    <section class="mt-10 grid gap-6 lg:grid-cols-2">
+      <article class="rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-800">
+          {item.outcomePositiveLabel}
+        </p>
+        <p class="mt-4 text-base leading-8 text-emerald-950">
+          {item.outcomePositive}
+        </p>
+      </article>
+
+      <article class="rounded-3xl border border-rose-200 bg-rose-50 p-6">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-rose-800">
+          {item.outcomeNegativeLabel}
+        </p>
+        <p class="mt-4 text-base leading-8 text-rose-950">
+          {item.outcomeNegative}
+        </p>
+      </article>
+    </section>
+
+    <section class="mt-10 grid gap-6 lg:grid-cols-2">
+      <article class="rounded-3xl border border-gray-200 bg-white p-6">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">
+          Potential Pros
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-gray-700">
+          {item.pros.map((pro) => (
+            <li>{pro}</li>
+          ))}
+        </ul>
+      </article>
+
+      <article class="rounded-3xl border border-gray-200 bg-white p-6">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">
+          Potential Cons
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-gray-700">
+          {item.cons.map((con) => (
+            <li>{con}</li>
+          ))}
+        </ul>
+      </article>
+    </section>
+
+    {item.relatedCoverage && (
+      <section class="mt-10 rounded-3xl border border-gray-200 bg-gray-50 p-6">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">
+          Related Coverage
+        </p>
+        <a
+          href={item.relatedCoverage.href}
+          class="mt-4 block rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-gray-300"
+        >
+          <p class="text-base font-semibold leading-7 text-black">
+            {item.relatedCoverage.title}
+          </p>
+          <p class="mt-2 text-sm text-gray-500">Read related reporting →</p>
+        </a>
+      </section>
+    )}
+
+    <section class="mt-10 rounded-3xl border border-gray-200 bg-gray-50 p-6">
+      <p class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">
+        Tracker Note
+      </p>
+      <p class="mt-4 text-sm leading-7 text-gray-700">
+        {trackerNote}
+      </p>
+    </section>
+  </main>
+</Layout>
