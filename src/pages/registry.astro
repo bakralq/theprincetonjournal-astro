@@ -11,7 +11,6 @@ const registryLastReviewed = 'April 8, 2026';
   title="Princeton TX Sex Offender Registry Lookup | The Princeton Journal"
   description="Search registered sex offenders in Princeton, Texas using public registry data. View risk levels, status, and official records."
   url="https://theprincetonjournal.com/registry"
-  ogImage="https://theprincetonjournal.com/images/registry-preview.jpg"
 >
   <main class="registry-page mx-auto max-w-6xl px-6 py-8">
     <section class="registry-banner" aria-label="Mandatory registry disclaimer">
@@ -297,6 +296,7 @@ const registryLastReviewed = 'April 8, 2026';
     const detailTitle = document.getElementById('registry-detail-title');
     const detailPanel = document.getElementById('registry-detail');
     const detailEmpty = document.getElementById('registry-detail-empty');
+    const detailSection = document.querySelector('.registry-detail-panel');
     const detailPhotoImage = document.getElementById('detail-photo-image');
     const detailPhotoEmpty = document.getElementById('detail-photo-empty');
 
@@ -304,6 +304,7 @@ const registryLastReviewed = 'April 8, 2026';
     let leafletMap = null;
     let leafletLayer = null;
     let markerGroup = [];
+    let shouldScrollToDetail = false;
 
     const offenseOptions = Array.from(
       new Set(
@@ -323,6 +324,25 @@ const registryLastReviewed = 'April 8, 2026';
     }
 
     const formatText = (value, fallback = 'Not provided') => value || fallback;
+
+    const scrollDetailIntoView = () => {
+      if (!shouldScrollToDetail || !detailSection) {
+        return;
+      }
+
+      shouldScrollToDetail = false;
+
+      if (!window.matchMedia('(max-width: 960px)').matches) {
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        detailSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      });
+    };
 
     const renderDetail = (record) => {
       if (!record || !detailPanel || !detailEmpty || !detailTitle) {
@@ -394,6 +414,8 @@ const registryLastReviewed = 'April 8, 2026';
         `;
         eventContainer.appendChild(item);
       });
+
+      scrollDetailIntoView();
     };
 
     const createListCard = (record) => {
@@ -597,6 +619,7 @@ const registryLastReviewed = 'April 8, 2026';
 
         marker.on('click', () => {
           activeId = record.id;
+          shouldScrollToDetail = true;
           render();
         });
 
