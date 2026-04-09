@@ -4,12 +4,14 @@ import SubscribeModal from '../components/SubscribeModal.astro';
 const {
   title = "The Princeton Journal",
   description = "The Princeton Journal is Princeton Texas’s leading independent source for local news, city government coverage, and community reporting.",
-  url = "https://theprincetonjournal.com",
+  url,
   ogImage = "https://theprincetonjournal.com/tpj-logo.jpg",
-  ogType = "website"
+  ogType = "website",
+  noindex = false,
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
+const siteOrigin = Astro.site?.toString() || 'https://theprincetonjournal.com';
 const showSubscribeModal = ![
   '/subscribe',
   '/subscribe-thank-you',
@@ -33,8 +35,20 @@ const adsEnabled = !adExcludedPaths.some(
   (path) => pathname === path || pathname.startsWith(`${path}/`)
 );
 
+const normalizeCanonicalUrl = (value) => {
+  const normalized = new URL(value, siteOrigin);
+
+  if (normalized.pathname !== '/' && !normalized.pathname.endsWith('/')) {
+    normalized.pathname = `${normalized.pathname}/`;
+  }
+
+  return normalized.toString();
+};
+
+const canonicalUrl = normalizeCanonicalUrl(url || pathname);
+
 const websiteSchema =
-  ogType === "website" && url === "https://theprincetonjournal.com"
+  ogType === "website" && canonicalUrl === "https://theprincetonjournal.com/"
     ? {
         "@context": "https://schema.org",
         "@type": "WebSite",
@@ -82,13 +96,14 @@ const websiteSchema =
 
 <title>{title}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={url} />
+<link rel="canonical" href={canonicalUrl} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
 <link rel="alternate" type="application/rss+xml" title="The Princeton Journal RSS Feed" href="https://theprincetonjournal.com/rss.xml" />
 <meta property="og:title" content={title} />
 
 <meta property="og:description" content={description} />
 <meta property="og:type" content={ogType} />
-<meta property="og:url" content={url} />
+<meta property="og:url" content={canonicalUrl} />
 <meta property="og:image" content={ogImage} />
 <meta property="fb:app_id" content="1600725191074059" />
 

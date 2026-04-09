@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
 
 const posts = await getCollection('posts', ({ data }) =>
   !data.draft && data.section === 'Princeton Governance'
@@ -35,6 +36,13 @@ const formatDate = (date) =>
     month: 'long',
     day: 'numeric',
   });
+
+const getReadingTime = (content) => {
+  const wordCount = (content || '').trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(wordCount / 200));
+};
+
+const initialPosts = postsData.slice(0, 10);
 ---
 
 <Layout
@@ -78,11 +86,35 @@ const formatDate = (date) =>
       </div>
     </div>
 
-    <p id="resultsCount" class="mt-6 text-sm text-gray-500"></p>
+    <p id="resultsCount" class="mt-6 text-sm text-gray-500">
+      Showing {postsData.length} article{postsData.length === 1 ? '' : 's'}
+    </p>
 
-    <div id="articlesList" class="mt-6 grid gap-6"></div>
+    <div id="articlesList" class="mt-6 grid gap-6">
+      {initialPosts.map((post) => (
+        <ArticleCard
+          title={post.title}
+          description={post.description}
+          href={post.href}
+          date={post.date}
+          image={post.image}
+          readingTime={getReadingTime(post.content)}
+          variant="horizontal"
+        />
+      ))}
+    </div>
 
-    <div id="pagination" class="mt-10 flex justify-center gap-2 text-sm"></div>
+    <div id="pagination" class="mt-10 flex justify-center gap-2 text-sm">
+      {postsData.length > 10 && (
+        <button
+          type="button"
+          class="px-3 py-1 border rounded bg-black text-white"
+          aria-current="page"
+        >
+          1
+        </button>
+      )}
+    </div>
 
     <p id="noResultsMessage" class="mt-8 hidden text-gray-500">
       No articles found.
@@ -93,14 +125,14 @@ const formatDate = (date) =>
 <script define:vars={{ postsData }}>
   const posts = postsData;
   const pageSize = 10;
-function getReadingTime(content) {
-  const wordCount = (content || '').trim().split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.ceil(wordCount / 200));
-}
-function truncateDescription(text, limit = 140) {
-  if (!text || text.length <= limit) return text;
-  return text.slice(0, limit).trimEnd() + '...';
-}
+  function getReadingTime(content) {
+    const wordCount = (content || '').trim().split(/\s+/).filter(Boolean).length;
+    return Math.max(1, Math.ceil(wordCount / 200));
+  }
+  function truncateDescription(text, limit = 140) {
+    if (!text || text.length <= limit) return text;
+    return text.slice(0, limit).trimEnd() + '...';
+  }
   let filteredPosts = [...posts];
   let currentPage = 1;
 
