@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import ScrollReturnButton from '../../components/ScrollReturnButton.astro';
 import {
   cityCouncilMeetings,
   getCityCouncilMeeting,
@@ -246,7 +247,7 @@ const trackingStatusCopy =
       </ul>
     </section>
 
-    <section class="mt-12">
+    <section id="full-agenda-tracker" class="mt-12 scroll-mt-24">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">
@@ -339,5 +340,10 @@ const trackingStatusCopy =
         ))}
       </ul>
     </section>
+
+    <ScrollReturnButton
+      targetId="full-agenda-tracker"
+      label="Back to full agenda"
+    />
   </main>
 </Layout>

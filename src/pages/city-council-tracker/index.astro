@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import ScrollReturnButton from '../../components/ScrollReturnButton.astro';
 import { cityCouncilMeetings } from '../../data/cityCouncilTracker';
 
 const meetings = [...cityCouncilMeetings].sort(
@@ -63,7 +64,7 @@ const getStatusClasses = (status: string) =>
       </aside>
     </section>
 
-    <section class="mt-14">
+    <section id="full-tracker" class="mt-14 scroll-mt-24">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.22em] text-gray-500">
@@ -158,5 +159,10 @@ const getStatusClasses = (status: string) =>
         keep the explainer anchored to what the agenda itself actually shows.
       </p>
     </section>
+
+    <ScrollReturnButton
+      targetId="full-tracker"
+      label="Back to tracker"
+    />
   </main>
 </Layout>

@@ -1,0 +1,65 @@
+---
+const {
+  targetId,
+  label = 'Back to tracker',
+  thresholdRatio = 0.22,
+} = Astro.props;
+---
+
+<button
+  type="button"
+  data-scroll-return-button
+  data-target-id={targetId}
+  data-threshold-ratio={String(thresholdRatio)}
+  aria-label={label}
+  class="pointer-events-none fixed bottom-5 right-5 z-40 inline-flex translate-y-3 items-center gap-2 rounded-full border border-black bg-white px-4 py-3 text-sm font-semibold text-black opacity-0 shadow-[0_18px_40px_rgba(17,24,39,0.14)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-black hover:text-white sm:bottom-6 sm:right-6"
+>
+  <span aria-hidden="true">↑</span>
+  <span>{label}</span>
+</button>
+
+<script is:inline>
+  (() => {
+    const buttons = Array.from(
+      document.querySelectorAll('[data-scroll-return-button]')
+    ).filter((button) => !button.dataset.scrollReturnBound);
+
+    buttons.forEach((button) => {
+      button.dataset.scrollReturnBound = 'true';
+
+      const targetId = button.dataset.targetId;
+      const thresholdRatio = Number(button.dataset.thresholdRatio || '0.22');
+      const target = targetId ? document.getElementById(targetId) : null;
+
+      if (!target) {
+        button.remove();
+        return;
+      }
+
+      const setVisible = (visible) => {
+        button.classList.toggle('opacity-0', !visible);
+        button.classList.toggle('translate-y-3', !visible);
+        button.classList.toggle('pointer-events-none', !visible);
+        button.classList.toggle('opacity-100', visible);
+        button.classList.toggle('translate-y-0', visible);
+        button.classList.toggle('pointer-events-auto', visible);
+      };
+
+      const updateVisibility = () => {
+        const targetTop = target.getBoundingClientRect().top + window.scrollY;
+        const scrollTrigger =
+          targetTop + Math.max(target.offsetHeight * thresholdRatio, 160);
+
+        setVisible(window.scrollY > scrollTrigger);
+      };
+
+      button.addEventListener('click', () => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      window.addEventListener('scroll', updateVisibility, { passive: true });
+      window.addEventListener('resize', updateVisibility);
+      updateVisibility();
+    });
+  })();
+</script>
