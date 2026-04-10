@@ -60,6 +60,11 @@ const websiteSchema =
         "url": "https://theprincetonjournal.com/"
       }
     : null;
+
+const maintenanceMode = true;
+const maintenanceMessage = "Website down for maintenance. Check back again in a couple of hours.";
+
+
 ---
 
 <!DOCTYPE html>
@@ -137,67 +142,83 @@ const websiteSchema =
 <body class="bg-white text-black">
 <AppShellEnhancements />
 
-<header class="site-header border-b border-gray-200">
-  <div class="site-header-inner mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-    <a href="/" class="logo text-xl">
-      The Princeton Journal
-    </a>
+{maintenanceMode ? (
+  <main class="min-h-screen flex items-center justify-center bg-white px-6 text-center">
+    <div class="max-w-xl">
+      <h1 class="text-4xl font-bold tracking-tight text-black">
+        Website down for maintenance
+      </h1>
+<p class="mt-4 text-lg text-gray-600">
+  Check back again in a couple of hours.
+</p>
 
-    <button
-      class="menu-toggle text-2xl"
-      aria-label="Open navigation"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-      type="button"
-    >
-      ☰
-    </button>
-
-    <nav class="desktop-nav flex gap-6 text-sm font-medium">
-      <a href="/">Home</a>
-      <a href="/city-council-tracker">Council Tracker</a>
-      <a href="/registry">Registry</a>
-      <a href="/princeton-governance">Princeton Governance</a>
-      <a href="/us-news">US News</a>
-      <a href="/community">Community</a>
-    </nav>
-  </div>
-
-  <div id="mobile-menu" class="mobile-menu border-t border-gray-200">
-    <nav class="mobile-nav mx-auto max-w-6xl px-6 py-4 flex flex-col gap-4 text-sm font-medium">
-      <a href="/">Home</a>
-      <a href="/city-council-tracker">Council Tracker</a>
-      <a href="/registry">Registry</a>
-      <a href="/princeton-governance">Princeton Governance</a>
-      <a href="/us-news">US News</a>
-      <a href="/community">Community</a>
-    </nav>
-  </div>
-</header>
-
-<slot />
-
-<SubscribeModal enabled={showSubscribeModal} />
-
-<footer class="border-t border-gray-200 mt-20">
-  <div class="mx-auto max-w-6xl px-6 py-10">
-    <div class="flex flex-wrap gap-6 text-sm font-medium text-gray-700">
-      <a href="/about">About</a>
-<a href="/staff">Staff</a>
-      <a href="/community">Community</a>
-      <a href="/account">Account</a>
-      <a href="/support">Support</a>
-      <a href="/privacy">Privacy Policy</a>
-<a href="/terms">Terms of Service</a>
-      <a href="/contact">Contact</a>
-      <a href="/subscribe">Subscribe</a>
     </div>
+  </main>
+) : (
+  <>
+    <header class="site-header border-b border-gray-200">
+      <div class="site-header-inner mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+        <a href="/" class="logo text-xl">
+          The Princeton Journal
+        </a>
 
-    <div class="mt-6 text-sm text-gray-500">
-      © {new Date().getFullYear()} The Princeton Journal
-    </div>
-  </div>
-</footer>
+        <button
+          class="menu-toggle text-2xl"
+          aria-label="Open navigation"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          type="button"
+        >
+          ☰
+        </button>
+
+        <nav class="desktop-nav flex gap-6 text-sm font-medium">
+          <a href="/">Home</a>
+          <a href="/city-council-tracker">Council Tracker</a>
+          <a href="/registry">Registry</a>
+          <a href="/princeton-governance">Princeton Governance</a>
+          <a href="/us-news">US News</a>
+          <a href="/community">Community</a>
+        </nav>
+      </div>
+
+      <div id="mobile-menu" class="mobile-menu border-t border-gray-200">
+        <nav class="mobile-nav mx-auto max-w-6xl px-6 py-4 flex flex-col gap-4 text-sm font-medium">
+          <a href="/">Home</a>
+          <a href="/city-council-tracker">Council Tracker</a>
+          <a href="/registry">Registry</a>
+          <a href="/princeton-governance">Princeton Governance</a>
+          <a href="/us-news">US News</a>
+          <a href="/community">Community</a>
+        </nav>
+      </div>
+    </header>
+
+    <slot />
+
+    <SubscribeModal enabled={showSubscribeModal} />
+
+    <footer class="border-t border-gray-200 mt-20">
+      <div class="mx-auto max-w-6xl px-6 py-10">
+        <div class="flex flex-wrap gap-6 text-sm font-medium text-gray-700">
+          <a href="/about">About</a>
+          <a href="/staff">Staff</a>
+          <a href="/community">Community</a>
+          <a href="/account">Account</a>
+          <a href="/support">Support</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/contact">Contact</a>
+          <a href="/subscribe">Subscribe</a>
+        </div>
+
+        <div class="mt-6 text-sm text-gray-500">
+          © {new Date().getFullYear()} The Princeton Journal
+        </div>
+      </div>
+    </footer>
+  </>
+)}
 
 </body>
 <script>
