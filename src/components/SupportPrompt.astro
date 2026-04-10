@@ -1,0 +1,35 @@
+---
+const monthlyUrl = import.meta.env.PUBLIC_SUPPORT_MONTHLY_URL || '/support';
+const annualUrl = import.meta.env.PUBLIC_SUPPORT_YEARLY_URL || '/support';
+---
+
+<section class="mt-14 rounded-[2rem] border border-gray-200 bg-stone-50 p-6 sm:p-8">
+  <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+    <div class="max-w-2xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
+        Support TPJ
+      </p>
+      <h2 class="mt-3 text-3xl font-bold tracking-tight">
+        Keep the reporting independent and local.
+      </h2>
+      <p class="mt-4 text-base leading-7 text-gray-700">
+        If this coverage is useful, help fund more city-hall reporting, growth coverage, tracker updates, and the stories Princeton actually needs.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+      <a
+        href={monthlyUrl}
+        class="inline-flex items-center rounded-2xl border border-black bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+      >
+        Support monthly
+      </a>
+      <a
+        href={annualUrl}
+        class="inline-flex items-center rounded-2xl border border-gray-300 px-5 py-3 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
+      >
+        See all options
+      </a>
+    </div>
+  </div>
+</section>

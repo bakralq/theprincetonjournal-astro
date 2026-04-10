@@ -1,0 +1,10 @@
+<div data-community-hub class="mt-8"></div>
+
+<script>
+  import { mountCommunityHub } from '../scripts/communityHub';
+
+  const root = document.querySelector('[data-community-hub]');
+  if (root instanceof HTMLElement) {
+    mountCommunityHub(root);
+  }
+</script>

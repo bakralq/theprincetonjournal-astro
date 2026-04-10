@@ -16,18 +16,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchLogo" translatesAutoresizingMaskIntoConstraints="NO" id="0xK-B5-IvI">
-                                <rect key="frame" x="143.5" y="289.5" width="88" height="88"/>
+                                <rect key="frame" x="151.5" y="297.5" width="72" height="72"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="88" id="9VJ-Sx-svP"/>
-                                    <constraint firstAttribute="height" constant="88" id="h3j-vS-r8K"/>
+                                    <constraint firstAttribute="width" constant="72" id="9VJ-Sx-svP"/>
+                                    <constraint firstAttribute="height" constant="72" id="h3j-vS-r8K"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="0xK-B5-IvI" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="1pQ-wP-4uR"/>
-                            <constraint firstItem="0xK-B5-IvI" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="JjS-ZS-Zqv"/>
+                            <constraint firstItem="0xK-B5-IvI" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="1pQ-wP-4uR"/>
+                            <constraint firstItem="0xK-B5-IvI" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="JjS-ZS-Zqv"/>
                         </constraints>
                     </view>
                 </viewController>

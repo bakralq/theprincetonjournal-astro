@@ -1,0 +1,27 @@
+---
+import AccountCenter from '../components/AccountCenter.astro';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Account | The Princeton Journal"
+  description="Manage your TPJ account, comment access, community profile, and app notification preferences."
+  url="https://theprincetonjournal.com/account"
+>
+  <main class="mx-auto max-w-6xl px-6 py-12">
+    <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+      Account
+    </p>
+
+    <h1 class="mt-3 text-4xl font-bold tracking-tight">
+      Your TPJ account
+    </h1>
+
+    <p class="mt-4 max-w-3xl text-lg leading-8 text-gray-700">
+      Use one account for article comments, the community forum, and app alerts. You can still post anonymously when you want,
+      but the account stays attached behind the scenes for accountability.
+    </p>
+
+    <AccountCenter />
+  </main>
+</Layout>

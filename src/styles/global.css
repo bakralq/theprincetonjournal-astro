@@ -18,11 +18,50 @@ html.capacitor-app {
   background: #fff;
 }
 
+html.capacitor-app:not(.app-shell-ready) {
+  background: #fff;
+}
+
 html.capacitor-app body {
   min-height: 100vh;
   padding-right: env(safe-area-inset-right);
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
+}
+
+html.capacitor-app body {
+  overflow-x: hidden;
+}
+
+html.capacitor-app #app-launch-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.28s ease,
+    visibility 0.28s ease;
+}
+
+html.capacitor-app #app-launch-overlay[hidden] {
+  display: none;
+}
+
+html.capacitor-app.app-shell-ready #app-launch-overlay {
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.app-launch-overlay-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
 }
 
 html.capacitor-app .site-header {

@@ -1,0 +1,15 @@
+<section class="mt-8">
+  <div
+    data-account-center
+    class="space-y-6"
+  ></div>
+</section>
+
+<script>
+  import { mountAccountCenter } from '../scripts/accountCenter';
+
+  const root = document.querySelector('[data-account-center]');
+  if (root instanceof HTMLElement) {
+    mountAccountCenter(root);
+  }
+</script>

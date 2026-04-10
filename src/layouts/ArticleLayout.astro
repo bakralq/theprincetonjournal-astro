@@ -1,8 +1,16 @@
 ---
 import Layout from './Layout.astro';
 import AdSlot from '../components/AdSlot.astro';
+import ArticleComments from '../components/ArticleComments.astro';
+import SupportPrompt from '../components/SupportPrompt.astro';
 
 const { title, section, author, date, description, url, image, imageCaption, nextPost, readingTime, preview } = Astro.props;
+const articleSlug = url
+  ? new URL(url, 'https://theprincetonjournal.com').pathname
+      .split('/')
+      .filter(Boolean)
+      .pop() || ''
+  : '';
 ---
 
 <Layout
@@ -106,6 +114,10 @@ const { title, section, author, date, description, url, image, imageCaption, nex
       slot={import.meta.env.PUBLIC_ADSENSE_ARTICLE_BOTTOM_SLOT}
       className="mt-12 max-w-2xl"
     />
+
+    <SupportPrompt />
+
+    <ArticleComments articleSlug={articleSlug} />
 
     {nextPost && (
       <section class="mt-14 border-t border-gray-200 pt-8">

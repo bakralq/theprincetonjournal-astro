@@ -1,34 +1,8 @@
-# Astro Starter Kit: Basics
+# The Princeton Journal
 
-```sh
-npm create astro@latest -- --template basics
-```
+Astro site and Capacitor app shell for `theprincetonjournal.com`.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
+## Commands
 
 All commands are run from the root of the project, from a terminal:
 
@@ -40,10 +14,6 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview`         | Preview your build locally, before deploying     |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
 
 ## AdSense notes
 
@@ -93,3 +63,39 @@ Notes:
 - Xcode is still required to build/sign the iOS app
 - Android Studio and a Java runtime are still required to build/sign the Android app
 - app icon and splash assets are generated from files in `resources/`
+- the live site drives the wrapped app, so web deploys affect in-app behavior too
+
+## Community, accounts, and alerts
+
+The repo now includes:
+
+- `Account` page for sign-in, profile setup, and app-alert preferences
+- article comments tied to TPJ accounts
+- `Community` forum page with threads and replies
+- support page and support prompts
+- push-notification registration plumbing for the mobile app
+
+To activate these features:
+
+1. Create a Supabase project
+2. Run the SQL in `supabase/migrations/20260410_tpj_platform_foundation.sql`
+3. Add these environment variables:
+   - `PUBLIC_SUPABASE_URL`
+   - `PUBLIC_SUPABASE_ANON_KEY`
+4. Redeploy the site
+
+Important note:
+
+- the app-side notification UI is implemented
+- actual production push delivery still needs Apple/APNs and Android/FCM credentials connected in the native apps
+- for iPhone production distribution and push notifications, the paid Apple Developer membership is still required
+
+## Support links
+
+The support page and article prompts use optional payment-link environment variables:
+
+- `PUBLIC_SUPPORT_MONTHLY_URL`
+- `PUBLIC_SUPPORT_YEARLY_URL`
+- `PUBLIC_SUPPORT_ONE_TIME_URL`
+
+These can be Stripe Payment Links or any other checkout links you want to use.

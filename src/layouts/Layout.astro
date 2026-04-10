@@ -20,7 +20,9 @@ const showSubscribeModal = ![
 ].includes(pathname);
 
 const adExcludedPaths = [
+  '/account',
   '/about',
+  '/community',
   '/contact',
   '/privacy',
   '/registry',
@@ -28,6 +30,7 @@ const adExcludedPaths = [
   '/staff',
   '/subscribe',
   '/subscribe-thank-you',
+  '/support',
   '/terms',
   '/thank-you',
 ];
@@ -156,6 +159,7 @@ const websiteSchema =
       <a href="/registry">Registry</a>
       <a href="/princeton-governance">Princeton Governance</a>
       <a href="/us-news">US News</a>
+      <a href="/community">Community</a>
     </nav>
   </div>
 
@@ -166,6 +170,7 @@ const websiteSchema =
       <a href="/registry">Registry</a>
       <a href="/princeton-governance">Princeton Governance</a>
       <a href="/us-news">US News</a>
+      <a href="/community">Community</a>
     </nav>
   </div>
 </header>
@@ -179,6 +184,9 @@ const websiteSchema =
     <div class="flex flex-wrap gap-6 text-sm font-medium text-gray-700">
       <a href="/about">About</a>
 <a href="/staff">Staff</a>
+      <a href="/community">Community</a>
+      <a href="/account">Account</a>
+      <a href="/support">Support</a>
       <a href="/privacy">Privacy Policy</a>
 <a href="/terms">Terms of Service</a>
       <a href="/contact">Contact</a>

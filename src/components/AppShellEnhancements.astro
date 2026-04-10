@@ -1,6 +1,18 @@
+<div id="app-launch-overlay" hidden aria-hidden="true">
+  <img
+    src="/favicon.png"
+    alt=""
+    width="72"
+    height="72"
+    decoding="async"
+    class="app-launch-overlay-logo"
+  />
+</div>
+
 <script>
   import { Capacitor } from '@capacitor/core';
   import { Browser } from '@capacitor/browser';
+  import { PushNotifications } from '@capacitor/push-notifications';
   import { SplashScreen } from '@capacitor/splash-screen';
   import { StatusBar, Style } from '@capacitor/status-bar';
 
@@ -17,17 +29,43 @@
   };
 
   if (isNativeApp) {
+    const launchOverlay = document.getElementById('app-launch-overlay');
     document.documentElement.classList.add('capacitor-app');
+    launchOverlay?.removeAttribute('hidden');
 
     let splashHidden = false;
+    let overlayHidden = false;
+    let pushListenersAttached = false;
 
     const hideSplash = async () => {
       if (splashHidden) return;
       splashHidden = true;
 
       try {
-        await SplashScreen.hide({ fadeOutDuration: 320 });
+        await SplashScreen.hide({ fadeOutDuration: 0 });
       } catch {}
+    };
+
+    const hideLaunchOverlay = () => {
+      if (overlayHidden) return;
+      overlayHidden = true;
+
+      document.documentElement.classList.add('app-shell-ready');
+      window.setTimeout(() => {
+        launchOverlay?.setAttribute('hidden', '');
+      }, 340);
+    };
+
+    const waitForVisualStability = async () => {
+      if ('fonts' in document) {
+        try {
+          await document.fonts.ready;
+        } catch {}
+      }
+
+      await new Promise((resolve) => requestAnimationFrame(() => resolve()));
+      await new Promise((resolve) => requestAnimationFrame(() => resolve()));
+      await new Promise((resolve) => window.setTimeout(resolve, 90));
     };
 
     const bootstrapNativeShell = async () => {
@@ -44,18 +82,43 @@
       } catch {}
     };
 
+    const attachPushNavigation = async () => {
+      if (pushListenersAttached) return;
+      pushListenersAttached = true;
+
+      try {
+        await PushNotifications.addListener(
+          'pushNotificationActionPerformed',
+          (event) => {
+            const destination =
+              event.notification.data?.url || event.notification.data?.path;
+
+            if (typeof destination !== 'string' || !destination.trim()) return;
+
+            window.location.href = new URL(
+              destination,
+              window.location.href || APP_ORIGIN,
+            ).toString();
+          },
+        );
+      } catch {}
+    };
+
     const scheduleSplashHide = () => {
-      window.setTimeout(() => {
-        void hideSplash();
-      }, 120);
+      void waitForVisualStability().then(async () => {
+        await hideSplash();
+        hideLaunchOverlay();
+      });
     };
 
     if (document.readyState === 'complete') {
       void bootstrapNativeShell();
+      void attachPushNavigation();
       scheduleSplashHide();
     } else {
       document.addEventListener('DOMContentLoaded', () => {
         void bootstrapNativeShell();
+        void attachPushNavigation();
       });
 
       window.addEventListener(
@@ -68,6 +131,7 @@
 
       window.setTimeout(() => {
         void hideSplash();
+        hideLaunchOverlay();
       }, 5000);
     }
 

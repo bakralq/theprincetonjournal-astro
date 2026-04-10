@@ -1,0 +1,41 @@
+---
+const { articleSlug } = Astro.props;
+---
+
+<section class="mt-16 border-t border-gray-200 pt-10">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+        Community
+      </p>
+      <h2 class="mt-2 text-3xl font-bold tracking-tight">
+        Article comments
+      </h2>
+      <p class="mt-3 max-w-2xl text-base leading-7 text-gray-700">
+        Let readers add context, ask questions, and push the reporting further without turning the site into a free-for-all.
+      </p>
+    </div>
+
+    <a
+      href="/community"
+      class="inline-flex items-center rounded-2xl border border-black px-4 py-2 text-sm font-semibold text-black transition hover:bg-black hover:text-white"
+    >
+      Open community forum
+    </a>
+  </div>
+
+  <div
+    data-article-comments
+    data-article-slug={articleSlug}
+    class="mt-8"
+  ></div>
+</section>
+
+<script>
+  import { mountArticleComments } from '../scripts/articleComments';
+
+  const root = document.querySelector('[data-article-comments]');
+  if (root instanceof HTMLElement) {
+    mountArticleComments(root);
+  }
+</script>
