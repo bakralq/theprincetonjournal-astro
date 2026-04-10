@@ -132,7 +132,7 @@ const accountShell = (state: AccountState) => {
                       maxlength="40"
                       required
                       class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
-                      placeholder="Bakr"
+                      placeholder="Name"
                     />
                   </div>
                   <div>
@@ -443,10 +443,10 @@ export const mountAccountCenter = (root: HTMLElement) => {
         email,
         password,
         options: {
+          emailRedirectTo: window.location.origin + '/account',
           data: {
             display_name: displayName,
             username: displayName,
-            anonymous_handle: '',
           },
         },
       });
