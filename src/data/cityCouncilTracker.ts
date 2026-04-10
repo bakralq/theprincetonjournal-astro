@@ -768,28 +768,28 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     title: 'Presentation and recognition of commendation to the Princeton CDC',
     importance: 'low',
     summary:
-      'Council recognized the Princeton Community Development Corporation with a commendation.',
+      'The Princeton CDC commendation item was tabled on March 23 instead of being presented that night.',
     watchReason:
       'This is a recognition item, but it still signals who the city is publicly highlighting.',
     explainer:
-      'Commendations do not create new law or spending authority, but they can still be part of the city’s broader public messaging and relationship-building.',
+      'City communications after the meeting said this commendation item was tabled rather than presented on March 23. That means the recognition did not happen that night even though it appeared on the ceremonial agenda. The same commendation later appeared again on the April 13 agenda, which suggests it was moved to a later meeting.',
     voteMode: 'ceremonial',
-    voteHeadline: 'Recognition item; no separate policy vote tracked here.',
+    voteHeadline: 'Tabled rather than presented on March 23.',
     voteNote:
-      'This appears to have been handled as a ceremonial presentation rather than a contested vote.',
-    outcomePositiveLabel: 'If presented',
+      'The city later described this ceremonial item as tabled; no separate policy vote is tracked here.',
+    outcomePositiveLabel: 'If presented later',
     outcomePositive:
-      'The CDC received formal public recognition during the meeting.',
-    outcomeNegativeLabel: 'If deferred',
+      'The CDC could still receive the commendation at a later meeting.',
+    outcomeNegativeLabel: 'Because it was tabled',
     outcomeNegative:
-      'The commendation could have been moved to another meeting without wider policy effect.',
+      'The recognition did not occur during the March 23 meeting.',
     pros: [
       'Publicly acknowledges a city-affiliated organization.',
       'Signals civic relationships council wants to highlight.',
     ],
     cons: [
       'Symbolic recognition does not itself answer performance questions.',
-      'Ceremonial items can crowd the agenda before substantive votes.',
+      'Even ceremonial items can be delayed or moved without much explanation in the moment.',
     ],
   },
   {
