@@ -12,6 +12,16 @@ export default defineConfig({
   ],
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    server: {
+      watch: {
+        ignored: [
+          '**/android/**',
+          '**/ios/**',
+          '**/build/**',
+          '**/dist/**',
+        ],
+      },
+    },
   }
 });
