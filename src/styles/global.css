@@ -20,10 +20,14 @@ html.capacitor-app {
 
 html.capacitor-app body {
   min-height: 100vh;
-  padding-top: env(safe-area-inset-top);
   padding-right: env(safe-area-inset-right);
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
+}
+
+html.capacitor-app .site-header {
+  padding-top: env(safe-area-inset-top);
+  background: #fff;
 }
 
 .article-content p {

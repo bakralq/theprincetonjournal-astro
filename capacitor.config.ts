@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.theprincetonjournal.app',
-  appName: 'The Princeton Journal',
+  appName: 'TPJ',
   webDir: 'dist',
   server: {
     url: 'https://theprincetonjournal.com',
