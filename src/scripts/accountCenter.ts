@@ -598,21 +598,23 @@ export const mountAccountCenter = (root: HTMLElement) => {
     }
   };
 
-  const { data } = supabase.auth.onAuthStateChange(async (_event, session) => {
-    state.session = session;
-    state.profile = session ? await ensureProfile(supabase, session) : null;
-    state.preferences = session
-      ? await loadNotificationPreferences(session.user.id)
-      : defaultNotificationPreferences;
-    state.error = '';
-    state.info = session
-      ? 'You are signed in and ready to comment, post, and manage alerts.'
-      : 'Signed out.';
+  const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+    window.setTimeout(async () => {
+      state.session = session;
+      state.profile = session ? await ensureProfile(supabase, session) : null;
+      state.preferences = session
+        ? await loadNotificationPreferences(session.user.id)
+        : defaultNotificationPreferences;
+      state.error = '';
+      state.info = session
+        ? 'You are signed in and ready to comment, post, and manage alerts.'
+        : 'Signed out.';
 
-    const permission = await getPushPermissionSummary();
-    state.permissionMessage = permission.message;
-    state.loading = false;
-    render();
+      const permission = await getPushPermissionSummary();
+      state.permissionMessage = permission.message;
+      state.loading = false;
+      render();
+    }, 0);
   });
 
   void syncState();

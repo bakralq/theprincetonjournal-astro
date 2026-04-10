@@ -248,10 +248,12 @@ export const mountArticleComments = async (root: HTMLElement) => {
     });
   };
 
-  const { data } = supabase.auth.onAuthStateChange(async () => {
-    state.error = '';
-    state.info = '';
-    await syncState();
+  const { data } = supabase.auth.onAuthStateChange(() => {
+    window.setTimeout(async () => {
+      state.error = '';
+      state.info = '';
+      await syncState();
+    }, 0);
   });
 
   await syncState();
