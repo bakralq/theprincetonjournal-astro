@@ -17,6 +17,19 @@ pnpm-debug.log*
 .env
 .env.production
 
+# native app build artifacts
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+ios/App/build/
+ios/App/DerivedData/
+ios/App/App.xcodeproj/xcuserdata/
+ios/App/App.xcworkspace/xcuserdata/
+*.iml
+*.jks
+*.keystore
+
 # macOS-specific files
 .DS_Store
 

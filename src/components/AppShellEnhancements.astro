@@ -1,0 +1,63 @@
+<script>
+  import { Capacitor } from '@capacitor/core';
+  import { Browser } from '@capacitor/browser';
+  import { SplashScreen } from '@capacitor/splash-screen';
+  import { StatusBar, Style } from '@capacitor/status-bar';
+
+  const APP_ORIGIN = 'https://theprincetonjournal.com';
+  const isNativeApp = Capacitor.isNativePlatform();
+
+  const isExternalUrl = (url) => {
+    try {
+      const parsedUrl = new URL(url, window.location.href);
+      return parsedUrl.origin !== window.location.origin && parsedUrl.origin !== APP_ORIGIN;
+    } catch {
+      return false;
+    }
+  };
+
+  if (isNativeApp) {
+    document.documentElement.classList.add('capacitor-app');
+
+    const bootstrapNativeShell = async () => {
+      try {
+        await StatusBar.setStyle({ style: Style.Dark });
+      } catch {}
+
+      try {
+        await StatusBar.setBackgroundColor({ color: '#ffffff' });
+      } catch {}
+
+      try {
+        await SplashScreen.hide();
+      } catch {}
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      void bootstrapNativeShell();
+    });
+
+    document.addEventListener(
+      'click',
+      (event) => {
+        const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('/')) return;
+
+        if (href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('sms:')) {
+          event.preventDefault();
+          void Browser.open({ url: href });
+          return;
+        }
+
+        if (isExternalUrl(href)) {
+          event.preventDefault();
+          void Browser.open({ url: new URL(href, window.location.href).toString() });
+        }
+      },
+      { capture: true },
+    );
+  }
+</script>

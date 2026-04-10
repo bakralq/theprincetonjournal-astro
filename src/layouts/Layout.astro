@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import AppShellEnhancements from '../components/AppShellEnhancements.astro';
 import SubscribeModal from '../components/SubscribeModal.astro';
 const {
   title = "The Princeton Journal",
@@ -78,7 +79,8 @@ const websiteSchema =
   </script>
 
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
   <meta name="google-site-verification" content="q2FhOIt2RvOTMfmnH1qgdFheMFXS6RNchAsDJliiDWY" />
 
 <link rel="icon" type="image/png" href="/favicon.png" />
@@ -130,6 +132,7 @@ const websiteSchema =
 </head>
 
 <body class="bg-white text-black">
+<AppShellEnhancements />
 
 <header class="site-header border-b border-gray-200">
   <div class="site-header-inner mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
