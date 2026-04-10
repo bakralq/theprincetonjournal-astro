@@ -251,16 +251,16 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     title: 'Discussion regarding creation of historical preservation committee',
     importance: 'medium',
     summary:
-      'Council opened another early-stage discussion about whether Princeton should create a historical preservation committee.',
+      'This item was listed on the March 23 work-session agenda, but it was not actually discussed that night.',
     watchReason:
       'This is one of the city’s clearer signals that it may formalize how local history and preservation are handled.',
     explainer:
-      'This was a work-session discussion item rather than a final vote. The significance is less about a same-night decision and more about whether council wants staff to come back later with a defined committee structure, mission, or appointment process.',
+      'The agenda showed this as a work-session discussion item, but city communications later indicated it was not taken up during the workshop portion of the meeting. That means March 23 did not deliver a real public discussion on whether Princeton should create a historical preservation committee, even though the topic was posted.',
     voteMode: 'discussion',
-    voteHeadline: 'No final vote was scheduled on this discussion item.',
+    voteHeadline: 'Listed for work session, but not discussed.',
     voteNote:
-      'The main public signal here is whether council interest grows into a later formal agenda item.',
-    outcomePositiveLabel: 'If advanced later',
+      'The main thing to watch is whether this returns on a future agenda for an actual public discussion.',
+    outcomePositiveLabel: 'If it returns later',
     outcomePositive:
       'Princeton could create a formal body to help document historic sites and shape preservation policy.',
     outcomeNegativeLabel: 'If it stalls',
@@ -284,21 +284,21 @@ const march23AgendaItems: CouncilAgendaItem[] = [
       'Discussion of revised Council Relations Policy, Rules of Order, and Code of Ethics (Bylaws) for City Council and all boards, commissions, and committees',
     importance: 'high',
     summary:
-      'Council used the work session to discuss revised bylaws that later came back for a regular-agenda vote.',
+      'This bylaws item was listed in work session, but it was not actually discussed there before the later regular-agenda vote.',
     watchReason:
       'Changes to council and board bylaws can reshape procedure, staff interactions, ethics expectations, and how future disputes are handled.',
     explainer:
-      'This discussion set up one of the more important governance votes later in the meeting. Bylaws often look procedural on paper, but they can meaningfully change how councilmembers interact with staff, how boards operate, and how internal conflicts are managed.',
+      'Even though this item appeared on the work-session agenda, city communications later indicated it was not discussed during that workshop portion. The related bylaws still came back later under L4 for a regular-agenda vote, so the important takeaway is that the formal action happened without the earlier workshop discussion the posted agenda seemed to tee up.',
     voteMode: 'discussion',
-    voteHeadline: 'This item was discussed in work session before the later L4 vote.',
+    voteHeadline: 'Listed for work session, but not discussed before the later L4 vote.',
     voteNote:
-      'The binding vote happened later under L4, not during this work-session discussion.',
-    outcomePositiveLabel: 'If council embraced revisions',
+      'The binding action happened later under L4, not during the workshop portion.',
+    outcomePositiveLabel: 'Because L4 still moved later',
     outcomePositive:
       'The city would move toward a more updated operating framework for council and boards.',
-    outcomeNegativeLabel: 'If concerns remained',
+    outcomeNegativeLabel: 'Because there was no workshop discussion',
     outcomeNegative:
-      'Disagreements over process, ethics language, or staff relationships could carry into the formal vote.',
+      'Residents had less public workshop context before the formal bylaws vote later in the meeting.',
     pros: [
       'Can clarify expectations for both council and appointed boards.',
       'Makes governance rules more visible before adoption.',
@@ -1629,6 +1629,7 @@ export const cityCouncilMeetings: CouncilMeeting[] = [
     sourceNotes: [
       'Tracker details are based on the official posted March 23 agenda PDF plus the user-provided meeting notes supplied on April 9, 2026.',
       'Where the user-provided notes clearly captured a motion, second, and result, the tracker records those votes directly.',
+      'Per later city communications relayed by the user, the two listed March 23 work-session items were not actually discussed during the workshop portion.',
       'Where the notes did not clearly capture a final result, the tracker marks the item as not fully confirmed rather than guessing.',
     ],
     attendanceNote:
@@ -1648,7 +1649,7 @@ export const cityCouncilMeetings: CouncilMeeting[] = [
         id: 'work-session',
         title: 'Work Session',
         description:
-          'These items were discussed during the 5:30 PM pre-council work session and did not carry final votes that night.',
+          'These items were listed for the 5:30 PM pre-council work session, but later city communications indicated they were not actually discussed that night.',
         itemSlugs: [
           'march-23-historical-preservation-committee',
           'march-23-council-bylaws-discussion',
