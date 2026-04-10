@@ -8,14 +8,16 @@ const config: CapacitorConfig = {
     url: 'https://theprincetonjournal.com',
     cleartext: false,
   },
-  ios: {
-    contentInset: 'always',
-  },
   plugins: {
     SplashScreen: {
       launchAutoHide: false,
       showSpinner: false,
       backgroundColor: '#ffffff',
+    },
+    StatusBar: {
+      overlaysWebView: false,
+      style: 'DARK',
+      backgroundColor: '#ffffffff',
     },
   },
 };

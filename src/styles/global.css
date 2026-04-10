@@ -26,8 +26,12 @@ html.capacitor-app body {
 }
 
 html.capacitor-app .site-header {
-  padding-top: env(safe-area-inset-top);
   background: #fff;
+}
+
+html.capacitor-app .site-header-inner {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 .article-content p {

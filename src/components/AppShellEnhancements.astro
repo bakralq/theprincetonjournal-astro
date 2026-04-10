@@ -19,7 +19,22 @@
   if (isNativeApp) {
     document.documentElement.classList.add('capacitor-app');
 
+    let splashHidden = false;
+
+    const hideSplash = async () => {
+      if (splashHidden) return;
+      splashHidden = true;
+
+      try {
+        await SplashScreen.hide({ fadeOutDuration: 320 });
+      } catch {}
+    };
+
     const bootstrapNativeShell = async () => {
+      try {
+        await StatusBar.setOverlaysWebView({ overlay: false });
+      } catch {}
+
       try {
         await StatusBar.setStyle({ style: Style.Dark });
       } catch {}
@@ -27,15 +42,34 @@
       try {
         await StatusBar.setBackgroundColor({ color: '#ffffff' });
       } catch {}
-
-      try {
-        await SplashScreen.hide();
-      } catch {}
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
+    const scheduleSplashHide = () => {
+      window.setTimeout(() => {
+        void hideSplash();
+      }, 120);
+    };
+
+    if (document.readyState === 'complete') {
       void bootstrapNativeShell();
-    });
+      scheduleSplashHide();
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        void bootstrapNativeShell();
+      });
+
+      window.addEventListener(
+        'load',
+        () => {
+          scheduleSplashHide();
+        },
+        { once: true },
+      );
+
+      window.setTimeout(() => {
+        void hideSplash();
+      }, 5000);
+    }
 
     document.addEventListener(
       'click',
