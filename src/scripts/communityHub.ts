@@ -52,6 +52,8 @@ type CommunityState = {
   sessionUserId: string | null;
   profile: TPJProfile | null;
   threads: ThreadRecord[];
+  ownedPostIds: Set<string>;
+  postAttachmentPaths: Record<string, string>;
   replies: Record<string, ReplyRecord[]>;
   expandedPostId: string | null;
   expandedReplyThreadIds: Set<string>;
@@ -86,6 +88,32 @@ const upvoteIcon = `
 const replyIcon = `
   <svg aria-hidden="true" viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M4.5 5.75A2.25 2.25 0 0 1 6.75 3.5h6.5A2.25 2.25 0 0 1 15.5 5.75v4.5A2.25 2.25 0 0 1 13.25 12.5H9l-3.5 3v-3H6.75A2.25 2.25 0 0 1 4.5 10.25v-4.5Z"></path>
+  </svg>
+`;
+
+const shareIcon = `
+  <svg aria-hidden="true" viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12.75 4.75h2.5v2.5"></path>
+    <path d="M8 12 15.25 4.75"></path>
+    <path d="M15.5 10.25v4A1.25 1.25 0 0 1 14.25 15.5h-8.5A1.25 1.25 0 0 1 4.5 14.25v-8.5A1.25 1.25 0 0 1 5.75 4.5h4"></path>
+  </svg>
+`;
+
+const reportIcon = `
+  <svg aria-hidden="true" viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 6.25v4.25"></path>
+    <path d="M10 13.5h.01"></path>
+    <path d="M8.35 3.9 2.9 13.1A1.2 1.2 0 0 0 3.93 15h12.14a1.2 1.2 0 0 0 1.03-1.9L11.65 3.9a1.9 1.9 0 0 0-3.3 0Z"></path>
+  </svg>
+`;
+
+const deleteIcon = `
+  <svg aria-hidden="true" viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5.5 6.25h9"></path>
+    <path d="M7.25 6.25v8"></path>
+    <path d="M12.75 6.25v8"></path>
+    <path d="M8.25 4.5h3.5"></path>
+    <path d="M6.5 6.25l.45 8.2A1.2 1.2 0 0 0 8.15 15.5h3.7a1.2 1.2 0 0 0 1.2-1.05l.45-8.2"></path>
   </svg>
 `;
 
@@ -469,6 +497,7 @@ const postCard = (thread: ThreadRecord, state: CommunityState) => {
   const postIsExpanded = state.expandedPostId === thread.id;
   const replies = state.replies[thread.id] || [];
   const hasVoted = state.votedThreadIds.has(thread.id);
+  const isOwnPost = state.ownedPostIds.has(thread.id);
   const bodyPreview = truncatePostBody(thread.body);
   const displayedBody =
     postIsExpanded || !bodyPreview.truncated ? thread.body : bodyPreview.preview;
@@ -556,6 +585,39 @@ const postCard = (thread: ThreadRecord, state: CommunityState) => {
           ${replyIcon}
           <span>${thread.reply_count}</span>
         </button>
+
+        <button
+          type="button"
+          data-share-post="${escapeHtml(thread.id)}"
+          class="inline-flex items-center gap-2 rounded-2xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
+        >
+          ${shareIcon}
+          <span>Share</span>
+        </button>
+
+        <button
+          type="button"
+          data-report-post="${escapeHtml(thread.id)}"
+          class="inline-flex items-center gap-2 rounded-2xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
+        >
+          ${reportIcon}
+          <span>Report</span>
+        </button>
+
+        ${
+          isOwnPost
+            ? `
+              <button
+                type="button"
+                data-delete-post="${escapeHtml(thread.id)}"
+                class="inline-flex items-center gap-2 rounded-2xl border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-50"
+              >
+                ${deleteIcon}
+                <span>Delete</span>
+              </button>
+            `
+            : ''
+        }
       </div>
 
       ${
@@ -635,6 +697,8 @@ export const mountCommunityHub = async (root: HTMLElement) => {
     sessionUserId: null,
     profile: null,
     threads: [],
+    ownedPostIds: new Set<string>(),
+    postAttachmentPaths: {},
     replies: {},
     expandedPostId: null,
     expandedReplyThreadIds: new Set<string>(),
@@ -651,6 +715,29 @@ export const mountCommunityHub = async (root: HTMLElement) => {
 
     if (error) throw error;
     state.threads = (data || []) as ThreadRecord[];
+  };
+
+  const loadPostMeta = async (userId: string | null) => {
+    if (!userId) {
+      state.ownedPostIds = new Set<string>();
+      state.postAttachmentPaths = {};
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('community_threads')
+      .select('id, author_id, attachment_path')
+      .eq('author_id', userId);
+
+    if (error) throw error;
+
+    state.ownedPostIds = new Set((data || []).map((record) => String(record.id)));
+    state.postAttachmentPaths = Object.fromEntries(
+      (data || []).map((record) => [
+        String(record.id),
+        String(record.attachment_path || ''),
+      ]),
+    );
   };
 
   const loadReplies = async (threadId: string) => {
@@ -694,6 +781,7 @@ export const mountCommunityHub = async (root: HTMLElement) => {
       state.sessionUserId = session?.user.id || null;
       state.profile = session ? await ensureProfile(supabase, session) : null;
       await loadPosts();
+      await loadPostMeta(state.sessionUserId);
       await loadVotes(state.sessionUserId);
 
       if (state.expandedPostId) {
@@ -761,6 +849,88 @@ export const mountCommunityHub = async (root: HTMLElement) => {
 
     state.info = hasVoted ? 'Upvote removed.' : 'Post upvoted.';
     await loadPosts();
+    await loadPostMeta(state.sessionUserId);
+    await loadVotes(state.sessionUserId);
+    render();
+  };
+
+  const sharePost = async (thread: ThreadRecord) => {
+    const shareUrl = `${window.location.origin}/community#post-${thread.id}`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: thread.title,
+          text: `${thread.title} | The Princeton Journal Community`,
+          url: shareUrl,
+        });
+        state.info = 'Post shared.';
+      } else if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl);
+        state.info = 'Post link copied.';
+      } else {
+        window.prompt('Copy this post link:', shareUrl);
+      }
+    } catch (error) {
+      state.error = getCommunityErrorMessage(
+        error,
+        'Could not share this post.',
+      );
+    }
+
+    render();
+  };
+
+  const reportPost = (thread: ThreadRecord) => {
+    const reportUrl = `${window.location.origin}/community#post-${thread.id}`;
+    const subject = encodeURIComponent(`Report TPJ community post: ${thread.title}`);
+    const body = encodeURIComponent(
+      `Please review this community post.\n\nTitle: ${thread.title}\nPost ID: ${thread.id}\nLink: ${reportUrl}\n\nReason:\n`,
+    );
+
+    window.location.href = `mailto:theprincetonjournal@gmail.com?subject=${subject}&body=${body}`;
+  };
+
+  const deletePost = async (threadId: string) => {
+    if (!state.sessionUserId || !state.ownedPostIds.has(threadId)) return;
+
+    const confirmed = window.confirm(
+      'Delete this post? Replies under it will be removed too.',
+    );
+    if (!confirmed) return;
+
+    state.error = '';
+    state.info = '';
+    render();
+
+    const attachmentPath = state.postAttachmentPaths[threadId];
+    if (attachmentPath) {
+      await removeCommunityAttachment(attachmentPath);
+    }
+
+    const { error } = await supabase
+      .from('community_threads')
+      .delete()
+      .eq('id', threadId)
+      .eq('author_id', state.sessionUserId);
+
+    if (error) {
+      state.error = getCommunityErrorMessage(
+        error,
+        'Could not delete this post.',
+      );
+      render();
+      return;
+    }
+
+    if (state.expandedPostId === threadId) {
+      state.expandedPostId = null;
+    }
+    state.expandedReplyThreadIds.delete(threadId);
+    delete state.replies[threadId];
+    state.info = 'Post deleted.';
+    await loadPosts();
+    await loadPostMeta(state.sessionUserId);
     await loadVotes(state.sessionUserId);
     render();
   };
@@ -860,6 +1030,39 @@ export const mountCommunityHub = async (root: HTMLElement) => {
         if (!threadId) return;
 
         await toggleVote(threadId);
+      });
+    });
+
+    root.querySelectorAll<HTMLElement>('[data-share-post]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const threadId = button.dataset.sharePost;
+        if (!threadId) return;
+
+        const thread = state.threads.find((record) => record.id === threadId);
+        if (!thread) return;
+
+        await sharePost(thread);
+      });
+    });
+
+    root.querySelectorAll<HTMLElement>('[data-report-post]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const threadId = button.dataset.reportPost;
+        if (!threadId) return;
+
+        const thread = state.threads.find((record) => record.id === threadId);
+        if (!thread) return;
+
+        reportPost(thread);
+      });
+    });
+
+    root.querySelectorAll<HTMLElement>('[data-delete-post]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const threadId = button.dataset.deletePost;
+        if (!threadId) return;
+
+        await deletePost(threadId);
       });
     });
 
