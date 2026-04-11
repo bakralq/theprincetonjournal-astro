@@ -225,6 +225,7 @@ export const getCommunityErrorMessage = (
     'username_changed_at',
     'community_thread_votes',
     'vote_count',
+    'toggle_community_thread_vote',
     'attachment_name',
     'attachment_path',
     'attachment_url',
@@ -234,7 +235,7 @@ export const getCommunityErrorMessage = (
   ];
 
   if (migrationSignals.some((signal) => combined.includes(signal))) {
-    return 'The latest Supabase community migration still needs to be run. Open Supabase SQL Editor, run supabase/migrations/20260410_community_guardrails_and_uploads.sql, then redeploy.';
+    return 'The latest Supabase community migration still needs to be run. Open Supabase SQL Editor, run the newer files in supabase/migrations, including 20260410_community_guardrails_and_uploads.sql and 20260410_vote_toggle_rpc.sql, then redeploy.';
   }
 
   return combined || fallback;

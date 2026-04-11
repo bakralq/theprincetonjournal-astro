@@ -840,28 +840,37 @@ export const mountCommunityHub = async (root: HTMLElement) => {
     state.info = '';
     render();
 
-    const hasVoted = state.votedThreadIds.has(threadId);
-    const query = supabase.from('community_thread_votes');
-    const { error } = hasVoted
-      ? await query
-          .delete()
-          .eq('thread_id', threadId)
-          .eq('user_id', state.sessionUserId)
-      : await query.insert({
-          thread_id: threadId,
-          user_id: state.sessionUserId,
-        });
+    const { data, error } = await supabase.rpc('toggle_community_thread_vote', {
+      target_thread_id: threadId,
+    });
 
     if (error) {
-      state.error = error.message;
+      state.error = getCommunityErrorMessage(error, 'Could not update the upvote.');
       render();
       return;
     }
 
-    state.info = hasVoted ? 'Upvote removed.' : 'Post upvoted.';
-    await loadPosts();
-    await loadPostMeta(state.sessionUserId);
-    await loadVotes(state.sessionUserId);
+    const result = Array.isArray(data) ? data[0] : data;
+    const nextVoteCount =
+      result && typeof result.vote_count === 'number'
+        ? result.vote_count
+        : null;
+    const hasVoted = Boolean(result?.has_voted);
+
+    state.threads = state.threads.map((thread) =>
+      thread.id === threadId && nextVoteCount !== null
+        ? { ...thread, vote_count: nextVoteCount }
+        : thread,
+    );
+
+    if (hasVoted) {
+      state.votedThreadIds.add(threadId);
+      state.info = 'Post upvoted.';
+    } else {
+      state.votedThreadIds.delete(threadId);
+      state.info = 'Upvote removed.';
+    }
+
     render();
   };
 
