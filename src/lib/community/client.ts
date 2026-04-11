@@ -9,12 +9,24 @@ import {
   type SupabaseClient,
 } from '@supabase/supabase-js';
 
+export const COMMUNITY_UPLOAD_BUCKET = 'community-uploads';
+export const COMMUNITY_MAX_UPLOAD_BYTES = 6 * 1024 * 1024;
+
+const COMMUNITY_ALLOWED_ATTACHMENT_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'application/pdf',
+]);
+
 export type TPJProfile = {
   id: string;
   display_name: string;
   username: string;
   anonymous_handle: string;
   membership_tier?: string | null;
+  username_changed_at?: string | null;
 };
 
 export type NotificationPreferences = {
@@ -114,10 +126,67 @@ export const formatRelativeTime = (value: string) => {
   return 'just now';
 };
 
+export const formatAbsoluteTime = (value: string | Date) => {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+
+  return new Intl.DateTimeFormat('en-US', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(date);
+};
+
+export const formatFileSize = (value: number) => {
+  if (value >= 1024 * 1024) {
+    return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  return `${Math.max(1, Math.round(value / 1024))} KB`;
+};
+
+export const getUsernameCooldown = (value?: string | null) => {
+  if (!value) {
+    return {
+      canChange: true,
+      message: 'You can change this now. Usernames must be unique.',
+    };
+  }
+
+  const lastChanged = new Date(value);
+  if (Number.isNaN(lastChanged.getTime())) {
+    return {
+      canChange: true,
+      message: 'You can change this now. Usernames must be unique.',
+    };
+  }
+
+  const nextAllowed = new Date(
+    lastChanged.getTime() + 7 * 24 * 60 * 60 * 1000,
+  );
+
+  if (nextAllowed.getTime() <= Date.now()) {
+    return {
+      canChange: true,
+      message: 'You can change this now. Usernames must be unique.',
+    };
+  }
+
+  return {
+    canChange: false,
+    message: `You can change this again on ${formatAbsoluteTime(nextAllowed)}.`,
+  };
+};
+
 export const membershipBadge = (tier?: string | null) => {
   if (!tier || tier === 'reader') return '';
 
-  const label = tier === 'founding' ? 'Founding member' : 'Supporter';
+  const label =
+    tier === 'founding'
+      ? 'Founding member'
+      : tier === 'insider'
+        ? 'Insider'
+        : 'Supporter';
+
   return `<span class="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-900">${escapeHtml(
     label,
   )}</span>`;
@@ -152,7 +221,9 @@ export const ensureProfile = async (
   const user = session.user;
   const { data: existingProfile, error: existingProfileError } = await supabase
     .from('profiles')
-    .select('id, display_name, username, anonymous_handle, membership_tier')
+    .select(
+      'id, display_name, username, anonymous_handle, membership_tier, username_changed_at',
+    )
     .eq('id', user.id)
     .maybeSingle();
 
@@ -182,7 +253,9 @@ export const ensureProfile = async (
       },
       { onConflict: 'id' },
     )
-    .select('id, display_name, username, anonymous_handle, membership_tier')
+    .select(
+      'id, display_name, username, anonymous_handle, membership_tier, username_changed_at',
+    )
     .single();
 
   if (error) throw error;
@@ -195,9 +268,7 @@ export const loadNotificationPreferences = async (userId: string) => {
 
   const { data, error } = await supabase
     .from('notification_preferences')
-    .select(
-      'new_articles, tracker_updates, registry_updates, weekly_picks',
-    )
+    .select('new_articles, tracker_updates, registry_updates, weekly_picks')
     .eq('user_id', userId)
     .maybeSingle();
 
@@ -227,6 +298,78 @@ export const saveNotificationPreferences = async (
   );
 
   if (error) throw error;
+};
+
+const sanitizeAttachmentName = (value: string) => {
+  const trimmed = value.trim().toLowerCase();
+  const dotIndex = trimmed.lastIndexOf('.');
+  const extension = dotIndex >= 0 ? trimmed.slice(dotIndex) : '';
+  const baseName = dotIndex >= 0 ? trimmed.slice(0, dotIndex) : trimmed;
+  const sanitizedBase = baseName
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60);
+
+  return `${sanitizedBase || 'upload'}${extension.slice(0, 8)}`;
+};
+
+export const validateCommunityAttachment = (file: File) => {
+  if (!COMMUNITY_ALLOWED_ATTACHMENT_TYPES.has(file.type)) {
+    return 'Uploads currently support JPG, PNG, WebP, GIF, and PDF files only.';
+  }
+
+  if (file.size <= 0) {
+    return 'This upload looks empty. Try a different file.';
+  }
+
+  if (file.size > COMMUNITY_MAX_UPLOAD_BYTES) {
+    return `Uploads must be ${formatFileSize(
+      COMMUNITY_MAX_UPLOAD_BYTES,
+    )} or smaller.`;
+  }
+
+  return '';
+};
+
+export const uploadCommunityAttachment = async (file: File, userId: string) => {
+  const validationMessage = validateCommunityAttachment(file);
+  if (validationMessage) {
+    throw new Error(validationMessage);
+  }
+
+  const supabase = getCommunityClient();
+  if (!supabase) {
+    throw new Error('Community backend is not configured yet.');
+  }
+
+  const fileName = `${Date.now()}-${sanitizeAttachmentName(file.name)}`;
+  const path = `${userId}/${fileName}`;
+
+  const { error } = await supabase.storage
+    .from(COMMUNITY_UPLOAD_BUCKET)
+    .upload(path, file, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type,
+    });
+
+  if (error) throw error;
+
+  const { data } = supabase.storage
+    .from(COMMUNITY_UPLOAD_BUCKET)
+    .getPublicUrl(path);
+
+  return {
+    path,
+    url: data.publicUrl,
+  };
+};
+
+export const removeCommunityAttachment = async (path: string) => {
+  const supabase = getCommunityClient();
+  if (!supabase || !path) return;
+
+  await supabase.storage.from(COMMUNITY_UPLOAD_BUCKET).remove([path]);
 };
 
 const getReadablePermission = (permission: PermissionState | undefined) => {
@@ -285,68 +428,66 @@ export const registerForPushNotifications = async (userId: string) => {
     };
   }
 
-  return await new Promise<{ ok: boolean; message: string }>(
-    async (resolve) => {
-      let settled = false;
+  return await new Promise<{ ok: boolean; message: string }>(async (resolve) => {
+    let settled = false;
 
-      const finish = async (result: { ok: boolean; message: string }) => {
-        if (settled) return;
-        settled = true;
-        await registrationListener.remove();
-        await errorListener.remove();
-        resolve(result);
-      };
+    const finish = async (result: { ok: boolean; message: string }) => {
+      if (settled) return;
+      settled = true;
+      await registrationListener.remove();
+      await errorListener.remove();
+      resolve(result);
+    };
 
-      const registrationListener = await PushNotifications.addListener(
-        'registration',
-        async (token) => {
-          try {
-            const { error } = await supabase.from('push_subscriptions').upsert(
-              {
-                user_id: userId,
-                token: token.value,
-                platform: Capacitor.getPlatform(),
-              },
-              { onConflict: 'token' },
-            );
+    const registrationListener = await PushNotifications.addListener(
+      'registration',
+      async (token) => {
+        try {
+          const { error } = await supabase.from('push_subscriptions').upsert(
+            {
+              user_id: userId,
+              token: token.value,
+              platform: Capacitor.getPlatform(),
+            },
+            { onConflict: 'token' },
+          );
 
-            if (error) throw error;
+          if (error) throw error;
 
-            await finish({
-              ok: true,
-              message: 'Notifications are enabled for this account.',
-            });
-          } catch (error) {
-            await finish({
-              ok: false,
-              message:
-                error instanceof Error
-                  ? error.message
-                  : 'Could not save the push subscription.',
-            });
-          }
-        },
-      );
-
-      const errorListener = await PushNotifications.addListener(
-        'registrationError',
-        async (error) => {
+          await finish({
+            ok: true,
+            message: 'Notifications are enabled for this account.',
+          });
+        } catch (error) {
           await finish({
             ok: false,
             message:
-              error.error || 'The app could not register for notifications.',
+              error instanceof Error
+                ? error.message
+                : 'Could not save the push subscription.',
           });
-        },
-      );
+        }
+      },
+    );
 
-      window.setTimeout(() => {
-        void finish({
+    const errorListener = await PushNotifications.addListener(
+      'registrationError',
+      async (error) => {
+        await finish({
           ok: false,
-          message: 'Timed out while registering this device for notifications.',
+          message:
+            error.error || 'The app could not register for notifications.',
         });
-      }, 9000);
+      },
+    );
 
-      await PushNotifications.register();
-    },
-  );
+    window.setTimeout(() => {
+      void finish({
+        ok: false,
+        message: 'Timed out while registering this device for notifications.',
+      });
+    }, 9000);
+
+    await PushNotifications.register();
+  });
 };

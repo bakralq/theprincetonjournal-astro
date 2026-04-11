@@ -14,28 +14,80 @@ import Layout from '../layouts/Layout.astro';
     </p>
 
     <h1 class="mt-3 text-4xl font-bold tracking-tight">
-      A local forum built around TPJ reporting
+      The most direct place to talk about what’s happening in Princeton
     </h1>
 
-    <p class="mt-4 max-w-4xl text-lg leading-8 text-gray-700">
-      This is where readers can react to stories, surface local context, and raise the next questions Princeton should be asking.
-      It is meant to feel useful, accountable, and local, not like a generic social feed.
-    </p>
+    <div class="mt-5 max-w-4xl space-y-5 text-lg leading-8 text-gray-700">
+      <p>
+        This is where reporting, real experiences, and local conversations come together.
+      </p>
+      <p>
+        You can react to stories, share what you’re seeing, ask questions, raise concerns, or talk about what’s affecting you day to day.
+      </p>
+      <p>
+        No more jumping between disconnected Facebook groups. No more important posts getting buried under noise.
+      </p>
+      <p class="font-semibold text-black">
+        Everything local, in one place that people actually pay attention to.
+      </p>
+    </div>
 
     <div class="mt-8 grid gap-4 md:grid-cols-3">
       <div class="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
-        <p class="text-sm font-semibold text-black">Start with reporting</p>
-        <p class="mt-2 text-sm leading-6 text-gray-600">Bring context, questions, and firsthand observations that move the story forward.</p>
+        <p class="text-sm font-semibold text-black">Start with something real</p>
+        <p class="mt-2 text-sm leading-6 text-gray-600">
+          Share experiences, problems, observations, or questions. It can be tied to reporting or just something happening in your neighborhood or daily life.
+        </p>
       </div>
       <div class="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
-        <p class="text-sm font-semibold text-black">Use one account</p>
-        <p class="mt-2 text-sm leading-6 text-gray-600">Post under your name or anonymously, but keep it tied to one TPJ account for accountability.</p>
+        <p class="text-sm font-semibold text-black">One account, protected</p>
+        <p class="mt-2 text-sm leading-6 text-gray-600">
+          Use a single TPJ account. Post publicly or anonymously. Your identity is protected under our
+          <a href="/privacy" class="font-semibold text-black underline decoration-black/30 underline-offset-4 transition hover:decoration-black">Privacy Policy</a>
+          and
+          <a href="/whistleblower-protections" class="font-semibold text-black underline decoration-black/30 underline-offset-4 transition hover:decoration-black">Whistleblower Protections</a>.
+          Anonymous posts are never public, but accountability is maintained behind the scenes.
+        </p>
       </div>
       <div class="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
-        <p class="text-sm font-semibold text-black">Keep it civic</p>
-        <p class="mt-2 text-sm leading-6 text-gray-600">Growth, schools, roads, council, policing, and neighborhood impacts are the center of gravity here.</p>
+        <p class="text-sm font-semibold text-black">Keep it local and useful</p>
+        <p class="mt-2 text-sm leading-6 text-gray-600">
+          This is about Princeton. Civic issues, daily life, problems, concerns, questions, or things people need help with. If it helps people understand what’s going on or helps someone else, it belongs here.
+        </p>
       </div>
     </div>
+
+    <section class="registry-banner mt-8" aria-label="Community ground rules">
+      <div class="registry-banner-head">
+        <p class="registry-banner-title">Ground Rules</p>
+        <p class="registry-banner-summary">
+          The community is built for useful local conversation. Expand the ground rules for posting expectations, anonymity notes, and moderation standards.
+        </p>
+      </div>
+
+      <details class="registry-banner-disclosure">
+        <summary>View ground rules</summary>
+
+        <div class="registry-banner-body">
+          <p>
+            <strong>Start with something real.</strong> Share experiences, problems, observations, or questions. It can be tied to reporting or just something happening in your neighborhood or daily life.
+          </p>
+          <p>
+            <strong>One account, protected.</strong> Use a single TPJ account. Post publicly or anonymously. Your identity is protected under our
+            <a href="/privacy">Privacy Policy</a>
+            and
+            <a href="/whistleblower-protections">Whistleblower Protections</a>.
+            Anonymous posts are never public, but accountability is maintained behind the scenes.
+          </p>
+          <p>
+            <strong>Keep it local and useful.</strong> This is about Princeton. Civic issues, daily life, problems, concerns, questions, or things people need help with. If it helps people understand what’s going on or helps someone else, it belongs here.
+          </p>
+          <p>
+            TPJ moderates to keep this space useful, respectful, and grounded in real local conversation.
+          </p>
+        </div>
+      </details>
+    </section>
 
     <CommunityHub />
   </main>

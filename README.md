@@ -71,7 +71,7 @@ The repo now includes:
 
 - `Account` page for sign-in, profile setup, and app-alert preferences
 - article comments tied to TPJ accounts
-- `Community` forum page with threads and replies
+- `Community` forum page with threads, replies, search, sorting, votes, and thread attachments
 - support page and support prompts
 - push-notification registration plumbing for the mobile app
 
@@ -79,16 +79,19 @@ To activate these features:
 
 1. Create a Supabase project
 2. Run the SQL in `supabase/migrations/20260410_tpj_platform_foundation.sql`
-3. Add these environment variables:
+3. Run the SQL in `supabase/migrations/20260410_community_guardrails_and_uploads.sql`
+4. Add these environment variables:
    - `PUBLIC_SUPABASE_URL`
    - `PUBLIC_SUPABASE_ANON_KEY`
-4. Redeploy the site
+5. Redeploy the site
 
 Important note:
 
 - the app-side notification UI is implemented
 - actual production push delivery still needs Apple/APNs and Android/FCM credentials connected in the native apps
 - for iPhone production distribution and push notifications, the paid Apple Developer membership is still required
+- the second community migration creates a public `community-uploads` storage bucket with file-type and size guardrails for thread attachments
+- profile rules now lock display names after account creation, limit username changes to once every 7 days, and allow anonymous handles to be updated freely
 
 ## Support links
 
@@ -97,5 +100,6 @@ The support page and article prompts use optional payment-link environment varia
 - `PUBLIC_SUPPORT_MONTHLY_URL`
 - `PUBLIC_SUPPORT_YEARLY_URL`
 - `PUBLIC_SUPPORT_ONE_TIME_URL`
+- `PUBLIC_SUPPORT_FOUNDING_URL`
 
 These can be Stripe Payment Links or any other checkout links you want to use.

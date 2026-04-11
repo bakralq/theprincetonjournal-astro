@@ -6,6 +6,7 @@ import {
   getCommunityClient,
   getCommunitySetupMarkup,
   getPushPermissionSummary,
+  getUsernameCooldown,
   hasCommunityBackend,
   loadNotificationPreferences,
   normalizeUsername,
@@ -40,10 +41,13 @@ const accountShell = (state: AccountState) => {
       <section class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
         <div class="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">TPJ Account</p>
-          <h2 class="mt-3 text-3xl font-bold tracking-tight text-black">Create one account for comments, community, and app alerts.</h2>
+          <h2 class="mt-3 text-3xl font-bold tracking-tight text-black">Create your TPJ account.</h2>
           <p class="mt-4 text-base leading-7 text-gray-700">
-            Your account powers article comments, the community forum, and notification preferences inside the TPJ app.
-            You can still post anonymously when you want, but it stays attached to your account behind the scenes.
+            One account powers article comments, the community forum, and notification preferences inside the TPJ app.
+            You can post publicly or anonymously, but the account still stays attached behind the scenes for accountability and moderation.
+          </p>
+          <p class="mt-3 text-sm leading-7 text-gray-600">
+            By creating an account, you agree to the <a href="/privacy" class="font-semibold text-black underline decoration-black/30 underline-offset-4">Privacy Policy</a>, <a href="/whistleblower-protections" class="font-semibold text-black underline decoration-black/30 underline-offset-4">Whistleblower Protections</a>, and <a href="/terms" class="font-semibold text-black underline decoration-black/30 underline-offset-4">Terms of Service</a>.
           </p>
 
           <div class="mt-6 inline-flex rounded-full border border-gray-200 bg-gray-50 p-1">
@@ -195,6 +199,7 @@ const accountShell = (state: AccountState) => {
   }
 
   const { profile, preferences } = state;
+  const usernameCooldown = getUsernameCooldown(profile.username_changed_at);
 
   return `
     <section class="grid gap-8 lg:grid-cols-[1fr_0.95fr]">
@@ -240,12 +245,11 @@ const accountShell = (state: AccountState) => {
             <input
               name="displayName"
               type="text"
-              minlength="2"
-              maxlength="40"
-              required
               value="${escapeHtml(profile.display_name)}"
-              class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
+              disabled
+              class="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-500 outline-none"
             />
+            <p class="mt-2 text-xs leading-6 text-gray-500">Display names stay fixed after account creation.</p>
           </div>
           <div>
             <label class="mb-2 block text-sm font-semibold text-gray-700">Username</label>
@@ -256,8 +260,18 @@ const accountShell = (state: AccountState) => {
               maxlength="24"
               required
               value="${escapeHtml(profile.username)}"
-              class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
+              ${
+                usernameCooldown.canChange ? '' : 'disabled'
+              }
+              class="w-full rounded-2xl border ${
+                usernameCooldown.canChange
+                  ? 'border-gray-300'
+                  : 'border-gray-200 bg-gray-50 text-gray-500'
+              } px-4 py-3 outline-none transition focus:border-black"
             />
+            <p class="mt-2 text-xs leading-6 text-gray-500">${escapeHtml(
+              usernameCooldown.message,
+            )}</p>
           </div>
           <div>
             <label class="mb-2 block text-sm font-semibold text-gray-700">Anonymous posting name</label>
@@ -475,20 +489,30 @@ export const mountAccountCenter = (root: HTMLElement) => {
       render();
 
       const formData = new FormData(profileForm);
-      const displayName = String(formData.get('displayName') || '').trim();
-      const username = String(formData.get('username') || '').trim();
-      const anonymousHandle = String(formData.get('anonymousHandle') || '').trim();
+      const usernameInput = profileForm.querySelector<HTMLInputElement>(
+        'input[name="username"]',
+      );
+      const username = usernameInput?.disabled
+        ? state.profile.username
+        : String(formData.get('username') || state.profile.username).trim();
+      const anonymousHandle = String(
+        formData.get('anonymousHandle') || state.profile.anonymous_handle,
+      ).trim();
 
       const normalizedUsername = normalizeUsername(username);
+      const nextAnonymousHandle =
+        anonymousHandle || state.profile.anonymous_handle;
+      const profileUpdate: Record<string, string> = {
+        anonymous_handle: nextAnonymousHandle,
+      };
+
+      if (normalizedUsername !== state.profile.username) {
+        profileUpdate.username = normalizedUsername;
+      }
 
       const { error: profileError } = await supabase
         .from('profiles')
-        .update({
-          display_name: displayName,
-          username: normalizedUsername,
-          anonymous_handle:
-            anonymousHandle || state.profile.anonymous_handle,
-        })
+        .update(profileUpdate)
         .eq('id', state.session.user.id);
 
       if (profileError) {
@@ -499,10 +523,8 @@ export const mountAccountCenter = (root: HTMLElement) => {
 
       await supabase.auth.updateUser({
         data: {
-          display_name: displayName,
           username: normalizedUsername,
-          anonymous_handle:
-            anonymousHandle || state.profile.anonymous_handle,
+          anonymous_handle: nextAnonymousHandle,
         },
       });
 
@@ -600,20 +622,28 @@ export const mountAccountCenter = (root: HTMLElement) => {
 
   const { data } = supabase.auth.onAuthStateChange((_event, session) => {
     window.setTimeout(async () => {
-      state.session = session;
-      state.profile = session ? await ensureProfile(supabase, session) : null;
-      state.preferences = session
-        ? await loadNotificationPreferences(session.user.id)
-        : defaultNotificationPreferences;
-      state.error = '';
-      state.info = session
-        ? 'You are signed in and ready to comment, post, and manage alerts.'
-        : 'Signed out.';
+      try {
+        state.session = session;
+        state.profile = session ? await ensureProfile(supabase, session) : null;
+        state.preferences = session
+          ? await loadNotificationPreferences(session.user.id)
+          : defaultNotificationPreferences;
+        state.error = '';
+        state.info = session
+          ? 'You are signed in and ready to comment, post, and manage alerts.'
+          : 'Signed out.';
 
-      const permission = await getPushPermissionSummary();
-      state.permissionMessage = permission.message;
-      state.loading = false;
-      render();
+        const permission = await getPushPermissionSummary();
+        state.permissionMessage = permission.message;
+      } catch (error) {
+        state.error =
+          error instanceof Error
+            ? error.message
+            : 'Could not refresh your account tools.';
+      } finally {
+        state.loading = false;
+        render();
+      }
     }, 0);
   });
 
