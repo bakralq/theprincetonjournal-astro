@@ -424,7 +424,7 @@ const communityShell = (state: CommunityState) => {
                   ></textarea>
                 </div>
 
-                <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-stretch">
+                <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
                   <div>
                     <label class="mb-2 block text-sm font-semibold text-gray-700">Attachment (optional)</label>
                     <input
@@ -440,7 +440,10 @@ const communityShell = (state: CommunityState) => {
                     </p>
                   </div>
 
-                  <div class="flex lg:h-full lg:items-end">
+                  <div class="flex flex-col">
+                    <span aria-hidden="true" class="mb-2 hidden text-sm font-semibold text-transparent lg:block">
+                      Posting mode
+                    </span>
                     <label class="flex w-full items-start gap-3 rounded-2xl border border-gray-200 px-4 py-4 text-sm text-gray-700">
                       <input
                         name="isAnonymous"
