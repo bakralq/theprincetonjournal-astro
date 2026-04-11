@@ -53,7 +53,9 @@ type CommunityState = {
   profile: TPJProfile | null;
   threads: ThreadRecord[];
   replies: Record<string, ReplyRecord[]>;
-  openThreadId: string | null;
+  expandedPostId: string | null;
+  expandedReplyThreadIds: Set<string>;
+  composerOpen: boolean;
   error: string;
   info: string;
   searchQuery: string;
@@ -71,13 +73,29 @@ const categories = [
   'Opinion',
 ];
 
+const POST_PREVIEW_LENGTH = 430;
+const REPLY_PREVIEW_COUNT = 5;
+
+const upvoteIcon = `
+  <svg aria-hidden="true" viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 15V5"></path>
+    <path d="M5.75 9.25 10 5l4.25 4.25"></path>
+  </svg>
+`;
+
+const replyIcon = `
+  <svg aria-hidden="true" viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4.5 5.75A2.25 2.25 0 0 1 6.75 3.5h6.5A2.25 2.25 0 0 1 15.5 5.75v4.5A2.25 2.25 0 0 1 13.25 12.5H9l-3.5 3v-3H6.75A2.25 2.25 0 0 1 4.5 10.25v-4.5Z"></path>
+  </svg>
+`;
+
 const threadAuthorLabel = (thread: ThreadRecord) =>
   thread.is_anonymous ? thread.anonymous_handle : thread.display_name;
 
 const replyAuthorLabel = (reply: ReplyRecord) =>
   reply.is_anonymous ? reply.anonymous_handle : reply.display_name;
 
-const slugifyThread = (title: string) =>
+const slugifyPost = (title: string) =>
   title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -87,7 +105,7 @@ const slugifyThread = (title: string) =>
 const isImageAttachment = (type?: string | null) =>
   Boolean(type && type.startsWith('image/'));
 
-const searchableThreadText = (thread: ThreadRecord) =>
+const searchablePostText = (thread: ThreadRecord) =>
   [
     thread.title,
     thread.body,
@@ -102,11 +120,11 @@ const searchableThreadText = (thread: ThreadRecord) =>
 const engagementScore = (thread: ThreadRecord) =>
   thread.vote_count * 2 + thread.reply_count;
 
-const getVisibleThreads = (state: CommunityState) => {
+const getVisiblePosts = (state: CommunityState) => {
   const needle = state.searchQuery.trim().toLowerCase();
 
   const filtered = needle
-    ? state.threads.filter((thread) => searchableThreadText(thread).includes(needle))
+    ? state.threads.filter((thread) => searchablePostText(thread).includes(needle))
     : [...state.threads];
 
   if (state.sortMode === 'engagement') {
@@ -127,87 +145,113 @@ const getVisibleThreads = (state: CommunityState) => {
   );
 };
 
-const threadAttachmentSummaryMarkup = (thread: ThreadRecord) => {
-  if (!thread.attachment_url || !thread.attachment_name || !thread.attachment_type) {
-    return '';
+const truncatePostBody = (body: string) => {
+  if (body.length <= POST_PREVIEW_LENGTH) {
+    return {
+      preview: body,
+      truncated: false,
+    };
   }
 
-  if (isImageAttachment(thread.attachment_type)) {
-    return `
-      <div class="overflow-hidden rounded-[1.5rem] border border-gray-200">
-        <img
-          src="${escapeHtml(thread.attachment_url)}"
-          alt="${escapeHtml(thread.attachment_name)}"
-          class="h-52 w-full object-cover"
-          loading="lazy"
-        />
-      </div>
-    `;
-  }
-
-  return `
-    <div class="rounded-2xl border border-gray-200 bg-stone-50 px-4 py-3 text-sm text-gray-700">
-      Attached file: <strong>${escapeHtml(thread.attachment_name)}</strong>
-    </div>
-  `;
+  return {
+    preview: `${body.slice(0, POST_PREVIEW_LENGTH).trimEnd()}...`,
+    truncated: true,
+  };
 };
 
-const threadAttachmentExpandedMarkup = (thread: ThreadRecord) => {
-  if (!thread.attachment_url || !thread.attachment_name || !thread.attachment_type) {
+const attachmentMarkup = (thread: ThreadRecord) => {
+  if (!thread.attachment_url || !thread.attachment_type) {
     return '';
   }
 
   if (isImageAttachment(thread.attachment_type)) {
     return `
-      <div class="mt-5 overflow-hidden rounded-[1.5rem] border border-gray-200 bg-white">
+      <div class="mt-4 overflow-hidden rounded-[1.5rem] border border-gray-200 bg-stone-50">
         <img
           src="${escapeHtml(thread.attachment_url)}"
-          alt="${escapeHtml(thread.attachment_name)}"
-          class="max-h-[32rem] w-full object-contain bg-stone-50"
+          alt="${escapeHtml(thread.attachment_name || 'Post attachment')}"
+          class="max-h-[28rem] w-full object-cover"
           loading="lazy"
         />
-      </div>
-      <div class="mt-3 flex flex-wrap items-center gap-3 text-sm text-gray-600">
-        <span>${escapeHtml(thread.attachment_name)}</span>
-        ${
-          thread.attachment_size
-            ? `<span>${escapeHtml(formatFileSize(thread.attachment_size))}</span>`
-            : ''
-        }
-        <a
-          href="${escapeHtml(thread.attachment_url)}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="font-semibold text-black underline decoration-black/30 underline-offset-4"
-        >
-          Open full image
-        </a>
       </div>
     `;
   }
 
   return `
-    <div class="mt-5 rounded-[1.5rem] border border-gray-200 bg-stone-50 p-5">
-      <p class="text-sm font-semibold text-black">${escapeHtml(
-        thread.attachment_name,
-      )}</p>
-      <p class="mt-2 text-sm leading-6 text-gray-600">
-        PDF attachment${thread.attachment_size ? ` - ${escapeHtml(formatFileSize(thread.attachment_size))}` : ''}
-      </p>
+    <div class="mt-4 rounded-[1.5rem] border border-gray-200 bg-stone-50 p-4">
       <a
         href="${escapeHtml(thread.attachment_url)}"
         target="_blank"
         rel="noopener noreferrer"
-        class="mt-4 inline-flex items-center rounded-2xl border border-black px-4 py-2 text-sm font-semibold text-black transition hover:bg-black hover:text-white"
+        class="inline-flex items-center rounded-2xl border border-black px-4 py-2 text-sm font-semibold text-black transition hover:bg-black hover:text-white"
       >
-        Open PDF
+        View attachment
       </a>
     </div>
   `;
 };
 
+const replyListMarkup = (
+  thread: ThreadRecord,
+  replies: ReplyRecord[],
+  state: CommunityState,
+) => {
+  if (!replies.length) {
+    return `
+      <div class="mt-5 rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-4 text-sm text-gray-600">
+        No replies yet. Start the conversation.
+      </div>
+    `;
+  }
+
+  const showingAllReplies = state.expandedReplyThreadIds.has(thread.id);
+  const visibleReplies = showingAllReplies
+    ? replies
+    : replies.slice(0, REPLY_PREVIEW_COUNT);
+
+  return `
+    <div class="mt-5 space-y-3">
+      ${visibleReplies
+        .map(
+          (reply) => `
+            <div class="rounded-2xl border border-gray-200 bg-stone-50 px-4 py-4">
+              <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.16em] text-gray-500">
+                <span>${escapeHtml(replyAuthorLabel(reply))}</span>
+                ${membershipBadge(reply.membership_tier)}
+                <span class="normal-case tracking-normal">${escapeHtml(
+                  formatRelativeTime(reply.created_at),
+                )}</span>
+                <span class="normal-case tracking-normal">${escapeHtml(
+                  formatAbsoluteTime(reply.created_at),
+                )}</span>
+              </div>
+              <p class="mt-3 whitespace-pre-wrap text-sm leading-7 text-gray-800">${escapeHtml(
+                reply.body,
+              )}</p>
+            </div>
+          `,
+        )
+        .join('')}
+
+      ${
+        replies.length > REPLY_PREVIEW_COUNT
+          ? `
+            <button
+              type="button"
+              data-toggle-all-replies="${escapeHtml(thread.id)}"
+              class="inline-flex items-center gap-2 rounded-2xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
+            >
+              ${showingAllReplies ? 'Show fewer replies' : `View all ${replies.length} replies`}
+            </button>
+          `
+          : ''
+      }
+    </div>
+  `;
+};
+
 const communityShell = (state: CommunityState) => {
-  const visibleThreads = getVisibleThreads(state);
+  const visiblePosts = getVisiblePosts(state);
 
   return `
     ${
@@ -226,26 +270,91 @@ const communityShell = (state: CommunityState) => {
         : ''
     }
 
-    <div class="grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
-      <aside class="space-y-6">
-        <div class="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">Start a thread</p>
-          <h2 class="mt-3 text-2xl font-bold tracking-tight text-black">Share what you are seeing, hearing, or trying to figure out.</h2>
-          <p class="mt-4 text-sm leading-7 text-gray-700">
-            This space is for reporting reactions, neighborhood issues, local questions, city concerns, and the day-to-day details people in Princeton should not miss.
-          </p>
+    <section class="space-y-5">
+      <div class="rounded-[2rem] border border-gray-200 bg-white p-5 shadow-sm">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div class="max-w-2xl">
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">Posts</p>
+            <h2 class="mt-2 text-2xl font-bold tracking-tight text-black">Local posts, real context, and what people are actually seeing.</h2>
+            <p class="mt-3 text-sm leading-7 text-gray-700">
+              Search, sort, and follow what people in Princeton are surfacing right now.
+            </p>
+          </div>
 
           ${
             state.sessionUserId && state.profile
               ? `
-                <div class="mt-5 rounded-2xl border border-gray-200 bg-stone-50 px-4 py-4 text-sm text-gray-700">
-                  Signed in as <strong>${escapeHtml(
-                    state.profile.display_name,
-                  )}</strong>. Anonymous posting will still map back to this account behind the scenes.
-                </div>
-                <form data-thread-form class="mt-5 space-y-4">
+                <button
+                  type="button"
+                  data-toggle-composer
+                  class="inline-flex items-center justify-center rounded-2xl border border-black bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+                >
+                  ${state.composerOpen ? 'Close post maker' : 'Create a post'}
+                </button>
+              `
+              : `
+                <a
+                  href="/account"
+                  class="inline-flex items-center justify-center rounded-2xl border border-black bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+                >
+                  Sign in to post
+                </a>
+              `
+          }
+        </div>
+
+        <div class="mt-5 grid gap-4 md:grid-cols-[1fr_220px]">
+          <label>
+            <span class="mb-2 block text-sm font-semibold text-gray-700">Search posts</span>
+            <input
+              data-post-search
+              type="search"
+              value="${escapeHtml(state.searchQuery)}"
+              placeholder="Search titles, posts, categories, or names"
+              class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
+            />
+          </label>
+          <label>
+            <span class="mb-2 block text-sm font-semibold text-gray-700">Sort by</span>
+            <select
+              data-post-sort
+              class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
+            >
+              <option value="recent" ${
+                state.sortMode === 'recent' ? 'selected' : ''
+              }>Most recent</option>
+              <option value="engagement" ${
+                state.sortMode === 'engagement' ? 'selected' : ''
+              }>Most engagement</option>
+            </select>
+          </label>
+        </div>
+
+        <p class="mt-4 text-sm text-gray-500">
+          ${
+            visiblePosts.length === 1
+              ? '1 post in the feed.'
+              : `${visiblePosts.length} posts in the feed.`
+          }
+        </p>
+      </div>
+
+      ${
+        state.sessionUserId && state.profile && state.composerOpen
+          ? `
+            <div class="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm">
+              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">Create a post</p>
+              <h3 class="mt-2 text-2xl font-bold tracking-tight text-black">Share what you are seeing, hearing, or trying to figure out.</h3>
+              <p class="mt-3 text-sm leading-7 text-gray-700">
+                Signed in as <strong>${escapeHtml(
+                  state.profile.display_name,
+                )}</strong>. You can post publicly or anonymously, but the post still maps back to your account behind the scenes.
+              </p>
+
+              <form data-post-form class="mt-6 space-y-5">
+                <div class="grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
                   <div>
-                    <label class="mb-2 block text-sm font-semibold text-gray-700">Thread title</label>
+                    <label class="mb-2 block text-sm font-semibold text-gray-700">Post title</label>
                     <input
                       name="title"
                       type="text"
@@ -253,7 +362,7 @@ const communityShell = (state: CommunityState) => {
                       maxlength="120"
                       required
                       class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
-                      placeholder="What should Princeton residents be paying attention to here?"
+                      placeholder="What should Princeton residents be paying attention to?"
                     />
                   </div>
                   <div>
@@ -272,18 +381,22 @@ const communityShell = (state: CommunityState) => {
                         .join('')}
                     </select>
                   </div>
-                  <div>
-                    <label class="mb-2 block text-sm font-semibold text-gray-700">Thread body</label>
-                    <textarea
-                      name="body"
-                      rows="8"
-                      minlength="20"
-                      maxlength="6000"
-                      required
-                      class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
-                      placeholder="Add detail, context, or a real question for the community."
-                    ></textarea>
-                  </div>
+                </div>
+
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-gray-700">Post body</label>
+                  <textarea
+                    name="body"
+                    rows="7"
+                    minlength="20"
+                    maxlength="6000"
+                    required
+                    class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
+                    placeholder="Add detail, context, or a real question for the community."
+                  ></textarea>
+                </div>
+
+                <div class="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
                   <div>
                     <label class="mb-2 block text-sm font-semibold text-gray-700">Attachment (optional)</label>
                     <input
@@ -295,9 +408,10 @@ const communityShell = (state: CommunityState) => {
                     <p class="mt-2 text-xs leading-6 text-gray-500">
                       Images and PDFs only, up to ${escapeHtml(
                         formatFileSize(COMMUNITY_MAX_UPLOAD_BYTES),
-                      )}. Public uploads remain public and may contain metadata, so do not upload sensitive identifying files.
+                      )}. Public uploads remain public, so do not upload sensitive identifying files.
                     </p>
                   </div>
+
                   <label class="flex items-start gap-3 rounded-2xl border border-gray-200 px-4 py-4 text-sm text-gray-700">
                     <input
                       name="isAnonymous"
@@ -308,221 +422,154 @@ const communityShell = (state: CommunityState) => {
                       <span class="block font-semibold text-black">Post anonymously</span>
                       <span class="mt-1 block leading-6">Use ${escapeHtml(
                         state.profile.anonymous_handle,
-                      )} publicly, while the account remains attached behind the scenes.</span>
+                      )} publicly.</span>
                     </span>
                   </label>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
                   <button
                     type="submit"
                     class="inline-flex items-center rounded-2xl border border-black bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
                   >
-                    Publish thread
+                    Publish post
                   </button>
-                </form>
-              `
-              : `
-                <div class="mt-5 rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-5 text-sm leading-7 text-gray-700">
-                  <p class="font-semibold text-black">Sign in before you post.</p>
-                  <p class="mt-2">Use your TPJ account to start threads, reply, upload supporting files, and manage app alerts.</p>
-                  <a
-                    href="/account"
-                    class="mt-4 inline-flex items-center rounded-2xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+                  <button
+                    type="button"
+                    data-toggle-composer
+                    class="inline-flex items-center rounded-2xl border border-gray-300 px-5 py-3 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
                   >
-                    Open account page
-                  </a>
+                    Cancel
+                  </button>
                 </div>
-              `
-          }
-        </div>
+              </form>
+            </div>
+          `
+          : ''
+      }
 
-        <div class="rounded-[2rem] border border-gray-200 bg-stone-50 p-6">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">Before you upload</p>
-          <div class="mt-4 space-y-3 text-sm leading-7 text-gray-700">
-            <p>Photos, screenshots, and PDFs posted here are public once the thread goes live.</p>
-            <p>Automatic checks limit file type, file size, account access, and upload path ownership.</p>
-            <p>If anonymity matters, do not upload files that contain names, addresses, timestamps, or hidden metadata you do not want exposed.</p>
-          </div>
-        </div>
-      </aside>
-
-      <section class="space-y-4">
-        <div class="rounded-[2rem] border border-gray-200 bg-white p-5 shadow-sm">
-          <div class="grid gap-4 md:grid-cols-[1fr_220px]">
-            <label>
-              <span class="mb-2 block text-sm font-semibold text-gray-700">Search threads</span>
-              <input
-                data-thread-search
-                type="search"
-                value="${escapeHtml(state.searchQuery)}"
-                placeholder="Search titles, posts, categories, or names"
-                class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
-              />
-            </label>
-            <label>
-              <span class="mb-2 block text-sm font-semibold text-gray-700">Sort by</span>
-              <select
-                data-thread-sort
-                class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
-              >
-                <option value="recent" ${
-                  state.sortMode === 'recent' ? 'selected' : ''
-                }>Most recent</option>
-                <option value="engagement" ${
-                  state.sortMode === 'engagement' ? 'selected' : ''
-                }>Most engagement</option>
-              </select>
-            </label>
-          </div>
-          <p class="mt-4 text-sm text-gray-500">
-            ${
-              visibleThreads.length === 1
-                ? '1 thread in the feed.'
-                : `${visibleThreads.length} threads in the feed.`
-            }
-          </p>
-        </div>
-
-        ${
-          state.loading
-            ? `<div class="rounded-3xl border border-gray-200 bg-white p-6 text-sm text-gray-500 shadow-sm">Loading community threads...</div>`
-            : visibleThreads.length
-              ? visibleThreads.map((thread) => threadCard(thread, state)).join('')
-              : `<div class="rounded-3xl border border-dashed border-gray-300 bg-gray-50 p-6 text-sm leading-7 text-gray-600">${
-                  state.searchQuery
-                    ? 'No threads match that search yet.'
-                    : 'No community threads yet. Start the first one and set the tone.'
-                }</div>`
-        }
-      </section>
-    </div>
+      ${
+        state.loading
+          ? `<div class="rounded-3xl border border-gray-200 bg-white p-6 text-sm text-gray-500 shadow-sm">Loading posts...</div>`
+          : visiblePosts.length
+            ? `<div class="space-y-5">${visiblePosts
+                .map((thread) => postCard(thread, state))
+                .join('')}</div>`
+            : `<div class="rounded-3xl border border-dashed border-gray-300 bg-gray-50 p-6 text-sm leading-7 text-gray-600">${
+                state.searchQuery
+                  ? 'No posts match that search yet.'
+                  : 'No posts yet. Start the first one and set the tone.'
+              }</div>`
+      }
+    </section>
   `;
 };
 
-const threadCard = (thread: ThreadRecord, state: CommunityState) => {
-  const isOpen = state.openThreadId === thread.id;
+const postCard = (thread: ThreadRecord, state: CommunityState) => {
+  const postIsExpanded = state.expandedPostId === thread.id;
   const replies = state.replies[thread.id] || [];
   const hasVoted = state.votedThreadIds.has(thread.id);
+  const bodyPreview = truncatePostBody(thread.body);
+  const displayedBody =
+    postIsExpanded || !bodyPreview.truncated ? thread.body : bodyPreview.preview;
 
   return `
-    <article class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white shadow-sm">
-      <button
-        type="button"
-        data-open-thread="${escapeHtml(thread.id)}"
-        class="flex w-full flex-col items-start gap-4 px-6 py-5 text-left transition hover:bg-stone-50"
-      >
-        <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.18em] text-gray-500">
-          <span>${escapeHtml(thread.category)}</span>
-          <span class="normal-case tracking-normal">${escapeHtml(
-            formatRelativeTime(thread.last_activity_at || thread.created_at),
-          )}</span>
-          <span class="normal-case tracking-normal">Posted ${escapeHtml(
-            formatAbsoluteTime(thread.created_at),
-          )}</span>
-        </div>
-        <h3 class="text-2xl font-bold tracking-tight text-black">${escapeHtml(
-          thread.title,
-        )}</h3>
-        ${threadAttachmentSummaryMarkup(thread)}
-        <p class="line-clamp-3 text-sm leading-7 text-gray-700">${escapeHtml(
-          thread.body,
+    <article class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm">
+      <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.18em] text-gray-500">
+        <span>${escapeHtml(thread.category)}</span>
+        <span class="normal-case tracking-normal">${escapeHtml(
+          formatRelativeTime(thread.last_activity_at || thread.created_at),
+        )}</span>
+        <span class="normal-case tracking-normal">Posted ${escapeHtml(
+          formatAbsoluteTime(thread.created_at),
+        )}</span>
+      </div>
+
+      <div class="mt-4 flex flex-wrap items-center gap-2 text-sm text-gray-600">
+        <span class="font-semibold text-black">${escapeHtml(
+          threadAuthorLabel(thread),
+        )}</span>
+        ${membershipBadge(thread.membership_tier)}
+      </div>
+
+      <h3 class="mt-3 text-2xl font-bold tracking-tight text-black">${escapeHtml(
+        thread.title,
+      )}</h3>
+
+      ${attachmentMarkup(thread)}
+
+      <div class="mt-4 space-y-4">
+        <p class="whitespace-pre-wrap text-sm leading-7 text-gray-700">${escapeHtml(
+          displayedBody,
         )}</p>
-        <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.18em] text-gray-500">
-          <span>${escapeHtml(threadAuthorLabel(thread))}</span>
-          ${membershipBadge(thread.membership_tier)}
-          <span class="normal-case tracking-normal">${thread.reply_count} ${
-            thread.reply_count === 1 ? 'reply' : 'replies'
-          }</span>
-          <span class="normal-case tracking-normal">${thread.vote_count} ${
-            thread.vote_count === 1 ? 'upvote' : 'upvotes'
-          }</span>
-        </div>
-      </button>
+
+        ${
+          bodyPreview.truncated
+            ? `
+              <button
+                type="button"
+                data-toggle-post="${escapeHtml(thread.id)}"
+                class="inline-flex items-center rounded-2xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
+              >
+                ${postIsExpanded ? 'Show less' : 'Read full post'}
+              </button>
+            `
+            : ''
+        }
+      </div>
+
+      <div class="mt-5 flex flex-wrap items-center gap-3 border-t border-gray-200 pt-5">
+        ${
+          state.sessionUserId
+            ? `
+              <button
+                type="button"
+                data-upvote-post="${escapeHtml(thread.id)}"
+                class="inline-flex items-center gap-2 rounded-2xl border ${
+                  hasVoted
+                    ? 'border-black bg-black text-white'
+                    : 'border-gray-300 text-gray-700'
+                } px-4 py-2 text-sm font-semibold transition hover:border-black ${
+                  hasVoted ? 'hover:bg-white hover:text-black' : 'hover:bg-stone-50 hover:text-black'
+                }"
+              >
+                ${upvoteIcon}
+                <span>${thread.vote_count}</span>
+              </button>
+            `
+            : `
+              <a
+                href="/account"
+                class="inline-flex items-center gap-2 rounded-2xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
+              >
+                ${upvoteIcon}
+                <span>${thread.vote_count}</span>
+              </a>
+            `
+        }
+
+        <button
+          type="button"
+          data-open-replies="${escapeHtml(thread.id)}"
+          class="inline-flex items-center gap-2 rounded-2xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
+        >
+          ${replyIcon}
+          <span>${thread.reply_count}</span>
+        </button>
+      </div>
 
       ${
-        isOpen
+        postIsExpanded
           ? `
-            <div class="border-t border-gray-200 px-6 py-5">
-              <p class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-500">Thread details</p>
-              <p class="mt-3 whitespace-pre-wrap text-sm leading-7 text-gray-700">${escapeHtml(
-                thread.body,
-              )}</p>
-
-              ${threadAttachmentExpandedMarkup(thread)}
-
-              <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-gray-600">
-                <span>${thread.reply_count} ${
-                  thread.reply_count === 1 ? 'reply' : 'replies'
-                }</span>
-                <span>${thread.vote_count} ${
-                  thread.vote_count === 1 ? 'upvote' : 'upvotes'
-                }</span>
-                <span>Last activity ${escapeHtml(
-                  formatAbsoluteTime(thread.last_activity_at || thread.created_at),
-                )}</span>
-              </div>
-
-              <div class="mt-5 flex flex-wrap gap-3">
-                ${
-                  state.sessionUserId
-                    ? `
-                      <button
-                        type="button"
-                        data-upvote-thread="${escapeHtml(thread.id)}"
-                        class="inline-flex items-center rounded-2xl border ${
-                          hasVoted
-                            ? 'border-black bg-black text-white'
-                            : 'border-gray-300 text-gray-700'
-                        } px-4 py-2 text-sm font-semibold transition hover:border-black hover:text-black ${
-                          hasVoted ? 'hover:bg-white' : 'hover:bg-stone-50'
-                        }"
-                      >
-                        ${hasVoted ? 'Remove upvote' : 'Upvote thread'}
-                      </button>
-                    `
-                    : `
-                      <a
-                        href="/account"
-                        class="inline-flex items-center rounded-2xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
-                      >
-                        Sign in to upvote
-                      </a>
-                    `
-                }
-              </div>
-
-              <div class="mt-6 space-y-4">
-                ${
-                  replies.length
-                    ? replies
-                        .map(
-                          (reply) => `
-                            <div class="rounded-2xl border border-gray-200 bg-stone-50 px-4 py-4">
-                              <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.16em] text-gray-500">
-                                <span>${escapeHtml(replyAuthorLabel(reply))}</span>
-                                ${membershipBadge(reply.membership_tier)}
-                                <span class="normal-case tracking-normal">${escapeHtml(
-                                  formatRelativeTime(reply.created_at),
-                                )}</span>
-                                <span class="normal-case tracking-normal">${escapeHtml(
-                                  formatAbsoluteTime(reply.created_at),
-                                )}</span>
-                              </div>
-                              <p class="mt-3 whitespace-pre-wrap text-sm leading-7 text-gray-800">${escapeHtml(
-                                reply.body,
-                              )}</p>
-                            </div>
-                          `,
-                        )
-                        .join('')
-                    : `<div class="rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-4 text-sm text-gray-600">No replies yet. Start the conversation.</div>`
-                }
-              </div>
+            <div class="mt-6 border-t border-gray-200 pt-6">
+              ${replyListMarkup(thread, replies, state)}
 
               ${
                 state.sessionUserId && state.profile
                   ? `
                     <form data-reply-form="${escapeHtml(
                       thread.id,
-                    )}" class="mt-5 space-y-4 rounded-3xl border border-gray-200 bg-white p-5">
+                    )}" class="mt-5 space-y-4 rounded-3xl border border-gray-200 bg-stone-50 p-5">
                       <div>
                         <label class="mb-2 block text-sm font-semibold text-gray-700">Reply</label>
                         <textarea
@@ -531,25 +578,27 @@ const threadCard = (thread: ThreadRecord, state: CommunityState) => {
                           minlength="8"
                           maxlength="4000"
                           required
-                          class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
-                          placeholder="Add what you know, question, or disagree with."
+                          class="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 outline-none transition focus:border-black"
+                          placeholder="Add what you know, ask a question, or respond."
                         ></textarea>
                       </div>
-                      <label class="flex items-start gap-3 rounded-2xl border border-gray-200 px-4 py-4 text-sm text-gray-700">
-                        <input name="isAnonymous" type="checkbox" class="mt-1 h-4 w-4 rounded border-gray-300" />
-                        <span>
-                          <span class="block font-semibold text-black">Reply anonymously</span>
-                          <span class="mt-1 block leading-6">Use ${escapeHtml(
-                            state.profile.anonymous_handle,
-                          )} publicly.</span>
-                        </span>
-                      </label>
-                      <button
-                        type="submit"
-                        class="inline-flex items-center rounded-2xl border border-black px-4 py-2 text-sm font-semibold text-black transition hover:bg-black hover:text-white"
-                      >
-                        Add reply
-                      </button>
+                      <div class="flex flex-wrap items-center gap-4">
+                        <label class="flex items-start gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-4 text-sm text-gray-700">
+                          <input name="isAnonymous" type="checkbox" class="mt-1 h-4 w-4 rounded border-gray-300" />
+                          <span>
+                            <span class="block font-semibold text-black">Reply anonymously</span>
+                            <span class="mt-1 block leading-6">Use ${escapeHtml(
+                              state.profile.anonymous_handle,
+                            )} publicly.</span>
+                          </span>
+                        </label>
+                        <button
+                          type="submit"
+                          class="inline-flex items-center rounded-2xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+                        >
+                          Add reply
+                        </button>
+                      </div>
                     </form>
                   `
                   : `
@@ -573,7 +622,7 @@ export const mountCommunityHub = async (root: HTMLElement) => {
   if (!hasCommunityBackend()) {
     root.innerHTML = getCommunitySetupMarkup(
       'The community forum needs the community backend.',
-      'Threads, replies, and account-linked posting are built, but the site still needs Supabase keys and the database schema before the forum can open to readers.',
+      'Posts, replies, uploads, and account-linked activity are built, but the site still needs Supabase keys and the database schema before the forum can open to readers.',
     );
     return;
   }
@@ -587,7 +636,9 @@ export const mountCommunityHub = async (root: HTMLElement) => {
     profile: null,
     threads: [],
     replies: {},
-    openThreadId: null,
+    expandedPostId: null,
+    expandedReplyThreadIds: new Set<string>(),
+    composerOpen: false,
     error: '',
     info: '',
     searchQuery: '',
@@ -595,10 +646,8 @@ export const mountCommunityHub = async (root: HTMLElement) => {
     votedThreadIds: new Set<string>(),
   };
 
-  const loadThreads = async () => {
-    const { data, error } = await supabase
-      .from('community_threads_feed')
-      .select('*');
+  const loadPosts = async () => {
+    const { data, error } = await supabase.from('community_threads_feed').select('*');
 
     if (error) throw error;
     state.threads = (data || []) as ThreadRecord[];
@@ -644,11 +693,11 @@ export const mountCommunityHub = async (root: HTMLElement) => {
 
       state.sessionUserId = session?.user.id || null;
       state.profile = session ? await ensureProfile(supabase, session) : null;
-      await loadThreads();
+      await loadPosts();
       await loadVotes(state.sessionUserId);
 
-      if (state.openThreadId) {
-        await loadReplies(state.openThreadId);
+      if (state.expandedPostId) {
+        await loadReplies(state.expandedPostId);
       }
     } catch (error) {
       state.error = getCommunityErrorMessage(
@@ -661,6 +710,30 @@ export const mountCommunityHub = async (root: HTMLElement) => {
     }
   };
 
+  const toggleReplies = async (threadId: string) => {
+    state.error = '';
+    state.info = '';
+
+    if (state.expandedPostId === threadId) {
+      state.expandedPostId = null;
+      render();
+      return;
+    }
+
+    state.expandedPostId = threadId;
+
+    try {
+      await loadReplies(threadId);
+    } catch (error) {
+      state.error = getCommunityErrorMessage(
+        error,
+        'Could not load replies for this post.',
+      );
+    }
+
+    render();
+  };
+
   const toggleVote = async (threadId: string) => {
     if (!state.sessionUserId) return;
 
@@ -669,7 +742,6 @@ export const mountCommunityHub = async (root: HTMLElement) => {
     render();
 
     const hasVoted = state.votedThreadIds.has(threadId);
-
     const query = supabase.from('community_thread_votes');
     const { error } = hasVoted
       ? await query
@@ -687,8 +759,8 @@ export const mountCommunityHub = async (root: HTMLElement) => {
       return;
     }
 
-    state.info = hasVoted ? 'Upvote removed.' : 'Thread upvoted.';
-    await loadThreads();
+    state.info = hasVoted ? 'Upvote removed.' : 'Post upvoted.';
+    await loadPosts();
     await loadVotes(state.sessionUserId);
     render();
   };
@@ -696,39 +768,23 @@ export const mountCommunityHub = async (root: HTMLElement) => {
   const render = () => {
     root.innerHTML = communityShell(state);
 
-    root.querySelectorAll<HTMLElement>('[data-open-thread]').forEach((button) => {
-      button.addEventListener('click', async () => {
-        const threadId = button.dataset.openThread;
-        if (!threadId) return;
-
-        state.openThreadId = state.openThreadId === threadId ? null : threadId;
-        state.error = '';
-        state.info = '';
-
-        if (state.openThreadId) {
-          try {
-            await loadReplies(threadId);
-          } catch (error) {
-            state.error = getCommunityErrorMessage(
-              error,
-              'Could not load replies for this thread.',
-            );
-          }
-        }
-
+    root.querySelector<HTMLElement>('[data-toggle-composer]')?.addEventListener(
+      'click',
+      () => {
+        state.composerOpen = !state.composerOpen;
         render();
-      });
-    });
+      },
+    );
 
     root
-      .querySelector<HTMLInputElement>('[data-thread-search]')
+      .querySelector<HTMLInputElement>('[data-post-search]')
       ?.addEventListener('input', (event) => {
         const nextValue = (event.currentTarget as HTMLInputElement).value;
         state.searchQuery = nextValue;
         render();
 
         const nextInput = root.querySelector<HTMLInputElement>(
-          '[data-thread-search]',
+          '[data-post-search]',
         );
         if (nextInput) {
           nextInput.focus();
@@ -737,7 +793,7 @@ export const mountCommunityHub = async (root: HTMLElement) => {
       });
 
     root
-      .querySelector<HTMLSelectElement>('[data-thread-sort]')
+      .querySelector<HTMLSelectElement>('[data-post-sort]')
       ?.addEventListener('change', (event) => {
         state.sortMode =
           ((event.currentTarget as HTMLSelectElement).value as
@@ -746,17 +802,69 @@ export const mountCommunityHub = async (root: HTMLElement) => {
         render();
       });
 
-    root.querySelectorAll<HTMLElement>('[data-upvote-thread]').forEach((button) => {
+    root.querySelectorAll<HTMLElement>('[data-open-replies]').forEach((button) => {
       button.addEventListener('click', async () => {
-        const threadId = button.dataset.upvoteThread;
+        const threadId = button.dataset.openReplies;
+        if (!threadId) return;
+
+        await toggleReplies(threadId);
+      });
+    });
+
+    root.querySelectorAll<HTMLElement>('[data-toggle-post]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const threadId = button.dataset.togglePost;
+        if (!threadId) return;
+
+        if (state.expandedPostId === threadId) {
+          state.expandedPostId = null;
+          render();
+          return;
+        }
+
+        state.expandedPostId = threadId;
+
+        try {
+          await loadReplies(threadId);
+        } catch (error) {
+          state.error = getCommunityErrorMessage(
+            error,
+            'Could not load replies for this post.',
+          );
+        }
+
+        render();
+      });
+    });
+
+    root
+      .querySelectorAll<HTMLElement>('[data-toggle-all-replies]')
+      .forEach((button) => {
+        button.addEventListener('click', () => {
+          const threadId = button.dataset.toggleAllReplies;
+          if (!threadId) return;
+
+          if (state.expandedReplyThreadIds.has(threadId)) {
+            state.expandedReplyThreadIds.delete(threadId);
+          } else {
+            state.expandedReplyThreadIds.add(threadId);
+          }
+
+          render();
+        });
+      });
+
+    root.querySelectorAll<HTMLElement>('[data-upvote-post]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const threadId = button.dataset.upvotePost;
         if (!threadId) return;
 
         await toggleVote(threadId);
       });
     });
 
-    const threadForm = root.querySelector<HTMLFormElement>('[data-thread-form]');
-    threadForm?.addEventListener('submit', async (event) => {
+    const postForm = root.querySelector<HTMLFormElement>('[data-post-form]');
+    postForm?.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (!state.sessionUserId) return;
 
@@ -764,16 +872,16 @@ export const mountCommunityHub = async (root: HTMLElement) => {
       state.info = '';
       render();
 
-      const formData = new FormData(threadForm);
+      const formData = new FormData(postForm);
       const title = String(formData.get('title') || '').trim();
       const category = String(formData.get('category') || '').trim();
       const body = String(formData.get('body') || '').trim();
       const isAnonymous = formData.get('isAnonymous') === 'on';
-      const attachmentInput = threadForm.querySelector<HTMLInputElement>(
+      const attachmentInput = postForm.querySelector<HTMLInputElement>(
         'input[name="attachment"]',
       );
       const attachmentFile = attachmentInput?.files?.[0] || null;
-      const slug = `${slugifyThread(title)}-${Math.random()
+      const slug = `${slugifyPost(title)}-${Math.random()
         .toString(36)
         .slice(2, 6)}`;
 
@@ -813,10 +921,9 @@ export const mountCommunityHub = async (root: HTMLElement) => {
 
         if (error) throw error;
 
-        threadForm.reset();
-        state.info = attachment
-          ? 'Thread published with an attachment.'
-          : 'Thread published.';
+        postForm.reset();
+        state.composerOpen = false;
+        state.info = attachment ? 'Post published with an attachment.' : 'Post published.';
         await syncState();
       } catch (error) {
         if (attachment?.path) {
@@ -825,7 +932,7 @@ export const mountCommunityHub = async (root: HTMLElement) => {
 
         state.error = getCommunityErrorMessage(
           error,
-          'Could not publish thread.',
+          'Could not publish post.',
         );
         render();
       }
@@ -861,9 +968,10 @@ export const mountCommunityHub = async (root: HTMLElement) => {
         }
 
         form.reset();
+        state.expandedPostId = threadId;
         state.info = 'Reply posted.';
         await loadReplies(threadId);
-        await loadThreads();
+        await loadPosts();
         render();
       });
     });
