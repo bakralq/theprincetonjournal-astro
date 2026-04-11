@@ -363,6 +363,10 @@ html.capacitor-app .site-header-inner {
   color: #4b5563;
 }
 
+.community-guide-card {
+  align-self: start;
+}
+
 .community-guide-summary {
   cursor: pointer;
   list-style: none;
