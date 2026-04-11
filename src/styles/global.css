@@ -155,6 +155,51 @@ html.capacitor-app .site-header-inner {
   transition: max-height 0.3s ease, opacity 0.25s ease;
 }
 
+.support-ticker {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-bottom: 1px solid #111827;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+}
+
+.support-ticker-track {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 0.82rem 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: support-ticker-scroll 22s linear infinite;
+}
+
+.support-ticker-track span::after {
+  content: "•";
+  margin-left: 2.5rem;
+  opacity: 0.8;
+}
+
+.support-ticker:hover .support-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes support-ticker-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-33.333%, 0, 0);
+  }
+}
+
 @media (max-width: 768px) {
   .desktop-nav {
     display: none !important;
@@ -186,6 +231,17 @@ html.capacitor-app .site-header-inner {
   .menu-toggle {
     flex-shrink: 0;
     margin-left: 0.5rem;
+  }
+
+  .support-ticker-track {
+    gap: 1.6rem;
+    padding: 0.72rem 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+  }
+
+  .support-ticker-track span::after {
+    margin-left: 1.6rem;
   }
 }
 .article-content figure {
@@ -305,6 +361,29 @@ html.capacitor-app .site-header-inner {
 
 .registry-banner-disclosure summary::marker {
   color: #4b5563;
+}
+
+.community-guide-summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.community-guide-summary::-webkit-details-marker {
+  display: none;
+}
+
+.community-guide-summary::after {
+  content: "+";
+  float: right;
+  color: #6b7280;
+}
+
+.community-guide-card[open] .community-guide-summary {
+  margin-bottom: 0.25rem;
+}
+
+.community-guide-card[open] .community-guide-summary::after {
+  content: "−";
 }
 
 .registry-banner-body {

@@ -198,7 +198,7 @@ const attachmentMarkup = (thread: ThreadRecord) => {
         <img
           src="${escapeHtml(thread.attachment_url)}"
           alt="${escapeHtml(thread.attachment_name || 'Post attachment')}"
-          class="max-h-[28rem] w-full object-cover"
+          class="max-h-[28rem] w-full object-contain bg-stone-50"
           loading="lazy"
         />
       </div>
@@ -424,7 +424,7 @@ const communityShell = (state: CommunityState) => {
                   ></textarea>
                 </div>
 
-                <div class="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
+                <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-stretch">
                   <div>
                     <label class="mb-2 block text-sm font-semibold text-gray-700">Attachment (optional)</label>
                     <input
@@ -440,19 +440,21 @@ const communityShell = (state: CommunityState) => {
                     </p>
                   </div>
 
-                  <label class="flex items-start gap-3 rounded-2xl border border-gray-200 px-4 py-4 text-sm text-gray-700">
-                    <input
-                      name="isAnonymous"
-                      type="checkbox"
-                      class="mt-1 h-4 w-4 rounded border-gray-300"
-                    />
-                    <span>
-                      <span class="block font-semibold text-black">Post anonymously</span>
-                      <span class="mt-1 block leading-6">Use ${escapeHtml(
-                        state.profile.anonymous_handle,
-                      )} publicly.</span>
-                    </span>
-                  </label>
+                  <div class="flex lg:h-full lg:items-end">
+                    <label class="flex w-full items-start gap-3 rounded-2xl border border-gray-200 px-4 py-4 text-sm text-gray-700">
+                      <input
+                        name="isAnonymous"
+                        type="checkbox"
+                        class="mt-1 h-4 w-4 rounded border-gray-300"
+                      />
+                      <span>
+                        <span class="block font-semibold text-black">Post anonymously</span>
+                        <span class="mt-1 block leading-6">Use ${escapeHtml(
+                          state.profile.anonymous_handle,
+                        )} publicly.</span>
+                      </span>
+                    </label>
+                  </div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-3">
@@ -665,7 +667,13 @@ const postCard = (thread: ThreadRecord, state: CommunityState) => {
                   `
                   : `
                     <div class="mt-5 rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-4 text-sm text-gray-700">
-                      Sign in on <a href="/account" class="font-semibold underline">your TPJ account page</a> to reply.
+                      <p class="font-semibold text-black">Sign in or create an account to reply.</p>
+                      <a
+                        href="/account"
+                        class="mt-3 inline-flex items-center rounded-2xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+                      >
+                        Open account page
+                      </a>
                     </div>
                   `
               }
@@ -872,6 +880,14 @@ export const mountCommunityHub = async (root: HTMLElement) => {
         window.prompt('Copy this post link:', shareUrl);
       }
     } catch (error) {
+      if (
+        error instanceof Error &&
+        (error.name === 'AbortError' ||
+          error.message.toLowerCase().includes('cancellation'))
+      ) {
+        return;
+      }
+
       state.error = getCommunityErrorMessage(
         error,
         'Could not share this post.',
