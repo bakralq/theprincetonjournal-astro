@@ -4,6 +4,7 @@ import {
   ensureProfile,
   escapeHtml,
   getCommunityClient,
+  getCommunityErrorMessage,
   getCommunitySetupMarkup,
   getPushPermissionSummary,
   getUsernameCooldown,
@@ -612,8 +613,10 @@ export const mountAccountCenter = (root: HTMLElement) => {
       const permission = await getPushPermissionSummary();
       state.permissionMessage = permission.message;
     } catch (error) {
-      state.error =
-        error instanceof Error ? error.message : 'Could not load account tools.';
+      state.error = getCommunityErrorMessage(
+        error,
+        'Could not load account tools.',
+      );
     } finally {
       state.loading = false;
       render();
@@ -636,10 +639,10 @@ export const mountAccountCenter = (root: HTMLElement) => {
         const permission = await getPushPermissionSummary();
         state.permissionMessage = permission.message;
       } catch (error) {
-        state.error =
-          error instanceof Error
-            ? error.message
-            : 'Could not refresh your account tools.';
+        state.error = getCommunityErrorMessage(
+          error,
+          'Could not refresh your account tools.',
+        );
       } finally {
         state.loading = false;
         render();

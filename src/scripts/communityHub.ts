@@ -6,6 +6,7 @@ import {
   formatFileSize,
   formatRelativeTime,
   getActiveSession,
+  getCommunityErrorMessage,
   getCommunitySetupMarkup,
   hasCommunityBackend,
   membershipBadge,
@@ -650,8 +651,10 @@ export const mountCommunityHub = async (root: HTMLElement) => {
         await loadReplies(state.openThreadId);
       }
     } catch (error) {
-      state.error =
-        error instanceof Error ? error.message : 'Could not load the community.';
+      state.error = getCommunityErrorMessage(
+        error,
+        'Could not load the community.',
+      );
     } finally {
       state.loading = false;
       render();
@@ -706,10 +709,10 @@ export const mountCommunityHub = async (root: HTMLElement) => {
           try {
             await loadReplies(threadId);
           } catch (error) {
-            state.error =
-              error instanceof Error
-                ? error.message
-                : 'Could not load replies for this thread.';
+            state.error = getCommunityErrorMessage(
+              error,
+              'Could not load replies for this thread.',
+            );
           }
         }
 
@@ -820,8 +823,10 @@ export const mountCommunityHub = async (root: HTMLElement) => {
           await removeCommunityAttachment(attachment.path);
         }
 
-        state.error =
-          error instanceof Error ? error.message : 'Could not publish thread.';
+        state.error = getCommunityErrorMessage(
+          error,
+          'Could not publish thread.',
+        );
         render();
       }
     });

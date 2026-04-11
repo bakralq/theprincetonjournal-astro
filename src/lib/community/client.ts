@@ -192,6 +192,54 @@ export const membershipBadge = (tier?: string | null) => {
   )}</span>`;
 };
 
+export const getCommunityErrorMessage = (
+  error: unknown,
+  fallback: string,
+) => {
+  const message =
+    typeof error === 'object' &&
+    error !== null &&
+    'message' in error &&
+    typeof error.message === 'string'
+      ? error.message
+      : error instanceof Error
+        ? error.message
+        : '';
+  const details =
+    typeof error === 'object' &&
+    error !== null &&
+    'details' in error &&
+    typeof error.details === 'string'
+      ? error.details
+      : '';
+  const hint =
+    typeof error === 'object' &&
+    error !== null &&
+    'hint' in error &&
+    typeof error.hint === 'string'
+      ? error.hint
+      : '';
+
+  const combined = [message, details, hint].filter(Boolean).join(' ');
+  const migrationSignals = [
+    'username_changed_at',
+    'community_thread_votes',
+    'vote_count',
+    'attachment_name',
+    'attachment_path',
+    'attachment_url',
+    'attachment_type',
+    'attachment_size',
+    'community-uploads',
+  ];
+
+  if (migrationSignals.some((signal) => combined.includes(signal))) {
+    return 'The latest Supabase community migration still needs to be run. Open Supabase SQL Editor, run supabase/migrations/20260410_community_guardrails_and_uploads.sql, then redeploy.';
+  }
+
+  return combined || fallback;
+};
+
 export const getCommunitySetupMarkup = (title: string, body: string) =>
   `<div class="rounded-3xl border border-dashed border-gray-300 bg-gray-50 p-6 text-sm leading-7 text-gray-700">
     <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">Setup needed</p>
