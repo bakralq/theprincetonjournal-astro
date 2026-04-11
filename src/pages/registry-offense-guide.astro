@@ -1,0 +1,187 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { registryRecords } from '../data/registry';
+
+const offenseDescriptions = {
+  'AGGRAVATED KIDNAPPING WITH INTENT TO VIOLATE OR ABUSE THE VICTIM SEXUALLY':
+    'Generally refers to abducting or restraining a person with the intent to sexually violate or abuse that person, as defined by the cited statute.',
+  'AGGRAVATED SEXUAL ASSAULT':
+    'Generally refers to sexual assault with aggravating factors such as force, threats, a weapon, serious bodily injury, or a specially protected victim.',
+  'AGGRAVATED SEXUAL ASSAULT OF A CHILD':
+    'Generally refers to aggravated sexual assault involving a child victim under the cited law.',
+  'ATTEMPT TO COMMIT AGGRAVATED SEXUAL ASSAULT OF A CHILD':
+    'Generally refers to an alleged or convicted attempt to commit aggravated sexual assault against a child, even if the completed offense did not occur.',
+  'ATTEMPT TO COMMIT SEXUAL ASSAULT':
+    'Generally refers to an attempt to commit sexual assault under the cited jurisdiction.',
+  'ATTEMPT TO COMMIT SEXUAL ASSAULT OF A CHILD':
+    'Generally refers to an attempt to commit sexual assault against a child under the cited jurisdiction.',
+  'CERTAIN ACTIVITIES RELATING TO CHILD PORNOGRAPHY':
+    'Generally refers to conduct involving child sexual abuse material, which can include production, possession, distribution, or other prohibited handling depending on the statute.',
+  'CERTAIN ACTIVITIES RELATING TO MATERIAL INVOLVING SEXUAL EXPLOITATION OF MINORS':
+    'Generally refers to conduct involving material that sexually exploits minors under the cited jurisdiction.',
+  'CHILD MOLESTATION/2ND DEGREE':
+    'Generally refers to unlawful sexual conduct or contact with a child under a second-degree classification in the convicting jurisdiction.',
+  'CRIMINAL SEXUAL ABUSE/SEXUAL CONDUCT & VICTIM IS > 8 BUT < 17':
+    'Generally refers to prohibited sexual conduct involving a minor in the age range listed in the offense title.',
+  'CRIMINAL SOLICITATION OF A MINOR TO COMMIT ONLINE SOLICITATION OF A MINOR (SOLICITING A MINOR TO MEET)':
+    'Generally refers to asking, encouraging, or attempting to induce a minor to commit the online-solicitation offense named in the title.',
+  'INDECENCY WITH A CHILD BY CONTACT':
+    'Generally refers to sexual touching or contact with a child for sexual arousal or abuse under Texas law.',
+  'INDECENCY WITH A CHILD BY EXPOSURE':
+    'Generally refers to exposing oneself or sexual parts to a child for sexual arousal, abuse, or gratification under Texas law.',
+  'INDECENT LIBERTIES WITH A CHILD/FONDLING OR TOUCHING':
+    'Generally refers to fondling or sexual touching involving a child under the cited jurisdiction.',
+  'LEWD AND LASCIVIOUS ACTS INVOLVING CHILDREN/FORCE, VIOLENCE, DURESS, MENACE, OR FEAR OF IMMEDIATE AND UNLAWFUL BODILY INJURY':
+    'Generally refers to sexual acts involving a child where force, threats, or coercion are part of the offense.',
+  'LEWD AND LASCIVIOUS ACTS INVOLVING CHILDREN/VICTIM IS UNDER 14 YEARS OF AGE':
+    'Generally refers to lewd sexual acts involving a child under the age stated in the title.',
+  'LEWD OR INDECENT PROPOSALS OR ACTS AS TO CHILD UNDER 16 OR PERSON BELIEVED TO BE UNDER 16/LEWD OR INDECENT PROPOSAL':
+    'Generally refers to making a lewd or indecent sexual proposal to a child, or to someone believed to be a child, under the cited law.',
+  'ONLINE SOLICITATION OF A MINOR (COMMUNICATING OR DISTRIBUTING SEXUALLY EXPLICIT MATERIAL)':
+    'Generally refers to sending sexually explicit material or sexual communications to a minor online under the cited law.',
+  'ONLINE SOLICITATION OF A MINOR (SOLICITING A MINOR TO MEET)':
+    'Generally refers to using online communications to solicit or arrange an in-person meeting with a minor for unlawful sexual conduct.',
+  'POSSESSION OF CHILD PORNOGRAPHY':
+    'Generally refers to knowingly possessing child sexual abuse material under the cited law.',
+  'POSSESSION OR PROMOTION OF CHILD PORNOGRAPHY':
+    'Generally refers to possession, promotion, or distribution of child sexual abuse material depending on the cited statute.',
+  'PROHIBITED SEXUAL CONDUCT':
+    'Generally refers to a category of unlawful sexual conduct defined by the cited jurisdiction, often involving incest or other specifically prohibited relationships.',
+  'PROMOTION OF CHILD PORNOGRAPHY':
+    'Generally refers to distributing, promoting, advertising, or otherwise circulating child sexual abuse material.',
+  'RAPE BY FORCE OR FEAR':
+    'Generally refers to non-consensual sexual intercourse accomplished through force, threat, or fear under the cited jurisdiction.',
+  'REQUIRED TO REGISTER AS A CONDITION OF PAROLE FOR VIOLATION OF "CREDIT CARD OR DEBIT CARD ABUSE"':
+    'This label indicates a registration requirement tied to parole conditions in the cited record. It should be read carefully against the official record because the registration basis may not be obvious from the shorthand title alone.',
+  'SEXUAL ASSAULT':
+    'Generally refers to non-consensual sexual assault as defined by the cited jurisdiction.',
+  'SEXUAL ASSAULT OF A CHILD':
+    'Generally refers to sexual assault involving a child victim under the cited jurisdiction.',
+  'SEXUAL ASSAULT OF A CHILD/SECOND DEGREE/SEXUAL INTERCOURSE':
+    'Generally refers to child sexual assault involving sexual intercourse, with the severity classification coming from the convicting jurisdiction.',
+  'SEXUAL ASSAULT/THIRD DEGREE/SEXUAL INTERCOURSE AND WITHOUT CONSENT':
+    'Generally refers to sexual intercourse without consent, with the degree classification supplied by the convicting jurisdiction.',
+  'SEXUAL PERFORMANCE BY A CHILD':
+    'Generally refers to causing, employing, or permitting a child to engage in a sexual performance or sexual depiction.',
+  'TOUCHING, HANDLING, CHILD FOR LUSTFUL PURPOSES':
+    'Generally refers to sexual touching or handling of a child for a lustful or sexual purpose under the cited law.',
+  'TOUCHING, HANDLING, ETC, CHILD, MENTALLY DEFECTIVE OR INCAPACITATED PERSON OR PHYSICALLY HELPLESS PERSON':
+    'Generally refers to unlawful sexual touching involving a child or a person who is mentally incapacitated or physically helpless, depending on the cited law.',
+};
+
+const offenseEntries = Array.from(
+  new Map(
+    registryRecords
+      .flatMap((record) =>
+        (record.offenses || []).map((offense) => [
+          offense.offense,
+          {
+            label: offense.offense,
+            statutes: new Set([offense.statute].filter(Boolean)),
+          },
+        ])
+      )
+      .filter(([label]) => Boolean(label))
+  ).values()
+)
+  .map((entry) => ({
+    ...entry,
+    statutes: Array.from(entry.statutes).sort(),
+    summary:
+      offenseDescriptions[entry.label] ||
+      'Use the exact statute listed on the record for the controlling legal definition in that jurisdiction.',
+  }))
+  .sort((a, b) => a.label.localeCompare(b.label));
+
+const riskGuides = [
+  {
+    title: 'Low / Moderate / High',
+    body:
+      'These are risk labels shown on the public registry record. They are administrative labels from the official record, not a real-time TPJ judgment about current danger.',
+  },
+  {
+    title: 'Not reported',
+    body:
+      'This means the public-facing record does not show a risk level. It should not be treated as the same thing as low risk.',
+  },
+  {
+    title: 'Verified',
+    body:
+      'This generally means the registering agency reported the record as verified for the relevant reporting cycle shown in the official system.',
+  },
+  {
+    title: 'Reported information not verified',
+    body:
+      'This generally means information has been reported into the system, but the official record does not reflect a completed local verification status at that time.',
+  },
+  {
+    title: 'Relocation',
+    body:
+      'This generally means the public record reflects a move-related or transition status and should not be treated as a confirmed present residential address.',
+  },
+  {
+    title: 'Annually / Lifetime',
+    body:
+      'These labels describe the registration schedule or duration shown on the record, not a TPJ-created severity score.',
+  },
+];
+---
+
+<Layout
+  title="Registry Offense And Classification Guide | The Princeton Journal"
+  description="Plain-language guide to offense labels, statutes, and registry classifications shown on the Princeton registry page."
+  url="https://theprincetonjournal.com/registry-offense-guide"
+>
+  <main class="mx-auto max-w-5xl px-6 py-10">
+    <p class="text-sm font-medium uppercase tracking-wide text-gray-500">Registry Offense Guide</p>
+    <h1 class="mt-3 text-4xl font-bold tracking-tight">Offense And Classification Guide</h1>
+
+    <div class="mt-6 max-w-4xl space-y-5 text-base leading-7 text-gray-700">
+      <p>
+        This page gives a plain-language guide to the offense labels, statutes, and classification terms shown on the Princeton registry page.
+      </p>
+      <p>
+        It is not legal advice, and it is not a substitute for the exact legal text. The controlling definition is always the statute cited on the individual record in the jurisdiction where that conviction or registration basis came from.
+      </p>
+    </div>
+
+    <section class="mt-8 rounded-[2rem] border border-gray-200 bg-stone-50 p-6 sm:p-8">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">How to use this page</p>
+      <ul class="mt-4 list-disc space-y-3 pl-5 text-sm leading-7 text-gray-700">
+        <li>Use the offense label to understand the general category the record is pointing to.</li>
+        <li>Use the statute listed on the record for the exact legal definition.</li>
+        <li>Remember that Princeton registry records include Texas, federal, and out-of-state convictions, so wording can vary a lot by jurisdiction.</li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">Classification terms</p>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        {riskGuides.map((item) => (
+          <article class="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
+            <h2 class="text-lg font-bold tracking-tight text-black">{item.title}</h2>
+            <p class="mt-3 text-sm leading-7 text-gray-700">{item.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">Offense labels currently on the Princeton registry page</p>
+      <div class="mt-4 grid gap-4">
+        {offenseEntries.map((entry) => (
+          <article class="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
+            <h2 class="text-lg font-bold tracking-tight text-black">{entry.label}</h2>
+            <p class="mt-3 text-sm leading-7 text-gray-700">{entry.summary}</p>
+            <p class="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">Statutes shown on current Princeton records</p>
+            <div class="mt-3 flex flex-wrap gap-2 text-sm text-gray-700">
+              {entry.statutes.map((statute) => (
+                <span class="rounded-full border border-gray-200 bg-stone-50 px-3 py-1">{statute}</span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>

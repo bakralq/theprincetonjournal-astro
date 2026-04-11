@@ -1,13 +1,14 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
+import { getPostDateObject, getPostTimestamp } from '../lib/posts';
 
 export async function GET(context: { site?: URL }) {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
 
   const sortedPosts = posts.sort(
     (a, b) =>
-      new Date(`${b.data.date}T12:00:00`).getTime() -
-      new Date(`${a.data.date}T12:00:00`).getTime()
+      getPostTimestamp({ date: b.data.date, publishedAt: b.data.publishedAt }) -
+      getPostTimestamp({ date: a.data.date, publishedAt: a.data.publishedAt })
   );
 
   return rss({
@@ -17,7 +18,10 @@ export async function GET(context: { site?: URL }) {
     items: sortedPosts.map((post) => ({
       title: post.data.title,
       description: post.data.description,
-      pubDate: new Date(`${post.data.date}T12:00:00`),
+      pubDate: getPostDateObject({
+        date: post.data.date,
+        publishedAt: post.data.publishedAt,
+      }),
       link: `/posts/${post.id.replace(/\.md$/, '')}`,
     })),
     customData: `<language>en-us</language>`,

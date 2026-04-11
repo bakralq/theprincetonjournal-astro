@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
+import { formatPostDate, getPostTimestamp } from '../../lib/posts';
 
 const posts = await getCollection('posts', ({ data }) =>
   !data.draft && data.section === 'Princeton Governance'
@@ -9,17 +10,18 @@ const posts = await getCollection('posts', ({ data }) =>
 
 const sortedPosts = posts.sort(
   (a, b) =>
-    new Date(`${b.data.date}T12:00:00`).getTime() -
-    new Date(`${a.data.date}T12:00:00`).getTime()
+    getPostTimestamp({ date: b.data.date, publishedAt: b.data.publishedAt }) -
+    getPostTimestamp({ date: a.data.date, publishedAt: a.data.publishedAt })
 );
 
 const postsData = sortedPosts.map((post) => ({
   title: post.data.title,
   description: post.data.description,
   date: post.data.date,
+  publishedAt: post.data.publishedAt || null,
   image: post.data.image || null,
   href: `/posts/${post.id.replace(/\.md$/, '')}`,
-  content: post.body || ''
+  content: post.body || '',
 }));
 
 const uniqueDates = [
@@ -31,11 +33,7 @@ const uniqueDates = [
 );
 
 const formatDate = (date) =>
-  new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  formatPostDate({ date });
 
 const getReadingTime = (content) => {
   const wordCount = (content || '').trim().split(/\s+/).filter(Boolean).length;
@@ -97,6 +95,7 @@ const initialPosts = postsData.slice(0, 10);
           description={post.description}
           href={post.href}
           date={post.date}
+          publishedAt={post.publishedAt}
           image={post.image}
           readingTime={getReadingTime(post.content)}
           variant="horizontal"
@@ -143,12 +142,13 @@ const initialPosts = postsData.slice(0, 10);
   const resultsCount = document.getElementById('resultsCount');
   const noResultsMessage = document.getElementById('noResultsMessage');
 
-  function formatPrettyDate(date) {
-    return new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
+  function formatPrettyDate(date, publishedAt) {
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Chicago',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-    });
+    }).format(new Date(publishedAt || `${date}T12:00:00`));
   }
 
   function renderCards(pagePosts) {
@@ -174,7 +174,7 @@ const initialPosts = postsData.slice(0, 10);
             ` : ''}
 
             <div class="p-6 ${post.image ? 'sm:w-3/4' : 'w-full'}">
-<p class="text-sm text-gray-500">${formatPrettyDate(post.date)} • ${getReadingTime(post.content)} min read</p>
+<p class="text-sm text-gray-500">${formatPrettyDate(post.date, post.publishedAt)} • ${getReadingTime(post.content)} min read</p>
               <h2 class="mt-1 text-xl font-semibold">${post.title}</h2>
 <p class="mt-2 text-gray-600 text-sm">${truncateDescription(post.description, 140)}</p>
             </div>

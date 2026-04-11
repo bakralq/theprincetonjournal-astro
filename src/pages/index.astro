@@ -4,13 +4,14 @@ import Layout from '../layouts/Layout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import AdSlot from '../components/AdSlot.astro';
 import { cityCouncilMeetings } from '../data/cityCouncilTracker';
+import { formatPostDate, getPostTimestamp } from '../lib/posts';
 
 const posts = await getCollection('posts', ({ data }) => !data.draft);
 
 const sortedPosts = posts.sort(
   (a, b) =>
-    new Date(`${b.data.date}T12:00:00`).getTime() -
-    new Date(`${a.data.date}T12:00:00`).getTime()
+    getPostTimestamp({ date: b.data.date, publishedAt: b.data.publishedAt }) -
+    getPostTimestamp({ date: a.data.date, publishedAt: a.data.publishedAt })
 );
 const getReadingTime = (content) => {
   const wordCount = (content || '').trim().split(/\s+/).filter(Boolean).length;
@@ -108,10 +109,9 @@ const getMeetingStatusClasses = (status) =>
               </h1>
 
               <p class="mt-3 text-sm text-gray-500">
-                {new Date(`${topPost.data.date}T12:00:00`).toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric',
+                {formatPostDate({
+                  date: topPost.data.date,
+                  publishedAt: topPost.data.publishedAt,
                 })} • {getReadingTime(topPost.body)} min read
               </p>
 
@@ -197,17 +197,17 @@ const getMeetingStatusClasses = (status) =>
     />
 
     <section class="mt-16">
-<div class="flex items-center justify-between gap-2">
-  <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
-    Latest Princeton Governance
-  </h2>
-  <a
-    href="/princeton-governance"
-    class="text-sm font-medium text-gray-600 hover:text-black whitespace-nowrap shrink-0"
-  >
-    View all
-  </a>
-</div>
+      <div class="flex items-center justify-between gap-2">
+        <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
+          Latest Princeton Governance
+        </h2>
+        <a
+          href="/princeton-governance"
+          class="text-sm font-medium text-gray-600 hover:text-black whitespace-nowrap shrink-0"
+        >
+          View all
+        </a>
+      </div>
       <div class="mt-6 grid gap-6 md:grid-cols-3">
         {princetonGovernancePosts.map((post) => (
           <ArticleCard
@@ -215,8 +215,9 @@ const getMeetingStatusClasses = (status) =>
             description={post.data.description}
             href={`/posts/${post.id.replace(/\.md$/, '')}`}
             date={post.data.date}
+            publishedAt={post.data.publishedAt}
             image={post.data.image}
-  readingTime={getReadingTime(post.body)}
+            readingTime={getReadingTime(post.body)}
             variant="stacked"
           />
         ))}
@@ -224,17 +225,17 @@ const getMeetingStatusClasses = (status) =>
     </section>
 
     <section class="mt-16">
-<div class="flex items-center justify-between gap-2">
-  <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
-    Latest U.S. News
-  </h2>
-  <a
-    href="/us-news"
-    class="text-sm font-medium text-gray-600 hover:text-black whitespace-nowrap shrink-0"
-  >
-    View all
-  </a>
-</div>
+      <div class="flex items-center justify-between gap-2">
+        <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
+          Latest U.S. News
+        </h2>
+        <a
+          href="/us-news"
+          class="text-sm font-medium text-gray-600 hover:text-black whitespace-nowrap shrink-0"
+        >
+          View all
+        </a>
+      </div>
       <div class="mt-6 grid gap-6 md:grid-cols-3">
         {usNewsPosts.map((post) => (
           <ArticleCard
@@ -242,8 +243,9 @@ const getMeetingStatusClasses = (status) =>
             description={post.data.description}
             href={`/posts/${post.id.replace(/\.md$/, '')}`}
             date={post.data.date}
+            publishedAt={post.data.publishedAt}
             image={post.data.image}
-  readingTime={getReadingTime(post.body)}
+            readingTime={getReadingTime(post.body)}
             variant="stacked"
           />
         ))}

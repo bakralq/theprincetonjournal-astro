@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getPostDateObject, getPostTimestamp } from '../../lib/posts';
 
 const SITE_URL = 'https://theprincetonjournal.com';
 
@@ -16,7 +17,6 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-// --- Reading Time Calculation ---
 const rawContent = post.body || '';
 const wordCount = rawContent.split(/\s+/).filter(Boolean).length;
 const readingTime = Math.max(1, Math.ceil(wordCount / 200));
@@ -28,8 +28,8 @@ const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 
 const sortedPosts = allPosts.sort(
   (a, b) =>
-    new Date(`${b.data.date}T12:00:00`).getTime() -
-    new Date(`${a.data.date}T12:00:00`).getTime()
+    getPostTimestamp({ date: b.data.date, publishedAt: b.data.publishedAt }) -
+    getPostTimestamp({ date: a.data.date, publishedAt: a.data.publishedAt })
 );
 
 const currentIndex = sortedPosts.findIndex(
@@ -54,33 +54,40 @@ const nextPostData = nextPost
       title: nextPost.data.title,
       href: `/posts/${nextPost.id.replace(/\.md$/, '')}`,
       date: nextPost.data.date,
+      publishedAt: nextPost.data.publishedAt || null,
       image: nextPost.data.image || null,
-      readingTime: getReadingTime(nextPost.body || '')
+      readingTime: getReadingTime(nextPost.body || ''),
     }
   : null;
 
 const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "NewsArticle",
-  "headline": post.data.title,
-  "description": post.data.description,
-  "datePublished": post.data.date,
-  "dateModified": post.data.date,
-  "author": {
-    "@type": "Person",
-    "name": post.data.author
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: getPostDateObject({
+    date: post.data.date,
+    publishedAt: post.data.publishedAt,
+  }).toISOString(),
+  dateModified: getPostDateObject({
+    date: post.data.date,
+    publishedAt: post.data.publishedAt,
+  }).toISOString(),
+  author: {
+    '@type': 'Person',
+    name: post.data.author,
   },
-  "publisher": {
-    "@type": "Organization",
-    "name": "The Princeton Journal",
-    "url": SITE_URL
+  publisher: {
+    '@type': 'Organization',
+    name: 'The Princeton Journal',
+    url: SITE_URL,
   },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": articleUrl
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': articleUrl,
   },
-  "url": articleUrl,
-  "articleSection": post.data.section
+  url: articleUrl,
+  articleSection: post.data.section,
 };
 ---
 
@@ -92,10 +99,11 @@ const articleSchema = {
   section={post.data.section}
   author={post.data.author}
   date={post.data.date}
+  publishedAt={post.data.publishedAt}
   description={post.data.description}
   url={articleUrl}
   image={post.data.image}
-imageCaption={post.data.imageCaption}
+  imageCaption={post.data.imageCaption}
   preview={post.data.preview}
   readingTime={readingTime}
   nextPost={nextPostData}

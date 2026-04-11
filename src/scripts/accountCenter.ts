@@ -97,7 +97,7 @@ const accountShell = (state: AccountState) => {
               ? `
                 <form data-auth-form="signin" class="mt-6 space-y-4">
                   <div>
-                    <label class="mb-2 block text-sm font-semibold text-gray-700">Email</label>
+                    <label class="mb-2 block text-sm font-semibold text-gray-700">Email address (private)</label>
                     <input
                       name="email"
                       type="email"
@@ -106,6 +106,9 @@ const accountShell = (state: AccountState) => {
                       class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
                       placeholder="you@example.com"
                     />
+                    <p class="mt-2 text-xs leading-6 text-gray-500">
+                      Your email stays private and is never shown publicly to readers. It is only used for account access, confirmations, and direct TPJ account communication.
+                    </p>
                   </div>
                   <div>
                     <label class="mb-2 block text-sm font-semibold text-gray-700">Password</label>
@@ -141,7 +144,7 @@ const accountShell = (state: AccountState) => {
                     />
                   </div>
                   <div>
-                    <label class="mb-2 block text-sm font-semibold text-gray-700">Email</label>
+                    <label class="mb-2 block text-sm font-semibold text-gray-700">Email address (private)</label>
                     <input
                       name="email"
                       type="email"
@@ -150,6 +153,9 @@ const accountShell = (state: AccountState) => {
                       class="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black"
                       placeholder="you@example.com"
                     />
+                    <p class="mt-2 text-xs leading-6 text-gray-500">
+                      Your email stays private and is never shown publicly to readers. It is only used for account access, confirmations, and direct TPJ account communication.
+                    </p>
                   </div>
                   <div>
                     <label class="mb-2 block text-sm font-semibold text-gray-700">Password</label>

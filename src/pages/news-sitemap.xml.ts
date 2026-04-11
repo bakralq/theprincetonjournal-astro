@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { getPostDateObject, getPostTimestamp } from '../lib/posts';
 
 export async function GET() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -8,10 +9,19 @@ export async function GET() {
   const twoDaysAgo = new Date(now);
   twoDaysAgo.setDate(now.getDate() - 2);
 
-  const recentPosts = posts.filter((post) => {
-    const postDate = new Date(post.data.date);
-    return postDate >= twoDaysAgo;
-  });
+  const recentPosts = posts
+    .sort(
+      (a, b) =>
+        getPostTimestamp({ date: b.data.date, publishedAt: b.data.publishedAt }) -
+        getPostTimestamp({ date: a.data.date, publishedAt: a.data.publishedAt })
+    )
+    .filter((post) => {
+      const postDate = getPostDateObject({
+        date: post.data.date,
+        publishedAt: post.data.publishedAt,
+      });
+      return postDate >= twoDaysAgo;
+    });
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -19,7 +29,10 @@ export async function GET() {
     ${recentPosts
       .map((post) => {
         const url = `https://theprincetonjournal.com/posts/${post.id.replace(/\\.md$/, '')}`;
-        const pubDate = new Date(post.data.date).toISOString();
+        const pubDate = getPostDateObject({
+          date: post.data.date,
+          publishedAt: post.data.publishedAt,
+        }).toISOString();
 
         return `
         <url>

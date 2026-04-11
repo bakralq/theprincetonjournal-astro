@@ -4,7 +4,7 @@ import { registryRecords } from '../data/registry';
 
 const registryData = JSON.stringify(registryRecords);
 const officialRegistryZipUrl = 'https://sor.dps.texas.gov/Search/Default/SearchByZipCode';
-const registryLastReviewed = 'April 8, 2026';
+const registryLastReviewed = 'April 11, 2026';
 ---
 
 <Layout
@@ -59,18 +59,18 @@ const registryLastReviewed = 'April 8, 2026';
         <p class="registry-eyebrow">Public Records</p>
         <h1 class="registry-title">Princeton Sex Offender Registry Lookup</h1>
         <p class="registry-summary">
-          Search records, filter by status or risk level, and explore the Princeton map. Select a marker to open the full record details.
+          Search offenders, filter by status or risk level, and explore the Princeton map. Select a marker to open the full offender details.
         </p>
         <p class="registry-summary registry-summary-secondary">
-          Need help reading status terms or understanding how public registry data works?
-          <a href="/registry-data-guide">Read the quick guide</a>.
+          Need help reading offense labels, statutes, or status terms?
+          <a href="/registry-offense-guide">Read the offense and classification guide</a>.
         </p>
       </div>
     </section>
 
     <section class="registry-toolbar" aria-label="Registry search controls">
       <label class="registry-search">
-        <span class="sr-only">Search records</span>
+        <span class="sr-only">Search offenders</span>
         <input
           id="registry-search"
           type="search"
@@ -115,42 +115,42 @@ const registryLastReviewed = 'April 8, 2026';
             <p class="registry-panel-label">Map</p>
             <h2>Princeton overview</h2>
           </div>
-          <p id="registry-results-count" class="registry-results-count">0 records</p>
+          <p id="registry-results-count" class="registry-results-count">{registryRecords.length} offenders</p>
         </div>
 
         <div class="registry-map-shell">
           <div id="registry-live-map" class="registry-live-map" aria-label="Princeton map"></div>
           <div id="registry-map-empty" class="registry-map-empty">
-            No mapped records loaded yet. Add `location.lat` and `location.lng` values in the registry data file to place markers on the Princeton map.
+            No mapped offenders loaded yet. Add `location.lat` and `location.lng` values in the registry data file to place markers on the Princeton map.
           </div>
         </div>
 
         <p class="registry-map-note">
-          The map centers on Princeton, Texas and automatically plots any records that include latitude and longitude values.
-          Records marked as relocation are intentionally left off the map when the official registry does not provide a
+          The map centers on Princeton, Texas and automatically plots any offenders that include latitude and longitude values.
+          Offenders marked as relocation are intentionally left off the map when the official registry does not provide a
           current confirmed mappable address.
         </p>
       </div>
 
       <section class="registry-list-panel">
         <div class="registry-panel-heading">
-          <p class="registry-panel-label">Records</p>
+          <p class="registry-panel-label">Offenders</p>
           <h2>Search results</h2>
         </div>
         <div id="registry-list" class="registry-list"></div>
         <div id="registry-list-empty" class="registry-empty-state">
-          No matching records found.
+          No matching offenders found.
         </div>
       </section>
 
       <aside class="registry-detail-panel">
         <div class="registry-panel-heading">
           <p class="registry-panel-label">Details</p>
-          <h2 id="registry-detail-title">Select a record</h2>
+          <h2 id="registry-detail-title">Select an offender</h2>
         </div>
 
         <div id="registry-detail-empty" class="registry-empty-state">
-          Click a marker on the map to open that record here.
+          Click a marker on the map or a result card to open that offender here.
         </div>
 
         <div id="registry-detail" class="registry-detail" hidden>
@@ -212,6 +212,10 @@ const registryLastReviewed = 'April 8, 2026';
             <div class="registry-detail-section">
               <span class="registry-detail-label">Offenses</span>
               <div id="detail-offenses" class="registry-detail-stack"></div>
+              <p class="registry-offense-guide-link">
+                Want to see what an offense label, statute, or status term means?
+                <a href="/registry-offense-guide">Read the offense and classification guide</a>.
+              </p>
             </div>
 
             <div class="registry-detail-section">
@@ -236,35 +240,47 @@ const registryLastReviewed = 'April 8, 2026';
 
     <section class="registry-footer" aria-label="Registry information and legal resources">
       <div class="registry-resource-grid">
-        <article class="registry-resource-card">
-          <p class="registry-panel-label">Guide</p>
-          <h2>How To Understand This Data</h2>
-          <p>
-            Learn what “verified,” “reported not verified,” and “relocation” mean, how state-provided records update,
-            and why registry inclusion does not equal a current threat assessment.
-          </p>
-          <a href="/registry-data-guide">Read the guide</a>
-        </article>
+        <details class="registry-resource-card">
+          <summary class="registry-resource-summary">
+            <span class="registry-panel-label">Guide</span>
+            <span>How To Understand This Data</span>
+          </summary>
+          <div class="registry-resource-body">
+            <p>
+              Learn what “verified,” “reported not verified,” and “relocation” mean, and use the offense guide when you want plain-language help with statutes and offense labels.
+            </p>
+            <div class="registry-banner-links">
+              <a href="/registry-data-guide">Read the quick guide</a>
+              <a href="/registry-offense-guide">Read the offense and classification guide</a>
+            </div>
+          </div>
+        </details>
 
-        <article class="registry-resource-card">
-          <p class="registry-panel-label">Legal</p>
-          <h2>Registry Disclaimer</h2>
-          <p>
-            Review the registry-specific legal notice covering source attribution, accuracy limits, misuse
-            restrictions, and why the official Texas DPS registry remains the authoritative source.
-          </p>
-          <a href="/registry-disclaimer">Read the disclaimer</a>
-        </article>
+        <details class="registry-resource-card">
+          <summary class="registry-resource-summary">
+            <span class="registry-panel-label">Legal</span>
+            <span>Registry Disclaimer</span>
+          </summary>
+          <div class="registry-resource-body">
+            <p>
+              Review the registry-specific legal notice covering source attribution, accuracy limits, misuse restrictions, and why the official Texas DPS registry remains the authoritative source.
+            </p>
+            <a href="/registry-disclaimer">Read the disclaimer</a>
+          </div>
+        </details>
 
-        <article class="registry-resource-card">
-          <p class="registry-panel-label">Support</p>
-          <h2>Report A Correction Or Concern</h2>
-          <p>
-            If you believe this page displays a mismatched image, an issue with public registry data presentation, a
-            removal concern, or another issue, use the contact page and include the SID and details.
-          </p>
-          <a href="/contact">Go to contact page</a>
-        </article>
+        <details class="registry-resource-card">
+          <summary class="registry-resource-summary">
+            <span class="registry-panel-label">Support</span>
+            <span>Report A Correction Or Concern</span>
+          </summary>
+          <div class="registry-resource-body">
+            <p>
+              If you believe this page displays a mismatched image, an issue with public registry data presentation, a removal concern, or another issue, use the contact page and include the SID and details.
+            </p>
+            <a href="/contact">Go to contact page</a>
+          </div>
+        </details>
       </div>
 
       <div class="registry-meta-footer">
@@ -686,10 +702,10 @@ const registryLastReviewed = 'April 8, 2026';
       } else if (detailPanel && detailEmpty && detailTitle) {
         detailPanel.hidden = true;
         detailEmpty.hidden = false;
-        detailTitle.textContent = 'Select a record';
+        detailTitle.textContent = 'Select an offender';
       }
 
-      resultsCount.textContent = `${filtered.length} ${filtered.length === 1 ? 'record' : 'records'}`;
+      resultsCount.textContent = `${filtered.length} ${filtered.length === 1 ? 'offender' : 'offenders'}`;
 
       list.innerHTML = '';
       filtered.forEach((record) => {

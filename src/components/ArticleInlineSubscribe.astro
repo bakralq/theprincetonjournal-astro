@@ -1,0 +1,57 @@
+<aside class="article-inline-subscribe" data-inline-subscribe-card>
+  <div class="article-inline-subscribe-copy">
+    <p class="article-inline-subscribe-kicker">Get TPJ by email</p>
+    <p class="article-inline-subscribe-title">
+      Get major Princeton updates in your inbox.
+    </p>
+    <p class="article-inline-subscribe-text">
+      Major reporting, city moves, and the updates people here actually need.
+    </p>
+  </div>
+
+  <form
+    name="newsletter-subscribe"
+    method="POST"
+    action="/subscribe-thank-you"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    class="article-inline-subscribe-form"
+    data-inline-subscribe-form
+  >
+    <input type="hidden" name="form-name" value="newsletter-subscribe" />
+
+    <p class="hidden">
+      <label>
+        Don’t fill this out if you’re human:
+        <input name="bot-field" />
+      </label>
+    </p>
+
+    <input
+      type="email"
+      name="email"
+      required
+      placeholder="you@example.com"
+      class="article-inline-subscribe-input"
+      aria-label="Email address"
+    />
+
+    <button
+      type="submit"
+      class="article-inline-subscribe-button"
+    >
+      Subscribe
+    </button>
+  </form>
+
+  <p class="article-inline-subscribe-note">
+    Email updates only. Unsubscribe anytime.
+  </p>
+
+  <p
+    class="article-inline-subscribe-success hidden"
+    data-inline-subscribe-success
+  >
+    You’re on the list.
+  </p>
+</aside>
