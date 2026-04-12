@@ -1,6 +1,6 @@
 ---
-title: "Princeton Keeps Losing Key People. Residents Deserve Answers."
-description: "The city attorney's withdrawal, the city manager's resignation, a vacant council seat, and additional reported staff turnover point to a pattern of instability Princeton residents deserve answers about."
+title: "Inside the Legal Fight Over PD 46 and Princeton’s City Attorney Resignation"
+description: "The city attorney’s resignation, the fight over PD 46, and competing accounts from inside City Hall point to a deeper breakdown over legal judgment, process, and trust in Princeton."
 date: "2026-04-12"
 publishedAt: "2026-04-12T06:29:00-05:00"
 section: "Princeton Governance"
@@ -19,18 +19,18 @@ That is why this matters. On April 2, City Attorney Grant Lowry of Boyle &amp; L
 
 - Princeton’s city attorney withdrew from representation on April 2, effective immediately.
 - Council’s April 13 agenda includes discussion involving an interim city attorney while litigation remains active.
-- The city manager also resigned in December 2025.
-- Place 4 is vacant after Ryan Gerfers resigned in January for health reasons.
-- The Princeton Journal has also learned of additional turnover across planning, public works, inspections, finance, and administrative support.
-- The public record does not prove illegality. It does show instability.
+- The resignation followed a broader fight over legal services, PD 46, and how concerns inside City Hall were being handled.
+- According to Councilmember Cristina Todd, she had raised concerns about PD 46 earlier, but those concerns were initially written off before the matter was later revisited.
+- The mayor’s own public posts show he later pushed to bring PD 46 back to council, arguing it had not been processed correctly and that material details had not been fully disclosed at the time of the vote.
+- This comes less than four months after Princeton’s city manager resigned and amid broader turnover across city government.
 
-The dominant pattern is simple: major departures are stacking up.
+The dominant pattern is no longer just turnover. It is turnover colliding with deeper fights over legal judgment, process, and trust inside City Hall.
 
 First the city manager. Now the city attorney. Before that, Place 4 became vacant after Councilmember Ryan Gerfers stepped down. Gerfers’ resignation should be understood on its own terms. He cited serious health concerns and said he could no longer serve at full capacity. That is different from the broader internal conflict story. But it still left the city with another gap in continuity.
 
-The city attorney’s withdrawal letter cited Rule 1.16(b)(1), (4), and (7) of the Texas Disciplinary Rules of Professional Conduct. That language matters. It does not automatically prove illegal conduct. But it does show the relationship had broken down enough for the firm to walk away.
+The city attorney’s withdrawal letter cited Rule 1.16(b)(1), (4), and (7) of the Texas Disciplinary Rules of Professional Conduct. That language matters. It does not automatically prove illegal conduct, but it does show the city lost its legal counsel in the middle of active city matters.
 
-The mayor’s own public posts add context. In screenshots he posted, he showed a March 17 request for senior legal counsel to support council and boards. He also showed a March 30 email saying he intended to place an item on the next council agenda to discuss legal services and the possibility of moving to a different law firm. In another March 30 communication, he said he wanted PD 46 returned to council because he believed it had not been processed correctly and that material details had not been fully disclosed when council voted on it. Later, he publicly said neither the city nor council had asked the firm to do anything illegal or immoral, and argued the issue was accountability and the need for more experienced legal guidance.
+The mayor’s own public posts add context, but they are not the full context. According to Councilmember Cristina Todd, she had repeatedly raised concerns about PD 46 and pushed for the city to revisit the matter. Todd said staff took those concerns to legal counsel, and legal later came back saying the issue was fine and did not need to return to council. She also said Mayor Eugene Escobar Jr. had been told she was wrong. According to Todd, when the mayor asked legal counsel to identify the laws proving her concerns were unfounded, they were unable to clearly do so. Todd said she then asked the mayor to meet with her directly so she could walk him through the issue herself. According to her account, that meeting changed the direction of the dispute. In the mayor’s later public screenshots, he showed a March 30 communication stating that he wanted PD 46 returned to council because he believed it had not been processed correctly and that material details had not been fully disclosed at the time of the council vote. Taken together, those accounts suggest the issue was raised earlier, initially written off, and only escalated into a broader fight over legal judgment, process, and accountability after continued pressure and direct review. Todd said the situation also highlights a broader issue inside local government, that elected officials are often told to defer to experts, but that this case shows the importance of asking questions and working collaboratively to ensure decisions are fully vetted. She added that one voice can be dismissed, but when multiple voices come together, those concerns are harder to ignore.
 
 <figure>
   <img src="/images/princeton-mashburn-city-hall.jpg" alt="Mashburn inside Princeton City Hall" />
@@ -39,7 +39,7 @@ The mayor’s own public posts add context. In screenshots he posted, he showed 
   </figcaption>
 </figure>
 
-That is what makes this bigger than one resignation. This was not a quiet personnel change. It came after visible friction over legal services, after disputes over agenda control and controversial city matters, and while the city is still dealing with active lawsuits. That is not normal churn. That is instability at the top of government.
+That broader context is what makes this bigger than one resignation. This was not a quiet personnel change. It came after visible friction over legal services, after disputes over agenda control and controversial city matters, and while the city is still dealing with active lawsuits. That is not normal churn. That is instability at the top of government.
 
 And it does not appear confined to the top. The Princeton Journal has learned of additional recent turnover affecting other parts of city government, including planning and zoning, public works, inspections, finance, and administrative support. According to information provided to the Journal, recent departures have included the planning and zoning administrator, planner, planning assistant, public works director, inspection leadership, public works support staff, finance staff, the assistant city manager, and the interim city manager. Not every one of those departures has yet been fully documented in the public record by date. Even so, the broader pattern is becoming difficult to ignore, especially in a city already described by insiders as understaffed.
 
