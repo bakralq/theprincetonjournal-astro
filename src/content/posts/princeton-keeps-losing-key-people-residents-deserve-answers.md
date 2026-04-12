@@ -6,7 +6,6 @@ publishedAt: "2026-04-12T06:29:00-05:00"
 section: "Princeton Governance"
 author: "Christian J. Remington, Editor"
 image: "/images/princeton-city-hall-instability.png"
-imageCaption: "Princeton City Hall."
 draft: false
 ---
 
