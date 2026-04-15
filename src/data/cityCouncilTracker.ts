@@ -102,22 +102,22 @@ const april13Roster: CouncilMemberAttendance[] = [
     name: 'Eugene Escobar Jr.',
     seat: 'Mayor',
     role: 'Mayor',
-    status: 'upcoming',
+    status: 'present',
   },
   {
     name: 'Terrance Johnson',
     seat: 'Place 1',
-    status: 'upcoming',
+    status: 'present',
   },
   {
     name: 'Cristina Todd',
     seat: 'Place 2',
-    status: 'upcoming',
+    status: 'present',
   },
   {
     name: 'Bryan Washington',
     seat: 'Place 3',
-    status: 'upcoming',
+    status: 'absent',
   },
   {
     name: 'Vacant',
@@ -127,17 +127,17 @@ const april13Roster: CouncilMemberAttendance[] = [
   {
     name: 'Steve Deffibaugh',
     seat: 'Place 5',
-    status: 'upcoming',
+    status: 'present',
   },
   {
     name: 'Ben Long',
     seat: 'Place 6',
-    status: 'upcoming',
+    status: 'present',
   },
   {
     name: 'Carolyn David-Graves',
     seat: 'Place 7',
-    status: 'upcoming',
+    status: 'present',
   },
 ];
 
@@ -239,6 +239,89 @@ const createMarch23UnconfirmedAction = (): CouncilVoteRecord[] =>
       role: member.role,
       status: 'not-confirmed',
       note: 'Final result for this seat has not been fully confirmed in the tracker yet.',
+    };
+  });
+
+const createApril13FiveZeroApproval = (): CouncilVoteRecord[] =>
+  april13Roster.map((member) => {
+    if (member.status === 'vacant') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'vacant',
+      };
+    }
+
+    if (member.seat === 'Mayor') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'not-voting',
+      };
+    }
+
+    if (member.seat === 'Place 3') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'absent',
+      };
+    }
+
+    return {
+      name: member.name,
+      seat: member.seat,
+      role: member.role,
+      status: 'yes',
+    };
+  });
+
+const createApril13ThreeTwoApproval = (): CouncilVoteRecord[] =>
+  april13Roster.map((member) => {
+    if (member.status === 'vacant') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'vacant',
+      };
+    }
+
+    if (member.seat === 'Mayor') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'not-voting',
+      };
+    }
+
+    if (member.seat === 'Place 3') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'absent',
+      };
+    }
+
+    if (member.seat === 'Place 1' || member.seat === 'Place 2') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'no',
+      };
+    }
+
+    return {
+      name: member.name,
+      seat: member.seat,
+      role: member.role,
+      status: 'yes',
     };
   });
 
@@ -1121,27 +1204,27 @@ const april13AgendaItems: CouncilAgendaItem[] = [
       'Discussion regarding proposed enhancements to the current City of Princeton Sex Offender Ordinance',
     importance: 'high',
     summary:
-      'Council is set to discuss possible changes to Princeton’s sex offender ordinance, but the posted agenda does not include the amendment language yet.',
+      'This work-session item was posted for April 13, but it was not actually discussed after council moved into closed session instead.',
     watchReason:
       'This is a high-interest public safety item because any direction given here could shape future local restrictions and enforcement.',
     explainer:
-      'This is a discussion item rather than a final ordinance vote. Based on the agenda title and the site’s existing reporting, council appears poised to talk about tightening the city’s current rules, likely around where registered offenders can live or what local enforcement tools the city can use. The biggest thing to watch is whether council gives staff a clear path to bring back a specific ordinance, and how city leaders describe the legal limits under Texas law.',
+      'Based on the user-provided meeting notes, council did not take up the posted work-session discussions on April 13 and later future-agenda requests referenced the workshop items as tabled. That means this public-safety topic stayed in the pipeline rather than getting a real public discussion that night.',
     voteMode: 'discussion',
-    voteHeadline: 'No final vote is scheduled on this agenda item.',
+    voteHeadline: 'Listed for work session, but not discussed on April 13.',
     voteNote:
-      'Because this sits in the work session, the practical signal is whether council moves the idea toward a later ordinance for adoption.',
-    outcomePositiveLabel: 'If council moves it forward',
+      'User-provided meeting notes indicate the posted work-session items were tabled after council moved into closed session instead of taking up the workshop discussions.',
+    outcomePositiveLabel: 'If it returns later',
     outcomePositive:
-      'Staff could return with a drafted ordinance or amendment package for a future meeting, giving residents a clearer look at the exact restrictions under consideration.',
-    outcomeNegativeLabel: 'If momentum stalls',
+      'Council could come back with a real workshop discussion or drafted ordinance changes at a later meeting.',
+    outcomeNegativeLabel: 'Because it was tabled',
     outcomeNegative:
-      'The city may leave the current ordinance in place for now, and public pressure would likely continue until a more concrete proposal appears.',
+      'Residents did not get a public April 13 discussion on the ordinance changes that night.',
     pros: [
       'Could strengthen local protections or enforcement in areas residents are already focused on.',
       'Forces council to explain what the city legally can and cannot do.',
     ],
     cons: [
-      'The agenda does not show the actual amendment text yet, which limits public review before the meeting.',
+      'No public workshop discussion happened despite the item being posted on the agenda.',
       'Cities can only push so far before state law and constitutional limits narrow their options.',
     ],
     relatedCoverage: {
@@ -1158,27 +1241,27 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     title: 'Discussion regarding creation of historical preservation committee',
     importance: 'medium',
     summary:
-      'Council will discuss whether Princeton should create a historical preservation committee.',
+      'This work-session item was posted for April 13, but it was not actually discussed after council moved into closed session instead.',
     watchReason:
       'It could become the city’s first formal structure for identifying historic assets and advising on preservation policy.',
     explainer:
-      'This appears to be an early governance conversation about whether Princeton wants a dedicated body focused on preserving historic buildings, sites, or community identity. A committee would not automatically create hard protections on its own, but it could be the first institutional step toward inventories, recommendations, preservation incentives, or future design standards.',
+      'The agenda posted this as an early governance discussion about creating a historical preservation committee, but the user-provided meeting notes indicate the work-session items were not taken up that night. So the key public takeaway is not a new policy direction, but that this idea remains unresolved and could return later.',
     voteMode: 'discussion',
-    voteHeadline: 'No final vote is scheduled on this agenda item.',
+    voteHeadline: 'Listed for work session, but not discussed on April 13.',
     voteNote:
-      'Watch for whether council wants staff to define the committee’s mission, powers, and membership for a future vote.',
-    outcomePositiveLabel: 'If council moves it forward',
+      'User-provided meeting notes indicate the posted work-session items were tabled rather than discussed during the workshop portion.',
+    outcomePositiveLabel: 'If it returns later',
     outcomePositive:
-      'Princeton could begin building a preservation framework before redevelopment pressure erases older places or local history.',
-    outcomeNegativeLabel: 'If it does not advance',
+      'Princeton could still begin building a preservation framework before redevelopment pressure erases older places or local history.',
+    outcomeNegativeLabel: 'Because it was tabled',
     outcomeNegative:
-      'Historic preservation would likely remain informal, with no standing city body to review or champion it.',
+      'Historic preservation remained an open question without a public April 13 discussion to move it forward.',
     pros: [
       'Could help the city document and protect places that matter before growth changes them.',
       'Creates a more formal public process around preservation decisions.',
     ],
     cons: [
-      'New committees can add process and staff workload before their role is fully defined.',
+      'No public workshop discussion happened despite the item being posted on the agenda.',
       'If the committee lacks clear authority, it could raise expectations without producing much change.',
     ],
   },
@@ -1190,28 +1273,63 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     title: 'Discussion regarding short-term rentals',
     importance: 'high',
     summary:
-      'Council is opening a policy discussion on short-term rentals such as Airbnb-style properties.',
+      'This work-session item was posted for April 13, but it was not actually discussed after council moved into closed session instead.',
     watchReason:
       'Short-term rental rules can affect neighborhoods, property owners, enforcement workload, and future land-use policy.',
     explainer:
-      'The agenda suggests Princeton is entering an early-stage conversation on whether and how to regulate short-term rentals. Cities usually use these discussions to weigh registration requirements, safety rules, occupancy limits, parking concerns, nuisance enforcement, and where short-term rentals should be allowed. Even without a vote on April 13, this is a meaningful signal that council is considering a formal policy response.',
+      'The agenda signaled an early-stage conversation on short-term rentals, but the user-provided meeting notes indicate the posted workshop items were not taken up and were later referenced as tabled. That leaves the issue alive without giving residents the public discussion the agenda seemed to promise.',
     voteMode: 'discussion',
-    voteHeadline: 'No final vote is scheduled on this agenda item.',
+    voteHeadline: 'Listed for work session, but not discussed on April 13.',
     voteNote:
-      'The main thing to watch is whether council asks staff to draft options or begins steering toward tighter rules.',
-    outcomePositiveLabel: 'If council moves it toward regulation',
+      'User-provided meeting notes indicate the posted work-session items were tabled rather than discussed during the workshop portion.',
+    outcomePositiveLabel: 'If it returns later',
     outcomePositive:
-      'Residents and property owners would likely see a clearer ruleset later, including what is allowed, where, and how violations would be handled.',
-    outcomeNegativeLabel: 'If the issue is left unresolved',
+      'Residents and property owners could still see a clearer ruleset later, including what is allowed, where, and how violations would be handled.',
+    outcomeNegativeLabel: 'Because it was tabled',
     outcomeNegative:
-      'Short-term rental activity may continue without a clear citywide framework, leaving disputes to ad hoc enforcement or future complaints.',
+      'Short-term rental policy stayed unresolved without a public April 13 discussion.',
     pros: [
       'A formal policy can reduce ambiguity for both neighbors and property owners.',
       'Lets council address noise, parking, or safety concerns before they spread.',
     ],
     cons: [
+      'No public workshop discussion happened despite the item being posted on the agenda.',
       'New limits could frustrate owners who rely on short-term rental income.',
       'Enforcement can be difficult if the city adopts rules without enough staffing or clarity.',
+    ],
+  },
+  {
+    code: 'I1',
+    itemNumber: 'Executive session action',
+    slug: 'interim-legal-counsel-agreement',
+    category: 'Action Pertaining to Executive Session',
+    title:
+      'Action authorizing the mayor to enter into an interim legal-services agreement after the city attorney resignation',
+    importance: 'high',
+    summary:
+      'Council approved 5-0 an executive-session-related action authorizing the mayor to move forward with an interim legal-services agreement, based on the user-provided meeting notes.',
+    watchReason:
+      'Who advises the city during litigation, personnel matters, and governance fights can affect high-stakes decisions quickly.',
+    explainer:
+      'According to the user-provided meeting notes, Terrance Johnson made the motion and Cristina Todd seconded an action authorizing the mayor to get into an agreement with Nichols Jackson as interim outside counsel after the city attorney resignation. Because the law-firm name was heard through the live meeting audio rather than copied from official minutes, this tracker preserves it as reported but should still be cross-checked against the city’s final record once available.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 5-0.',
+    voteNote:
+      'Motion by Terrance Johnson. Second by Cristina Todd. The law-firm name should be cross-checked against official minutes or video once the city posts them.',
+    voteRecords: createApril13FiveZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The mayor was authorized to move ahead with an interim outside-counsel arrangement while the city addresses the city attorney resignation.',
+    outcomeNegativeLabel: 'If it had failed',
+    outcomeNegative:
+      'The city would have needed a different path for interim legal representation or a later return item.',
+    pros: [
+      'Gives the city a faster path to interim legal support during active litigation and personnel matters.',
+      'Creates an open-session record that council authorized the arrangement.',
+    ],
+    cons: [
+      'Interim counsel decisions can move quickly with limited public detail at the time of the vote.',
+      'The exact firm name and formal agreement terms still need official record confirmation.',
     ],
   },
   {
@@ -1223,28 +1341,29 @@ const april13AgendaItems: CouncilAgendaItem[] = [
       'Resolution authorizing the purchase of a 10ft bed, 6 cubic yard dump truck from Custom Truck One Source, Inc. for $92,440.00',
     importance: 'medium',
     summary:
-      'Council is set to consider a $92,440 purchase for a new city dump truck.',
+      'Council pulled G1 out of the consent agenda and then approved the dump-truck purchase on a separate 5-0 vote.',
     watchReason:
       'This is a routine procurement item, but it still commits public money and adds equipment capacity.',
     explainer:
-      'This item appears to be a standard equipment purchase. Even routine purchases are worth tracking because they show where the city is directing capital spending and whether departments are expanding or replacing equipment. Since it sits on the consent agenda, the most likely path is approval with little debate unless a councilmember pulls it for separate discussion.',
-    voteMode: 'upcoming',
-    voteHeadline: 'Vote pending.',
+      'Even routine fleet purchases are worth tracking because they show where the city is directing capital spending and equipment capacity. On April 13, council removed this item from the broader consent-agenda motion and approved it separately.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 5-0 after being pulled from consent.',
     voteNote:
-      'Unless a councilmember pulls it out of consent, this item would typically be approved as part of one larger motion.',
-    outcomePositiveLabel: 'If approved',
+      'Motion by Steve Deffibaugh. Second by Ben Long.',
+    voteRecords: createApril13FiveZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
     outcomePositive:
       'The city can move ahead with the purchase and add the truck to its fleet for public works or related field operations.',
-    outcomeNegativeLabel: 'If rejected or delayed',
+    outcomeNegativeLabel: 'If it had failed',
     outcomeNegative:
-      'Staff would need to revisit the purchase, pricing, or operational need before bringing it back.',
+      'Staff would have needed to revisit the purchase, pricing, or operational need before bringing it back.',
     pros: [
       'Adds or replaces equipment the city likely depends on for field work.',
-      'Consent placement suggests staff sees the purchase as straightforward and ready.',
+      'Council still approved the purchase after handling it separately from the rest of consent.',
     ],
     cons: [
       'It is still a six-figure public cost when related equipment or budget tradeoffs may not be obvious from the agenda alone.',
-      'Consent agenda items can move quickly with limited public discussion.',
+      'Routine equipment items can still move with limited public discussion.',
     ],
   },
   {
@@ -1255,21 +1374,22 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     title: 'Approval of March 23, 2026 City Council regular meeting minutes',
     importance: 'low',
     summary:
-      'Council is being asked to approve the official written minutes from the March 23 meeting.',
+      'Council approved the March 23 regular-meeting minutes as part of the April 13 consent-agenda motion.',
     watchReason:
       'Minutes matter because they become part of the formal public record, even when the item itself is procedural.',
     explainer:
-      'Approving minutes is usually routine, but it still matters because the city’s written record can influence how past decisions are understood later. If councilmembers believe the minutes are incomplete or inaccurate, they can request changes before approval.',
-    voteMode: 'upcoming',
-    voteHeadline: 'Vote pending.',
+      'Approving minutes is usually routine, but it still matters because the city’s written record can influence how past decisions are understood later. On April 13, this item passed inside the broader consent-agenda vote after G1 was removed for separate consideration.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 5-0 as part of the consent-agenda motion with G1 removed.',
     voteNote:
-      'This is a routine consent item unless someone raises a concern about the record.',
-    outcomePositiveLabel: 'If approved',
+      'Motion by Cristina Todd. Second by Terrance Johnson.',
+    voteRecords: createApril13FiveZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
     outcomePositive:
       'The March 23 minutes become part of the city’s official record in their current form.',
-    outcomeNegativeLabel: 'If delayed',
+    outcomeNegativeLabel: 'If it had been delayed',
     outcomeNegative:
-      'Council would likely ask for corrections or hold the minutes for a later meeting.',
+      'Council likely would have asked for corrections or held the minutes for a later meeting.',
     pros: [
       'Keeps the city’s public record current and organized.',
       'Gives council a chance to correct the official record if needed.',
@@ -1288,19 +1408,20 @@ const april13AgendaItems: CouncilAgendaItem[] = [
       'Resolution to remove 3303 Rooster Lane, a 2.25-acre tract, from the city’s extraterritorial jurisdiction',
     importance: 'medium',
     summary:
-      'Council is considering removing a 2.25-acre tract at 3303 Rooster Lane from Princeton’s ETJ.',
+      'Council approved removal of the 3303 Rooster Lane tract from Princeton’s ETJ as part of the April 13 consent-agenda motion.',
     watchReason:
       'ETJ decisions can affect future planning authority, subdivision review, and the city’s long-term growth footprint.',
     explainer:
-      'The ETJ is the area outside city limits where a city still has certain planning and development authority. Removing land from the ETJ reduces Princeton’s reach over that property, which can matter for how future development, annexation, or infrastructure coordination unfolds. Because this is on consent, it may not get much discussion unless someone intentionally slows it down.',
-    voteMode: 'upcoming',
-    voteHeadline: 'Vote pending.',
+      'The ETJ is the area outside city limits where a city still has certain planning and development authority. Removing land from the ETJ reduces Princeton’s reach over that property, which can matter for how future development, annexation, or infrastructure coordination unfolds. On April 13, this item passed inside the broader consent-agenda vote after G1 was removed.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 5-0 as part of the consent-agenda motion with G1 removed.',
     voteNote:
-      'This item can pass as part of the consent agenda unless a councilmember wants separate debate.',
-    outcomePositiveLabel: 'If approved',
+      'Motion by Cristina Todd. Second by Terrance Johnson.',
+    voteRecords: createApril13FiveZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
     outcomePositive:
       'The tract would leave Princeton’s ETJ, narrowing the city’s planning authority over that parcel.',
-    outcomeNegativeLabel: 'If rejected',
+    outcomeNegativeLabel: 'If it had been rejected',
     outcomeNegative:
       'The property would remain under the city’s current ETJ framework for now.',
     pros: [
@@ -1321,21 +1442,21 @@ const april13AgendaItems: CouncilAgendaItem[] = [
       'Presentation and recognition of commendation to the Princeton Community Development Corporation',
     importance: 'low',
     summary:
-      'Council will recognize the Princeton Community Development Corporation with a commendation.',
+      'Council presented the commendation to the Princeton Community Development Corporation during the ceremonial portion of the meeting.',
     watchReason:
       'This does not change policy, but it signals which organizations or partnerships the city is elevating publicly.',
     explainer:
-      'Ceremonial recognitions do not create new law or spending authority on their own, but they still show what the city chooses to spotlight. For residents tracking local influence or priorities, public commendations can be small but useful signals.',
+      'Ceremonial recognitions do not create new law or spending authority on their own, but they still show what the city chooses to spotlight. Based on the user-provided meeting notes, this commendation was presented on April 13 after having been tabled at the prior March 23 meeting.',
     voteMode: 'ceremonial',
-    voteHeadline: 'This is a recognition item rather than a policy vote.',
+    voteHeadline: 'Presented during the ceremonial portion; no separate policy vote tracked here.',
     voteNote:
-      'Expect a presentation rather than a contested council decision.',
-    outcomePositiveLabel: 'If presented as planned',
+      'This was handled as a recognition item rather than a contested governing action.',
+    outcomePositiveLabel: 'What happened',
     outcomePositive:
-      'The CDC receives a public commendation and the city highlights the contribution being recognized.',
-    outcomeNegativeLabel: 'If deferred',
+      'The CDC received the commendation and the city publicly highlighted the contribution being recognized.',
+    outcomeNegativeLabel: 'If it had been deferred again',
     outcomeNegative:
-      'The recognition would likely move to a later agenda without broader policy impact.',
+      'The recognition would likely have moved to a later agenda again without broader policy impact.',
     pros: [
       'Publicly acknowledges work the city wants residents to notice.',
       'Can reinforce relationships between city leadership and local partner organizations.',
@@ -1353,21 +1474,21 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     title: 'Presentation and recognition of officers receiving their RISE awards',
     importance: 'low',
     summary:
-      'Council will recognize officers receiving RISE awards.',
+      'Council recognized officers receiving their RISE awards during the ceremonial portion of the meeting.',
     watchReason:
       'This is a public recognition item rather than a policy change.',
     explainer:
-      'Like other ceremonial agenda entries, this item is mainly about recognition and morale, not a change in city policy. It may still matter to residents who closely follow policing, city culture, or public-facing recognition decisions.',
+      'Like other ceremonial agenda entries, this item was about recognition and morale rather than a change in city policy. Based on the user-provided meeting notes, the ceremonial items were all presented during the regular meeting.',
     voteMode: 'ceremonial',
-    voteHeadline: 'This is a recognition item rather than a policy vote.',
+    voteHeadline: 'Presented during the ceremonial portion; no separate policy vote tracked here.',
     voteNote:
-      'Expect acknowledgments and presentations rather than a yes-or-no governing action.',
-    outcomePositiveLabel: 'If presented as planned',
+      'This was handled as a recognition item rather than a yes-or-no governing action.',
+    outcomePositiveLabel: 'What happened',
     outcomePositive:
-      'The officers receive formal recognition during the meeting.',
-    outcomeNegativeLabel: 'If deferred',
+      'The officers received formal recognition during the meeting.',
+    outcomeNegativeLabel: 'If it had been deferred',
     outcomeNegative:
-      'The recognition would likely move to a later meeting without broader policy consequences.',
+      'The recognition would likely have moved to a later meeting without broader policy consequences.',
     pros: [
       'Can reinforce morale and public visibility for city employees.',
       'Helps residents see what achievements city leaders are choosing to celebrate.',
@@ -1386,21 +1507,21 @@ const april13AgendaItems: CouncilAgendaItem[] = [
       'Proclamation honoring Sexual Assault Awareness and Prevention Month for April 2026',
     importance: 'low',
     summary:
-      'Council will issue a proclamation for Sexual Assault Awareness and Prevention Month.',
+      'Council presented the Sexual Assault Awareness and Prevention Month proclamation during the ceremonial portion of the meeting.',
     watchReason:
       'This is symbolic rather than regulatory, but it publicly frames what the city is emphasizing that month.',
     explainer:
-      'Proclamations are symbolic acts that express public support or recognition. They do not create enforceable policy by themselves, but they can still matter as statements of priority, solidarity, or civic messaging.',
+      'Proclamations are symbolic acts that express public support or recognition. They do not create enforceable policy by themselves, but they can still matter as statements of priority, solidarity, or civic messaging. Based on the user-provided meeting notes, this proclamation was handled during the ceremonial portion of the regular meeting.',
     voteMode: 'ceremonial',
-    voteHeadline: 'This is a proclamation item rather than a policy vote.',
+    voteHeadline: 'Presented during the ceremonial portion; no separate policy vote tracked here.',
     voteNote:
       'The significance here is symbolic and public-facing, not legislative.',
-    outcomePositiveLabel: 'If presented as planned',
+    outcomePositiveLabel: 'What happened',
     outcomePositive:
-      'The city formally recognizes Sexual Assault Awareness and Prevention Month during the meeting.',
-    outcomeNegativeLabel: 'If deferred',
+      'The city formally recognized Sexual Assault Awareness and Prevention Month during the meeting.',
+    outcomeNegativeLabel: 'If it had been deferred',
     outcomeNegative:
-      'The symbolic recognition would move later or not occur at this meeting.',
+      'The symbolic recognition would have moved later or not occurred at this meeting.',
     pros: [
       'Publicly acknowledges an issue that affects community safety and support systems.',
       'Signals city willingness to align itself with prevention and survivor-awareness efforts.',
@@ -1419,21 +1540,21 @@ const april13AgendaItems: CouncilAgendaItem[] = [
       'Public hearing on the levy of assessments in Whitewing Trails PID No. 2 for Improvement Area 3C',
     importance: 'high',
     summary:
-      'Council will open a public hearing before later considering Whitewing Trails PID assessments for Improvement Area 3C.',
+      'Council opened the Whitewing Trails PID public hearing, heard no speakers, and closed it shortly after.',
     watchReason:
       'This is the public-comment gateway for a financing decision that can affect specific property owners and shape how infrastructure is funded.',
     explainer:
-      'A public hearing is the formal moment when residents or affected owners can weigh in before the council moves to ordinance action. Based on the agenda language, this hearing is directly tied to the Whitewing Trails PID assessment item later in the meeting. It matters because PID assessments can place long-term costs on properties inside the district while funding infrastructure up front.',
+      'A public hearing is the formal moment when residents or affected owners can weigh in before the council moves to ordinance action. Based on the user-provided meeting notes, council opened the hearing, no one came forward to speak, and the hearing was then closed. That cleared the way for the related L3 and L4 PID actions later in the meeting.',
     voteMode: 'public-hearing',
-    voteHeadline: 'Public hearing first, then related votes later in the meeting.',
+    voteHeadline: 'Public hearing opened and closed with no public speakers noted.',
     voteNote:
-      'The hearing itself is about public input; the binding financing actions appear later under L3 and L4.',
-    outcomePositiveLabel: 'If the hearing proceeds cleanly',
+      'The hearing itself was the tracked action here; the binding financing votes came later under L3 and L4.',
+    outcomePositiveLabel: 'Because the hearing was completed',
     outcomePositive:
-      'Council can move into the related assessment and bond items with the public hearing requirement satisfied.',
-    outcomeNegativeLabel: 'If major objections surface',
+      'Council could move into the related assessment and bond items with the public-hearing requirement satisfied.',
+    outcomeNegativeLabel: 'If major objections had surfaced',
     outcomeNegative:
-      'Council could still proceed, but the hearing could expose unresolved concerns that shape or delay the later ordinances.',
+      'Council could still have proceeded, but the hearing might have exposed unresolved concerns that shaped or delayed the later ordinances.',
     pros: [
       'Gives affected residents and owners a formal chance to comment before related ordinances are considered.',
       'Creates a public record around a complicated financing issue.',
@@ -1453,21 +1574,22 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     importance: 'high',
     presenter: 'Presented by Preston Jones, Assistant Director of Public Works',
     summary:
-      'Council is being asked to accept the 6th Street Lift Station and related public improvements into the city system.',
+      'Council approved acceptance of the 6th Street Lift Station and related public improvements on a 5-0 vote.',
     watchReason:
       'Wastewater infrastructure acceptance is a meaningful milestone because it can affect service capacity, maintenance responsibility, and future growth readiness.',
     explainer:
-      'When a city accepts a lift station and related improvements, it is usually confirming that the infrastructure has been completed to a standard that allows it to become part of the public system. That can matter for capacity, operations, and future development served by the infrastructure. If there are unresolved quality or documentation concerns, council could delay acceptance.',
-    voteMode: 'upcoming',
-    voteHeadline: 'Vote pending.',
+      'When a city accepts a lift station and related improvements, it is usually confirming that the infrastructure has been completed to a standard that allows it to become part of the public system. That can matter for capacity, operations, and future development served by the infrastructure. On April 13, council approved the acceptance on a 5-0 vote.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 5-0.',
     voteNote:
-      'This is a regular agenda action item, so council is expected to decide whether to accept the improvements.',
-    outcomePositiveLabel: 'If approved',
+      'Motion by Steve Deffibaugh. Second by Carolyn David-Graves.',
+    voteRecords: createApril13FiveZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
     outcomePositive:
       'The city would formally accept the lift station and associated improvements, taking them into the public side of the system.',
-    outcomeNegativeLabel: 'If rejected or delayed',
+    outcomeNegativeLabel: 'If it had been rejected or delayed',
     outcomeNegative:
-      'The project may need more documentation, corrections, or negotiations before acceptance can occur.',
+      'The project might have needed more documentation, corrections, or negotiations before acceptance could occur.',
     pros: [
       'Moves finished infrastructure into regular public use and oversight.',
       'Can signal progress on growth-related utility capacity.',
@@ -1486,21 +1608,22 @@ const april13AgendaItems: CouncilAgendaItem[] = [
       'Resolution authorizing on-call professional service contracts to support public works projects through September 30, 2028, with up to two one-year renewals',
     importance: 'high',
     summary:
-      'Council is considering multi-year on-call professional service contracts for public works support.',
+      'Council approved the on-call public-works professional service contracts on a 5-0 vote.',
     watchReason:
       'These contracts can shape how quickly the city moves on infrastructure work and how much discretion staff has to tap outside consultants over several years.',
     explainer:
-      'On-call professional service contracts usually create a pre-approved bench of outside firms the city can use for engineering, design, inspections, or related project support without running a full new procurement each time. That can speed project delivery, but it also places a lot of value in the initial contract structure and scope. The multi-year timeline here makes this more than a small housekeeping item.',
-    voteMode: 'upcoming',
-    voteHeadline: 'Vote pending.',
+      'On-call professional service contracts usually create a pre-approved bench of outside firms the city can use for engineering, design, inspections, or related project support without running a full new procurement each time. That can speed project delivery, but it also places a lot of value in the initial contract structure and scope. On April 13, council approved the item on a 5-0 vote.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 5-0.',
     voteNote:
-      'Because the contracts run through 2028 with optional renewals, the practical impact could last well beyond one project cycle.',
-    outcomePositiveLabel: 'If approved',
+      'Motion by Carolyn David-Graves. Second by Steve Deffibaugh.',
+    voteRecords: createApril13FiveZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
     outcomePositive:
       'City staff would gain a ready-made set of outside professional services for upcoming public works needs, likely accelerating future project support.',
-    outcomeNegativeLabel: 'If rejected or revised',
+    outcomeNegativeLabel: 'If it had been rejected or revised',
     outcomeNegative:
-      'The city may need to rebid, narrow, or restructure the contracts before moving forward.',
+      'The city might have needed to rebid, narrow, or restructure the contracts before moving forward.',
     pros: [
       'Can speed up public works delivery by giving staff faster access to outside expertise.',
       'Helps the city respond to multiple projects without starting from scratch every time.',
@@ -1519,21 +1642,22 @@ const april13AgendaItems: CouncilAgendaItem[] = [
       'Ordinance levying assessments for Whitewing Trails PID No. 2 Improvement Area 3C',
     importance: 'high',
     summary:
-      'Council is set to consider an ordinance that would levy assessments in Whitewing Trails PID No. 2 Improvement Area 3C.',
+      'Council approved the Whitewing Trails PID assessment ordinance 3-2, with Terrance Johnson and Cristina Todd voting no based on the user-provided meeting notes.',
     watchReason:
       'This is one of the meeting’s most consequential financing items because it can place district-specific payment obligations and liens on properties in the affected area.',
     explainer:
-      'Based on the ordinance title, this item would formally set assessments tied to improvements in Whitewing Trails PID Area 3C. In a PID structure, those assessments are generally charged to benefiting properties rather than funded by the city’s general tax base. That can help finance infrastructure for development, but it also means owners in the district can carry a long-term repayment burden tied to those improvements.',
-    voteMode: 'upcoming',
-    voteHeadline: 'Vote pending.',
+      'Based on the ordinance title, this item formally sets assessments tied to improvements in Whitewing Trails PID Area 3C. In a PID structure, those assessments are generally charged to benefiting properties rather than funded by the city’s general tax base. On April 13, council approved the ordinance 3-2, with the user-provided meeting notes recording no votes from Terrance Johnson and Cristina Todd.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 3-2.',
     voteNote:
-      'This is the core action item that turns the assessment framework into a live ordinance if adopted.',
-    outcomePositiveLabel: 'If approved',
+      'Motion by Steve Deffibaugh. Second by Carolyn David-Graves. User-provided meeting notes record no votes from Terrance Johnson and Cristina Todd.',
+    voteRecords: createApril13ThreeTwoApproval(),
+    outcomePositiveLabel: 'What approval means',
     outcomePositive:
       'The assessment ordinance would take effect, locking in the method the city uses to charge and collect district costs from affected properties.',
-    outcomeNegativeLabel: 'If rejected or delayed',
+    outcomeNegativeLabel: 'If it had been rejected or delayed',
     outcomeNegative:
-      'The district financing plan would likely need to be reworked, delayed, or separated from the current schedule.',
+      'The district financing plan likely would have needed to be reworked, delayed, or separated from the current schedule.',
     pros: [
       'Allows infrastructure costs to be assigned to the benefiting district instead of broadly across all city taxpayers.',
       'Can help move forward district improvements sooner than pay-as-you-go funding would allow.',
@@ -1552,21 +1676,22 @@ const april13AgendaItems: CouncilAgendaItem[] = [
       'Ordinance authorizing special assessment revenue bonds for Whitewing Trails PID No. 2 Improvement Areas 3A-3C',
     importance: 'high',
     summary:
-      'Council is considering special assessment revenue bonds tied to Whitewing Trails PID improvements across Areas 3A through 3C.',
+      'Council approved the Whitewing Trails PID bond ordinance 3-2, with Terrance Johnson and Cristina Todd recorded as no votes in the user-provided meeting notes.',
     watchReason:
       'This is a major infrastructure-finance decision because it determines how the district can raise money now and repay it later.',
     explainer:
-      'This agenda item appears to authorize bonds backed by special assessments rather than general citywide tax revenue. In plain terms, that can give the project access to larger upfront capital for improvements, but it also formalizes a financing structure that depends on assessment-backed repayment. Bond ordinances are often dense, but they matter because they shape the city’s risk exposure, the district’s repayment path, and how quickly infrastructure can be delivered.',
-    voteMode: 'upcoming',
-    voteHeadline: 'Vote pending.',
+      'This item authorizes bonds backed by special assessments rather than general citywide tax revenue. In plain terms, that can give the project access to larger upfront capital for improvements, but it also formalizes a financing structure that depends on assessment-backed repayment. On April 13, council approved the ordinance 3-2. The user-provided meeting notes list Steve Deffibaugh as the maker, Cristina Todd as the second, and both Todd and Terrance Johnson as no votes, so the tracker preserves that sequence as reported pending official minutes or video cross-check.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 3-2.',
     voteNote:
-      'This appears to be the financing companion to the assessment ordinance and could be one of the most consequential votes of the night.',
-    outcomePositiveLabel: 'If approved',
+      'User-provided meeting notes list Steve Deffibaugh as the maker, Cristina Todd as the second, and record no votes from Todd and Terrance Johnson. This should be cross-checked against the city’s official minutes or video once posted.',
+    voteRecords: createApril13ThreeTwoApproval(),
+    outcomePositiveLabel: 'What approval means',
     outcomePositive:
       'The city could move forward with the bond structure, giving the PID a stronger financing tool to fund improvements up front.',
-    outcomeNegativeLabel: 'If rejected or postponed',
+    outcomeNegativeLabel: 'If it had been rejected or postponed',
     outcomeNegative:
-      'The project’s financing timeline could slow down while council or staff rework the structure.',
+      'The project’s financing timeline could have slowed down while council or staff reworked the structure.',
     pros: [
       'Provides a mechanism to fund district improvements sooner rather than waiting on slower cash collection.',
       'Keeps the repayment structure tied to district assessments instead of the general city tax base.',
@@ -1585,28 +1710,28 @@ const april13AgendaItems: CouncilAgendaItem[] = [
       'Consider approving requests for items to be placed on a future agenda and not for discussion',
     importance: 'low',
     summary:
-      'Council may approve requests to place items on a future agenda, but the agenda notes these requests are not for discussion tonight.',
+      'Councilmembers used the future-agenda item to request a roadway study, traffic enforcement discussion, the return of tabled work-session items, bylaw posting and signatures, draft data-center and notary ordinances, and a status report on required Collin County uploads.',
     watchReason:
       'This can quietly shape what comes next even when the item itself is procedural.',
     explainer:
-      'Agenda-setting items do not usually deliver immediate policy change, but they can be useful early warnings. If council agrees to place something on a future agenda, it signals what issues may be coming back for a fuller public debate later.',
+      'Agenda-setting items do not usually deliver immediate policy change, but they can be useful early warnings. Based on the user-provided meeting notes, Eugene Escobar Jr. requested a roadway study; Carolyn David-Graves requested a traffic-enforcement-unit discussion; Terrance Johnson asked for the three tabled work-session items to come back on the next agenda and possibly for action; and Cristina Todd requested updated and signed bylaws on the city website, a drafted data-center ordinance, a drafted notary policy and procedure ordinance, and a staff report by May 25 on required Collin County website uploads.',
     voteMode: 'procedural',
-    voteHeadline: 'Procedural action pending.',
+    voteHeadline: 'Councilmembers used this item to queue up future topics rather than take a roll-call vote.',
     voteNote:
-      'The practical significance depends on what topics council chooses to queue up for later meetings.',
-    outcomePositiveLabel: 'If approved',
+      'This was a future-agenda request period rather than a member-by-member vote item, so no roll-call vote is tracked here.',
+    outcomePositiveLabel: 'If these requests return later',
     outcomePositive:
-      'Requested items would move into the pipeline for a future agenda where they could receive fuller discussion or action.',
-    outcomeNegativeLabel: 'If declined',
+      'Residents could see follow-up debates on roads, traffic enforcement, tabled work-session items, governance documents, and transparency-related compliance questions.',
+    outcomeNegativeLabel: 'If they do not return',
     outcomeNegative:
-      'Those proposed topics would not be scheduled for a future council agenda through this item.',
+      'Those issues may linger informally without a guaranteed future agenda slot tied to this request period.',
     pros: [
       'Provides a visible path for bringing new topics into the public meeting process.',
       'Lets residents see what may be coming next before a full debate happens.',
     ],
     cons: [
-      'The agenda does not tell the public much about the underlying requests themselves.',
-      'Because discussion is limited, residents may still be left guessing about the future topic list.',
+      'Future-agenda request periods can stack up a lot of topics without making clear which ones will actually come back first.',
+      'This tracker entry reflects the requests captured in the user-provided meeting notes rather than a verbatim transcript.',
     ],
   },
 ];
@@ -1717,25 +1842,28 @@ export const cityCouncilMeetings: CouncilMeeting[] = [
     slug: 'april-13-2026',
     title: 'Princeton City Council Meeting Tracker: April 13, 2026',
     date: '2026-04-13',
-    status: 'upcoming',
+    status: 'completed',
     workSessionTime: '6:00 PM',
     regularMeetingTime: '6:30 PM',
     locationName: 'Princeton Municipal Center, Council Chambers',
     locationAddress: '2000 East Princeton Drive',
     locationCityStateZip: 'Princeton, Texas 75407',
     summary:
-      'The April 13 agenda combines three policy-heavy work session discussions with several consequential infrastructure and PID financing items in the regular meeting.',
+      'The April 13 meeting skipped the posted work-session discussions, included a 5-0 executive-session-related legal-services action, passed the remaining consent agenda 5-0 with G1 pulled for its own 5-0 vote, and ended with split 3-2 Whitewing Trails PID votes plus a new round of future-agenda requests.',
     agendaSourceTitle: 'Official City Council work session and regular meeting agenda',
     agendaSourceUrl: 'https://princetontx.gov/AgendaCenter/City-Council-2/',
     sourceNotes: [
-      'Tracker details are based on the official posted agenda and the attached April 13 agenda PDF.',
-      'Item explainers are our plain-English read of the agenda language. Some support documents were referenced in the agenda but were not included in the attached PDF, so a few explanations are necessarily directional rather than memo-level specific.',
-      'Attendance and vote trackers will stay marked as upcoming until the meeting, minutes, or video confirm what happened.',
+      'Tracker details are based on the official posted April 13 agenda and the user-provided meeting notes supplied on April 14, 2026.',
+      'The three posted work-session discussion items are marked as not discussed because the user-provided notes indicate council moved into closed session instead and later future-agenda requests referenced those workshop items as tabled.',
+      'The interim legal-services action description and law-firm name reflect the user-provided notes from the meeting recording and should still be cross-checked against the city’s official minutes or video once posted.',
+      'Where the user-provided notes clearly captured a motion, second, and result, the tracker records those votes directly rather than leaving them as pending.',
     ],
     attendanceNote:
-      'Place 4 is vacant as of now and for this meeting ahead of the May 2, 2026 special election. Attendance will update after roll call.',
+      'Cristina Todd arrived late during the work session, Bryan Washington was not there, and all other seated officials were present. By the regular meeting, everyone except Washington and the vacant Place 4 was there.',
     councilMembers: april13Roster,
-    vacantSeats: ['Place 4 is vacant pending the May 2, 2026 special election.'],
+    vacantSeats: [
+      'Place 4 was vacant at the time of the April 13, 2026 meeting ahead of the May 2 special election.',
+    ],
     closedSessionTopics: [
       'Consultation with the city attorney regarding pending or contemplated litigation, settlement offers, or legal conflicts tied to agenda matters.',
       'Sicily Laguna Azure, LLC v. City of Princeton, Texas et al.',
@@ -1748,7 +1876,7 @@ export const cityCouncilMeetings: CouncilMeeting[] = [
         id: 'work-session',
         title: 'Work Session',
         description:
-          'These items are scheduled during the 6:00 PM pre-council work session and are mainly for discussion and direction-setting.',
+          'These three items were posted for the 6:00 PM work session, but the user-provided notes indicate council moved into closed session instead and did not discuss them that night.',
         itemSlugs: [
           'sex-offender-ordinance-enhancements',
           'historical-preservation-committee',
@@ -1756,10 +1884,17 @@ export const cityCouncilMeetings: CouncilMeeting[] = [
         ],
       },
       {
+        id: 'executive-action',
+        title: 'Executive Session Action',
+        description:
+          'This open-session action authorized interim legal-services work tied to the city attorney resignation, based on the user-provided meeting notes.',
+        itemSlugs: ['interim-legal-counsel-agreement'],
+      },
+      {
         id: 'consent',
         title: 'Consent Agenda',
         description:
-          'These items are usually voted on together unless a councilmember pulls one out for separate discussion.',
+          'Council approved the remaining consent agenda 5-0 after pulling G1 out for a separate standalone vote.',
         itemSlugs: [
           'dump-truck-purchase',
           'march-23-meeting-minutes',
@@ -1770,7 +1905,7 @@ export const cityCouncilMeetings: CouncilMeeting[] = [
         id: 'ceremonial',
         title: 'Ceremonial Items',
         description:
-          'These items recognize people, organizations, or causes rather than changing city policy.',
+          'The ceremonial items were presented during the regular meeting rather than handled as policy votes.',
         itemSlugs: [
           'cdc-commendation',
           'rise-awards',
@@ -1781,14 +1916,14 @@ export const cityCouncilMeetings: CouncilMeeting[] = [
         id: 'public-hearing',
         title: 'Public Hearing',
         description:
-          'This hearing creates the public-input record before related financing ordinances come up later in the meeting.',
+          'Council opened the PID public hearing, heard no speakers, and then closed it before moving to the related financing items.',
         itemSlugs: ['whitewing-trails-pid-public-hearing'],
       },
       {
         id: 'regular-agenda',
         title: 'Regular Agenda',
         description:
-          'These are the main action items where council is expected to vote individually.',
+          'These were the main open-session action items, including two 5-0 approvals, two split 3-2 PID votes, and the future-agenda request period.',
         itemSlugs: [
           'sixth-street-lift-station-acceptance',
           'public-works-on-call-contracts',
