@@ -94,6 +94,9 @@ const getVoteStatusLabel = (status: string) => {
   return 'upcoming';
 };
 
+const voteNote = item.voteNote?.trim() || '';
+const showVoteNote = Boolean(voteNote) && !(item.motionBy || item.secondBy);
+
 const trackerNote =
   meeting.status === 'completed'
     ? 'This tracker entry is based on the official agenda and the meeting notes currently captured by The Princeton Journal. If official minutes, video, or backup records clarify anything further, the tracker can be updated to match the final record.'
@@ -149,9 +152,25 @@ const trackerNote =
           {trackerSectionTitle}
         </p>
         <h2 class="mt-2 text-2xl font-bold tracking-tight">{item.voteHeadline}</h2>
-        <p class="mt-4 text-base leading-8 text-gray-700">
-          {item.voteNote}
-        </p>
+        {(item.motionBy || item.secondBy) && (
+          <div class="mt-4 flex flex-wrap gap-3 text-sm">
+            {item.motionBy && (
+              <span class="inline-flex rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 text-gray-700">
+                <span class="font-semibold text-black">Motion by:</span>&nbsp;{item.motionBy}
+              </span>
+            )}
+            {item.secondBy && (
+              <span class="inline-flex rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 text-gray-700">
+                <span class="font-semibold text-black">Second by:</span>&nbsp;{item.secondBy}
+              </span>
+            )}
+          </div>
+        )}
+        {showVoteNote && (
+          <p class="mt-4 text-base leading-8 text-gray-700">
+            {voteNote}
+          </p>
+        )}
 
         {showMemberVoteGrid && (
           <div class="mt-5 grid gap-3 sm:grid-cols-2">

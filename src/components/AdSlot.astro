@@ -6,28 +6,59 @@ interface Props {
 }
 
 const {
-  slot,
   className = '',
-  label = 'Advertisement',
+  label = 'Local Sponsor',
 } = Astro.props;
-
-const clientId = 'ca-pub-2859976110504673';
-const shouldRender = Boolean(slot);
 ---
 
-{shouldRender && (
-  <div class:list={['ad-slot', className]}>
-    <p class="ad-slot-label">{label}</p>
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client={clientId}
-      data-ad-slot={slot}
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-    ></ins>
-    <script is:inline>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-)}
+<div class:list={['ad-slot', className]}>
+  <p class="ad-slot-label">{label}</p>
+
+  <section class="overflow-hidden rounded-[1.75rem] border border-gray-200 bg-white shadow-[0_18px_45px_rgba(17,24,39,0.08)]">
+    <a
+      href="https://instagram.com/donnydetailss"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="View Donny Details on Instagram"
+      class="block bg-black"
+    >
+      <img
+        src="/images/donny-detail-ad.jpg"
+        alt="Donny Details advertisement for Donovan Sandoval auto detailing services"
+        loading="lazy"
+        class="block w-full object-cover"
+      />
+    </a>
+
+    <div class="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-6">
+      <div class="space-y-2">
+        <p class="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-gray-500">
+          Auto Detailing
+        </p>
+        <h3 class="text-2xl font-bold tracking-tight text-black">
+          Donny Details
+        </h3>
+        <p class="max-w-2xl text-sm leading-6 text-gray-600">
+          Interior detailing, exterior detailing, leather conditioning, and quick-wash service from local owner Donovan Sandoval.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-3 sm:min-w-[232px]">
+        <a
+          href="tel:+14696672116"
+          class="inline-flex items-center justify-center rounded-2xl border border-black bg-black px-4 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+        >
+          Call 469-667-2116
+        </a>
+        <a
+          href="https://instagram.com/donnydetailss"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-2xl border border-gray-300 px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
+        >
+          Follow @donnydetailss
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

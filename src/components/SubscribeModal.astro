@@ -124,6 +124,7 @@ const {
     const success = document.getElementById('subscribeModalSuccess');
     const emailInput = document.getElementById('subscribeModalEmail');
     const storageKey = 'tpj-subscribe-modal-state';
+    const pendingKey = 'tpj-newsletter-subscribe-pending';
     const dismissalWindowMs = 24 * 60 * 60 * 1000;
 
     const readState = () => {
@@ -137,6 +138,18 @@ const {
     const writeState = (state) => {
       try {
         localStorage.setItem(storageKey, JSON.stringify(state));
+      } catch {}
+    };
+
+    const markSubmitPending = () => {
+      try {
+        sessionStorage.setItem(pendingKey, 'true');
+      } catch {}
+    };
+
+    const clearSubmitPending = () => {
+      try {
+        sessionStorage.removeItem(pendingKey);
       } catch {}
     };
 
@@ -178,6 +191,7 @@ const {
 
     const markSubscribed = () => {
       writeState({ dismissedAt: Date.now(), subscribed: true });
+      clearSubmitPending();
     };
 
     if (root && shouldShow()) {
@@ -221,6 +235,7 @@ const {
         success?.classList.remove('hidden');
         window.setTimeout(() => closeModal(false), 1600);
       } catch {
+        markSubmitPending();
         form.submit();
       }
     });

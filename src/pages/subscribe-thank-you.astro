@@ -35,4 +35,23 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
   </main>
+
+  <script is:inline>
+    (() => {
+      const pendingKey = 'tpj-newsletter-subscribe-pending';
+      const storageKey = 'tpj-subscribe-modal-state';
+
+      try {
+        if (sessionStorage.getItem(pendingKey) !== 'true') {
+          return;
+        }
+
+        localStorage.setItem(
+          storageKey,
+          JSON.stringify({ dismissedAt: Date.now(), subscribed: true })
+        );
+        sessionStorage.removeItem(pendingKey);
+      } catch {}
+    })();
+  </script>
 </Layout>

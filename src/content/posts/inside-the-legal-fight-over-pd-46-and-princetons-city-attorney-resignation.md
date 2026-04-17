@@ -9,7 +9,7 @@ image: "/images/princeton-city-hall-instability.png"
 draft: false
 ---
 
-<p><strong><a href="#quick-read">Scroll to the Quick Read below.</a></strong></p>
+<p><strong><a href="#quick-read" style="color: #1d4ed8;">Scroll to the Quick Read below.</a></strong></p>
 
 Most residents do not watch City Hall for entertainment. They watch because they want basic government to work. They want development handled correctly, legal issues managed competently, and leaders focused on getting things done instead of fighting each other.
 

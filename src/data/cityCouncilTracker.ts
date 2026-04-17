@@ -58,6 +58,8 @@ export type CouncilAgendaItem = {
   voteMode: VoteMode;
   voteHeadline: string;
   voteNote: string;
+  motionBy?: string;
+  secondBy?: string;
   voteRecords?: CouncilVoteRecord[];
   outcomePositiveLabel: string;
   outcomePositive: string;
@@ -408,6 +410,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved 6-0.',
     voteNote: 'Motion by Terrance Johnson. Second by Bryan Washington.',
+    motionBy: 'Terrance Johnson',
+    secondBy: 'Bryan Washington',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -447,6 +451,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 6-0 as part of the remaining consent-agenda motion.',
     voteNote:
       'After G1, G3, G4, G5, G6, G7, and G10 were pulled out, the remaining consent items were approved together. Motion by Cristina Todd. Second by Carolyn David-Graves.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'If approved',
     outcomePositive:
@@ -480,6 +486,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved 6-0 as part of a grouped motion on G3 through G5.',
     voteNote: 'Motion by Cristina Todd. Second by Carolyn David-Graves.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -518,6 +526,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved 6-0 as part of a grouped motion on G3 through G5.',
     voteNote: 'Motion by Cristina Todd. Second by Carolyn David-Graves.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -556,6 +566,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved 6-0 as part of a grouped motion on G3 through G5.',
     voteNote: 'Motion by Cristina Todd. Second by Carolyn David-Graves.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -594,6 +606,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved 6-0.',
     voteNote: 'Motion by Cristina Todd. Second by Carolyn David-Graves.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -627,6 +641,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved 6-0.',
     voteNote: 'Motion by Cristina Todd. Second by Bryan Washington.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Bryan Washington',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -661,6 +677,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 6-0 as part of the remaining consent-agenda motion.',
     voteNote:
       'After G1, G3, G4, G5, G6, G7, and G10 were pulled out, the remaining consent items were approved together. Motion by Cristina Todd. Second by Carolyn David-Graves.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'If approved',
     outcomePositive:
@@ -695,6 +713,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 6-0 as part of the remaining consent-agenda motion.',
     voteNote:
       'After G1, G3, G4, G5, G6, G7, and G10 were pulled out, the remaining consent items were approved together. Motion by Cristina Todd. Second by Carolyn David-Graves.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'If approved',
     outcomePositive:
@@ -728,6 +748,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved 6-0.',
     voteNote: 'Motion by Cristina Todd. Second by Carolyn David-Graves.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -894,6 +916,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 6-0 with additional council changes.',
     voteNote:
       'Motion by Cristina Todd. Second by Bryan Washington. Approval included the added conditions described by the user plus city staff recommendations.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Bryan Washington',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -933,6 +957,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Continued and tabled to April 27, 2026 by a 6-0 vote.',
     voteNote:
       'Motion by Bryan Washington. Second by Terrance Johnson.',
+    motionBy: 'Bryan Washington',
+    secondBy: 'Terrance Johnson',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What the tabling means',
     outcomePositive:
@@ -971,6 +997,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 6-0.',
     voteNote:
       'Motion by Carolyn David-Graves. Second by Steve Deffibaugh.',
+    motionBy: 'Carolyn David-Graves',
+    secondBy: 'Steve Deffibaugh',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1004,6 +1032,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteMode: 'recorded-vote',
     voteHeadline: 'Accepted 6-0.',
     voteNote: 'Motion by Bryan Washington. Second by Terrance Johnson.',
+    motionBy: 'Bryan Washington',
+    secondBy: 'Terrance Johnson',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1037,6 +1067,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved 6-0.',
     voteNote: 'Motion by Terrance Johnson. Second by Carolyn David-Graves.',
+    motionBy: 'Terrance Johnson',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1109,6 +1141,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved 6-0 with a McKinney-consent condition.',
     voteNote: 'Motion by Steve Deffibaugh. Second by Bryan Washington.',
+    motionBy: 'Steve Deffibaugh',
+    secondBy: 'Bryan Washington',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1144,6 +1178,8 @@ const march23AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 6-0.',
     voteNote:
       'Motion by Bryan Washington. Second by Carolyn David-Graves.',
+    motionBy: 'Bryan Washington',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createMarch23UnanimousApproval(),
     outcomePositiveLabel: 'If approved',
     outcomePositive:
@@ -1316,6 +1352,8 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 5-0.',
     voteNote:
       'Motion by Terrance Johnson. Second by Cristina Todd. The law-firm name should be cross-checked against official minutes or video once the city posts them.',
+    motionBy: 'Terrance Johnson',
+    secondBy: 'Cristina Todd',
     voteRecords: createApril13FiveZeroApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1350,6 +1388,8 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 5-0 after being pulled from consent.',
     voteNote:
       'Motion by Steve Deffibaugh. Second by Ben Long.',
+    motionBy: 'Steve Deffibaugh',
+    secondBy: 'Ben Long',
     voteRecords: createApril13FiveZeroApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1383,6 +1423,8 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 5-0 as part of the consent-agenda motion with G1 removed.',
     voteNote:
       'Motion by Cristina Todd. Second by Terrance Johnson.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Terrance Johnson',
     voteRecords: createApril13FiveZeroApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1417,6 +1459,8 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 5-0 as part of the consent-agenda motion with G1 removed.',
     voteNote:
       'Motion by Cristina Todd. Second by Terrance Johnson.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Terrance Johnson',
     voteRecords: createApril13FiveZeroApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1583,6 +1627,8 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 5-0.',
     voteNote:
       'Motion by Steve Deffibaugh. Second by Carolyn David-Graves.',
+    motionBy: 'Steve Deffibaugh',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createApril13FiveZeroApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1617,6 +1663,8 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 5-0.',
     voteNote:
       'Motion by Carolyn David-Graves. Second by Steve Deffibaugh.',
+    motionBy: 'Carolyn David-Graves',
+    secondBy: 'Steve Deffibaugh',
     voteRecords: createApril13FiveZeroApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1651,6 +1699,8 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 3-2.',
     voteNote:
       'Motion by Steve Deffibaugh. Second by Carolyn David-Graves. User-provided meeting notes record no votes from Terrance Johnson and Cristina Todd.',
+    motionBy: 'Steve Deffibaugh',
+    secondBy: 'Carolyn David-Graves',
     voteRecords: createApril13ThreeTwoApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:
@@ -1685,6 +1735,8 @@ const april13AgendaItems: CouncilAgendaItem[] = [
     voteHeadline: 'Approved 3-2.',
     voteNote:
       'User-provided meeting notes list Steve Deffibaugh as the maker, Cristina Todd as the second, and record no votes from Todd and Terrance Johnson. This should be cross-checked against the city’s official minutes or video once posted.',
+    motionBy: 'Steve Deffibaugh',
+    secondBy: 'Cristina Todd',
     voteRecords: createApril13ThreeTwoApproval(),
     outcomePositiveLabel: 'What approval means',
     outcomePositive:

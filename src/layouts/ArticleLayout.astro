@@ -1,7 +1,6 @@
 ---
 import Layout from './Layout.astro';
 import AdSlot from '../components/AdSlot.astro';
-import ArticleComments from '../components/ArticleComments.astro';
 import ArticleInlineSubscribe from '../components/ArticleInlineSubscribe.astro';
 import SupportPrompt from '../components/SupportPrompt.astro';
 import {
@@ -22,14 +21,7 @@ const {
   imageCaption,
   nextPost,
   readingTime,
-  preview,
 } = Astro.props;
-const articleSlug = url
-  ? new URL(url, 'https://theprincetonjournal.com').pathname
-      .split('/')
-      .filter(Boolean)
-      .pop() || ''
-  : '';
 const formattedArticleDate = formatPostDate(
   { date, publishedAt },
   hasExplicitPublishTime({ publishedAt }),
@@ -86,38 +78,9 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
       className="mt-10 max-w-2xl"
     />
 
-    {preview ? (
-      <>
-        <div class="article-content mt-10 text-lg leading-8 text-gray-800">
-          <p>{preview}</p>
-        </div>
-
-        <div class="relative mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-white">
-          <div class="pointer-events-none max-h-64 overflow-hidden px-6 pt-6 pb-20 opacity-75 blur-[2px]">
-            <article class="article-content text-lg leading-8 text-gray-800">
-              <slot />
-            </article>
-          </div>
-
-          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-white via-white/95 to-transparent px-6 pb-6 pt-16 text-center">
-            <button
-              id="readMoreButton"
-              class="inline-flex items-center rounded-xl border border-black bg-black px-6 py-3 text-base font-semibold text-white transition hover:bg-white hover:text-black"
-            >
-              Read more
-            </button>
-          </div>
-        </div>
-
-        <article id="fullArticle" data-article-body data-published-at={articlePublishedIso} class="article-content mt-10 hidden text-lg leading-8 text-gray-800">
-          <slot />
-        </article>
-      </>
-    ) : (
-      <article data-article-body data-published-at={articlePublishedIso} class="article-content mt-10 text-lg leading-8 text-gray-800">
-        <slot />
-      </article>
-    )}
+    <article data-article-body data-published-at={articlePublishedIso} class="article-content mt-10 text-lg leading-8 text-gray-800">
+      <slot />
+    </article>
 
     <template id="articleInlineSubscribeTemplate">
       <ArticleInlineSubscribe />
@@ -126,10 +89,31 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
     <script is:inline>
       (() => {
         const template = document.getElementById('articleInlineSubscribeTemplate');
+        const storageKey = 'tpj-subscribe-modal-state';
+        const pendingKey = 'tpj-newsletter-subscribe-pending';
 
         if (!(template instanceof HTMLTemplateElement)) {
           return;
         }
+
+        const markSubscribed = () => {
+          try {
+            localStorage.setItem(
+              storageKey,
+              JSON.stringify({ dismissedAt: Date.now(), subscribed: true })
+            );
+          } catch {}
+
+          try {
+            sessionStorage.removeItem(pendingKey);
+          } catch {}
+        };
+
+        const markSubmitPending = () => {
+          try {
+            sessionStorage.setItem(pendingKey, 'true');
+          } catch {}
+        };
 
         const bindInlineForm = (card) => {
           if (!(card instanceof HTMLElement)) {
@@ -170,9 +154,11 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
                 throw new Error('Subscribe request failed');
               }
 
+              markSubscribed();
               form.classList.add('hidden');
               success?.classList.remove('hidden');
             } catch {
+              markSubmitPending();
               form.submit();
             }
           });
@@ -251,9 +237,6 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
           installInlinePrompts();
         }
 
-        document.getElementById('readMoreButton')?.addEventListener('click', () => {
-          requestAnimationFrame(installInlinePrompts);
-        });
       })();
     </script>
 
@@ -263,8 +246,6 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
     />
 
     <SupportPrompt />
-
-    <ArticleComments articleSlug={articleSlug} />
 
     {nextPost && (
       <section class="mt-14 border-t border-gray-200 pt-8">

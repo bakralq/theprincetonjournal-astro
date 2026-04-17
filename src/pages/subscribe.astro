@@ -21,6 +21,7 @@ import Layout from '../layouts/Layout.astro';
       </p>
 
       <form
+        id="newsletterSubscribePageForm"
         name="newsletter-subscribe"
         method="POST"
         action="/subscribe-thank-you"
@@ -63,4 +64,20 @@ import Layout from '../layouts/Layout.astro';
       </p>
     </div>
   </main>
+
+  <script is:inline>
+    (() => {
+      const form = document.getElementById('newsletterSubscribePageForm');
+
+      if (!(form instanceof HTMLFormElement)) {
+        return;
+      }
+
+      form.addEventListener('submit', () => {
+        try {
+          sessionStorage.setItem('tpj-newsletter-subscribe-pending', 'true');
+        } catch {}
+      });
+    })();
+  </script>
 </Layout>
