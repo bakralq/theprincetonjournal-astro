@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
-import { getPostDateObject, getPostTimestamp } from '../../lib/posts';
+import { getPostDateObject, getPostTimestamp, getReadingTime } from '../../lib/posts';
 
 const SITE_URL = 'https://theprincetonjournal.com';
 
@@ -18,8 +18,7 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 
 const rawContent = post.body || '';
-const wordCount = rawContent.split(/\s+/).filter(Boolean).length;
-const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+const readingTime = getReadingTime(rawContent, post.data.readingTime);
 
 const slug = post.id.replace(/\.md$/, '');
 const articleUrl = `${SITE_URL}/posts/${slug}`;
@@ -44,11 +43,6 @@ if (currentIndex === 0) {
   nextPost = sortedPosts[0] ?? null;
 }
 
-const getReadingTime = (content) => {
-  const wc = (content || '').trim().split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.ceil(wc / 200));
-};
-
 const nextPostData = nextPost
   ? {
       title: nextPost.data.title,
@@ -56,7 +50,7 @@ const nextPostData = nextPost
       date: nextPost.data.date,
       publishedAt: nextPost.data.publishedAt || null,
       image: nextPost.data.image || null,
-      readingTime: getReadingTime(nextPost.body || ''),
+      readingTime: getReadingTime(nextPost.body || '', nextPost.data.readingTime),
     }
   : null;
 

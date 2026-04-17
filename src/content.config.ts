@@ -10,6 +10,7 @@ const postsCollection = defineCollection({
     author: z.string(),
     image: z.string().optional(),
     imageCaption: z.string().optional(),
+    readingTime: z.number().int().positive().optional(),
     preview: z.string().optional(),
     draft: z.boolean().optional().default(false),
   }),

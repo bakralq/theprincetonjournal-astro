@@ -7,28 +7,27 @@ section: "Princeton Governance"
 author: "Christian J. Remington, Editor"
 image: "/images/princeton-crossmill-schools-april-17.jpg"
 imageCaption: "Image: Rogue Construction Facebook, used as a representative Princeton ISD image."
+readingTime: 5
 preview: "Princeton P&Z is set to review final plats Monday for a new middle school and elementary school in Crossmill, another clear sign that school expansion is moving alongside the city’s rapid growth."
 ---
 
 <p><strong><a href="#quick-read" style="color: #1d4ed8;">Scroll to the Quick Read below.</a></strong></p>
 
-## Princeton P&Z is set to review final plats Monday for Banschbach Middle School and Joyce Carrell Elementary School in Crossmill.
-
 If you live in Princeton, you can already feel how fast the city is changing.
 
 More neighborhoods. More traffic. More pressure on schools, roads, and services.
 
-And on Monday night, that growth shows up again in a form most residents will understand immediately: two new school sites moving forward in Crossmill.
+On Monday night, that growth shows up again in a form residents will understand immediately: two new Princeton ISD school sites moving forward in Crossmill.
 
-The Princeton Planning and Zoning Commission is set to review final plat cases on April 20 for Banschbach Middle School at 1110 Brookside Blvd. and Joyce Carrell Elementary School at 1015 Brookside Blvd. Both are Princeton ISD sites in the Crossmill subdivision, west of South Beauchamp Boulevard, and both staff memos say the plats are consistent with the preliminary plat approved by City Council on March 25, 2024.
+The Princeton Planning and Zoning Commission is set to review Case `#2026_FP_01_001` for Banschbach Middle School at 1110 Brookside Blvd. and Case `#2026_FP_02_001` for Joyce Carrell Elementary School at 1015 Brookside Blvd. Both are Princeton ISD sites in Crossmill, west of South Beauchamp Boulevard, and both staff memos say the plats are consistent with the preliminary plat approved by City Council on March 25, 2024. Both items are on the April 20 consent agenda, where routine items are usually approved in one motion unless pulled for separate discussion.
 
 <h2 id="quick-read">Quick Read</h2>
 
-- Princeton P&Z is scheduled to review two final plat cases Monday for Princeton ISD school sites in Crossmill.
-- One is for Banschbach Middle School. The other is for Joyce Carrell Elementary School.
-- The sites are located along Brookside Boulevard west of South Beauchamp Boulevard.
-- City staff says both plats meet applicable city regulations and development standards.
-- Brookside Boulevard is still under construction, and the memos say it must be completed and formally accepted before a certificate of occupancy can be issued for the schools.
+- Princeton P&Z is set to review two final plat cases on April 20 for Princeton ISD school sites in Crossmill.
+- One is for Banschbach Middle School at 1110 Brookside Blvd. The other is for Joyce Carrell Elementary School at 1015 Brookside Blvd.
+- Both sites are tied to Brookside Boulevard, west of South Beauchamp Boulevard, and staff says they meet city regulations and development standards.
+- Princeton ISD's long range planning page lists Joyce Carrell Elementary No. 9 and Tom Banschbach Middle School No. 4 as projects opening in 2026, and the district contact page lists both campuses at these addresses as "Coming Fall 2026."
+- The same April 20 P&Z consent agenda also includes a separate final plat request for Crossmill Phase 1A from D.R. Horton.
 
 ## The Big Number
 
@@ -36,89 +35,78 @@ The number that defines this story is simple:
 
 2
 
-Two school sites.
+Two school sites. One agenda. One fast growing area of Princeton.
 
-One agenda.
-
-One fast-growing area of Princeton.
-
-That matters because it shows the city is no longer just adding rooftops. It is continuing to make room for the public infrastructure that growth demands.
-
-The two cases are not scattered across different parts of town. They are both in Crossmill. They are both tied to Brookside Boulevard. And they both point in the same direction: this part of Princeton is still expanding, and the school system is moving with it.
+That matters because it shows the city is continuing to make room for the public infrastructure growth demands. Princeton ISD says it is planning for projected enrollment of 19,574 students by 2034, with eight new campuses on the way. In that broader picture, Joyce Carrell Elementary No. 9 and Tom Banschbach Middle School No. 4 are part of the next wave.
 
 ## What Is on the Agenda
 
-The first case, `2026_FP_01_001`, is a final plat for Banschbach Middle School at 1110 Brookside Blvd. The city memo says the purpose is to establish a buildable lot and dedicate the easements needed to support development of the site.
+The Banschbach and Joyce Carrell cases are final plats to establish buildable lots and dedicate the easements needed to support development. In both cases, staff says the plats meet applicable city regulations and development standards.
 
-The second case, `2026_FP_02_001`, is a final plat for Joyce Carrell Elementary School at 1015 Brookside Blvd. Its stated purpose is the same: establish a buildable lot and dedicate the easements needed to support development.
+For residents, the meaning is straightforward. A new middle school and a new elementary school are moving through the city process in one of Princeton's main growth areas. The district is already publicly listing both campuses at these Brookside addresses as coming in Fall 2026.
 
-For residents, the meaning is straightforward.
+## One Important Geography Detail
 
-A new middle school and a new elementary school are moving through the city process in one of Princeton’s growth areas.
-
-<figure>
-  <img src="/images/princeton-crossmill-schools-april-17-second.jpg" alt="Princeton ISD stadium in Princeton" />
-  <figcaption>
-    Image: Rogue Construction Facebook, used as a representative Princeton ISD image.
-  </figcaption>
-</figure>
+Both staff memos say the proposed school sites and Brookside Boulevard are inside Princeton city limits, while the adjacent single-family Crossmill neighborhood is outside city limits. The plats also show city limit lines and Princeton extraterritorial jurisdiction around the area. That helps explain why these school sites are in front of Princeton P&Z even as nearby residential development extends beyond the city boundary.
 
 ## Why This Matters
 
-School stories matter in Princeton because growth here does not stay abstract for long.
+School growth in Princeton does not stay abstract for long.
 
-It turns into crowded roads.
+It means more cars on the same roads, more pressure on intersections and utilities, and more questions about whether the district and city are keeping up at the same pace as the rooftops.
 
-It turns into pressure on nearby infrastructure.
+Both staff memos point to Brookside Boulevard as the primary frontage for the school sites. Both also say Brookside is still under construction and must be completed and formally accepted by the city before a certificate of occupancy can be issued for the proposed public schools. Joyce Carrell would also have secondary access from Cypress Bend Parkway.
 
-It turns into questions about how quickly the city and district can keep up.
-
-Both staff memos point to Brookside Boulevard as the primary frontage for the school sites. Both also note that Brookside is still under construction and must be completed and formally accepted before a certificate of occupancy can be issued for the proposed public schools.
-
-That means this is not just a land story.
-
-It is also a roads, access, and timing story.
+This is not just a land story. It is also a roads, access, and timing story.
 
 ## The Pattern Underneath It
 
 What makes this bigger than a routine plat item is the convergence.
 
-Two separate school sites are on the same agenda.
+Two school sites are on the same agenda, in the same subdivision, tied to the same corridor, and moving within the same broader growth pattern. The same consent agenda also includes a final plat for Crossmill Phase 1A from D.R. Horton, showing the school sites are moving with the surrounding development, not apart from it.
 
-Both are in the same subdivision.
+The packet also ties the area to future traffic response. Each memo says the developer of Crossmill reimbursed the city $5.1 million, with part of that available for signal improvements on Brookside and Beauchamp as needed.
 
-Both are tied to the same corridor.
+That is one of the clearest signs in the packet that this is not only about schools. It is also about the infrastructure required to support them.
 
-Both are part of the same broader growth pattern.
+## What the Public Record Says About Timing
 
-The documents also tie the area to future traffic response. Each memo notes that the developer of Crossmill reimbursed the city $5.1 million, with part of that available for signal improvements on Brookside and Beauchamp as needed.
+The city packet is about final plats, not ribbon cuttings. But Princeton ISD's public materials go further.
 
-That is one of the clearest signs in the packet that the issue is not only schools.
+The district's long range planning page lists Joyce Carrell Elementary No. 9 and Tom Banschbach Middle School No. 4 among its projects opening in 2026. The district contact page also lists both Brookside campuses as "Coming Fall 2026." That does not replace later construction and operational milestones, but it does show these schools are already part of the district's public timeline.
 
-It is the surrounding infrastructure required to support them.
+## One Public Record Note
 
-## What Residents Should Understand
+One detail in the packet is not clean.
 
-The cleanest way to read Monday’s agenda is this:
+The Banschbach staff memo lists the site as 23.3833 acres. But the uploaded plat application and proposed final plat for that same site list it as 28.3833 acres. The address, case, and school identity match. The acreage figure does not. The Joyce Carrell documents are consistent at 12.6396 acres.
 
-Princeton is moving closer to two more schools in Crossmill, one middle school and one elementary school.
+That discrepancy does not change the larger point of the story, but it is part of the public record.
 
-That does not mean every remaining step is finished. But it does mean the land is being formally pushed forward for those school uses, and city staff says both plats meet the applicable standards.
+## What Families and Residents Will Want to Know
 
-For people who live here, that is the real takeaway.
+This story answers the main questions.
 
-Growth in Princeton is still arriving.
+It answers what is happening: two Princeton ISD school sites in Crossmill are in front of P&Z for final plat review.
 
-And in Crossmill, it is now arriving in the form of two school sites moving closer to reality.
+It answers where: Banschbach is at 1110 Brookside Blvd. Joyce Carrell is at 1015 Brookside Blvd. Both are west of South Beauchamp Boulevard.
+
+It answers what stage this is: final plats to create buildable lots and dedicate easements, in a process staff says is ministerial if the plats comply with city regulations.
+
+It answers what the district is signaling: both campuses are publicly listed as coming in Fall 2026 and tied to a broader long range growth plan built around projected enrollment of 19,574 by 2034.
+
+It answers why roads matter: Brookside is still under construction, must be accepted before certificates of occupancy can issue, and the packet points to possible future signal improvements at Brookside and Beauchamp.
+
+## What It Still Does Not Answer
+
+The public materials still do not answer everything.
+
+They do not provide attendance boundaries, rezoning maps, bus routes, principal assignments, staffing plans, detailed campus capacity, student transfer rules, or a full traffic circulation plan for drop off and pickup. They also do not provide a final operational opening schedule beyond the district's public Fall 2026 listings. Those answers will likely come later through district communication, board materials, construction updates, or administrative releases.
 
 ## Final Take
 
-Princeton residents do not need another abstract sign that the city is growing.
+On Monday, P&Z is set to review final plats for Banschbach Middle School and Joyce Carrell Elementary School in Crossmill. The district is already publicly listing both campuses at those addresses as coming in Fall 2026. The same meeting also includes another Crossmill final plat, showing the school sites are moving forward as part of a broader buildout.
 
-They are getting a concrete one.
+That is the clearest way to read this story.
 
-On Monday, P&Z is set to review final plats for Banschbach Middle School and Joyce Carrell Elementary School in Crossmill. That puts a new middle school and a new elementary school one step further along in Princeton’s growth story.
-
-And when two school sites show up on the same agenda, in the same fast-growing area, tied to the same roads and development pattern, that is not minor paperwork.
-
-That is the city continuing to build around what is coming next.
+Princeton is still growing. Crossmill is one of the places where that growth is becoming physical. Here, it is taking the form of a new middle school and a new elementary school moving closer to reality.

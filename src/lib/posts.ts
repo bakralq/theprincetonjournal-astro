@@ -41,3 +41,13 @@ export const formatPostDate = (
 
 export const hasExplicitPublishTime = ({ publishedAt }: PostDateLike) =>
   Boolean(publishedAt && !Number.isNaN(new Date(publishedAt).getTime()));
+
+export const calculateReadingTime = (content: string) => {
+  const wordCount = (content || '').trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(wordCount / 200));
+};
+
+export const getReadingTime = (
+  content: string,
+  override?: number | null,
+) => override ?? calculateReadingTime(content);

@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
-import { formatPostDate, getPostTimestamp } from '../lib/posts';
+import { formatPostDate, getPostTimestamp, getReadingTime } from '../lib/posts';
 
 const posts = await getCollection('posts', ({ data }) =>
   !data.draft && data.section === 'US News'
@@ -22,6 +22,7 @@ const postsData = sortedPosts.map((post) => ({
   image: post.data.image || null,
   href: `/posts/${post.id.replace(/\.md$/, '')}`,
   content: post.body || '',
+  readingTime: getReadingTime(post.body || '', post.data.readingTime),
 }));
 
 const uniqueDates = [
@@ -34,11 +35,6 @@ const uniqueDates = [
 
 const formatDate = (date) =>
   formatPostDate({ date });
-
-const getReadingTime = (content) => {
-  const wordCount = (content || '').trim().split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.ceil(wordCount / 200));
-};
 
 const initialPosts = postsData.slice(0, 10);
 ---
@@ -97,7 +93,7 @@ const initialPosts = postsData.slice(0, 10);
           date={post.date}
           publishedAt={post.publishedAt}
           image={post.image}
-          readingTime={getReadingTime(post.content)}
+          readingTime={post.readingTime}
           variant="horizontal"
         />
       ))}
@@ -124,11 +120,6 @@ const initialPosts = postsData.slice(0, 10);
 <script define:vars={{ postsData }}>
   const posts = postsData;
   const pageSize = 10;
-
-  function getReadingTime(content) {
-    const wordCount = (content || '').trim().split(/\s+/).filter(Boolean).length;
-    return Math.max(1, Math.ceil(wordCount / 200));
-  }
 
   function truncateDescription(text, limit = 140) {
     if (!text || text.length <= limit) return text;
@@ -177,7 +168,7 @@ const initialPosts = postsData.slice(0, 10);
             ` : ''}
 
             <div class="p-6 ${post.image ? 'sm:w-3/4' : 'w-full'}">
-              <p class="text-sm text-gray-500">${formatPrettyDate(post.date, post.publishedAt)} • ${getReadingTime(post.content)} min read</p>
+              <p class="text-sm text-gray-500">${formatPrettyDate(post.date, post.publishedAt)} • ${post.readingTime} min read</p>
               <h2 class="mt-1 text-xl font-semibold">${post.title}</h2>
               <p class="mt-2 text-gray-600 text-sm">${truncateDescription(post.description, 140)}</p>
             </div>
