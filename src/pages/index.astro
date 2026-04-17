@@ -80,16 +80,16 @@ const getMeetingStatusClasses = (status) =>
   url="https://theprincetonjournal.com"
 >
   <main class="mx-auto max-w-6xl px-6 py-8">
-    <section class="grid gap-8 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+    <section class="grid gap-8 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] xl:items-stretch">
       {topPost && (
-        <div>
+        <div class="flex h-full flex-col">
           <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
             Top Story
           </h2>
 
           <a
             href={`/posts/${topPost.id.replace(/\.md$/, '')}`}
-            class="mt-4 block overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:border-gray-300 hover:shadow-sm"
+            class="mt-4 flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:border-gray-300 hover:shadow-sm"
           >
             {topPost.data.image && (
               <img
@@ -99,7 +99,7 @@ const getMeetingStatusClasses = (status) =>
               />
             )}
 
-            <div class="p-8">
+            <div class="flex flex-1 flex-col p-8">
               <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
                 {topPost.data.section}
               </p>
@@ -124,7 +124,7 @@ const getMeetingStatusClasses = (status) =>
       )}
 
       {featuredCouncilMeeting && (
-        <aside>
+        <aside class="flex h-full flex-col">
           <div class="flex items-center justify-between gap-2">
             <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
               City Council Tracker
@@ -139,9 +139,9 @@ const getMeetingStatusClasses = (status) =>
 
           <a
             href={`/city-council-tracker/${featuredCouncilMeeting.slug}`}
-            class="mt-4 block overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:border-gray-300 hover:shadow-sm"
+            class="mt-4 flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:border-gray-300 hover:shadow-sm"
           >
-            <div class="p-6">
+            <div class="flex flex-1 flex-col p-6">
               <div class="flex flex-wrap items-center gap-3">
                 <span
                   class={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] ${getMeetingStatusClasses(featuredCouncilMeeting.status)}`}
@@ -191,10 +191,24 @@ const getMeetingStatusClasses = (status) =>
       )}
     </section>
 
-    <AdSlot
-      slot={import.meta.env.PUBLIC_ADSENSE_HOME_SLOT}
-      className="mx-auto mt-12 max-w-4xl"
-    />
+    <div class="relative mt-12">
+      <div class="pointer-events-none absolute inset-y-0 left-0 hidden min-[960px]:flex items-center">
+        <span class="-translate-x-10 -rotate-90 rounded-full border border-gray-200 bg-white/92 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gray-500 shadow-sm">
+          Keep Scrolling
+        </span>
+      </div>
+
+      <div class="pointer-events-none absolute inset-y-0 right-0 hidden min-[960px]:flex items-center">
+        <span class="translate-x-10 rotate-90 rounded-full border border-gray-200 bg-white/92 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gray-500 shadow-sm">
+          More Below
+        </span>
+      </div>
+
+      <AdSlot
+        slot={import.meta.env.PUBLIC_ADSENSE_HOME_SLOT}
+        className="mx-auto max-w-[40rem] lg:max-w-[42rem]"
+      />
+    </div>
 
     <section class="mt-16">
       <div class="flex items-center justify-between gap-2">
