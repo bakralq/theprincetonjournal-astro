@@ -6,12 +6,9 @@ publishedAt: "2026-04-17T11:32:00-05:00"
 section: "Princeton Governance"
 author: "Christian J. Remington, Editor"
 image: "/images/princeton-crossmill-schools-april-17.jpg"
+imageCaption: "Image: Rogue Construction Facebook, used as a representative Princeton ISD image."
 preview: "Princeton P&Z is set to review final plats Monday for a new middle school and elementary school in Crossmill, another clear sign that school expansion is moving alongside the city’s rapid growth."
 ---
-
-<p class="article-hero-caption">
-  Image: Rogue Construction Facebook, used as a representative Princeton ISD image.
-</p>
 
 <p><strong><a href="#quick-read" style="color: #1d4ed8;">Scroll to the Quick Read below.</a></strong></p>
 
