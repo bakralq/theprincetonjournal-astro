@@ -19,6 +19,9 @@ const {
   url,
   image,
   imageCaption,
+  imageFit = 'cover',
+  heroWide = false,
+  heroSize = 'default',
   nextPost,
   readingTime,
 } = Astro.props;
@@ -47,7 +50,7 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
 
     {author && (
       <p class="mt-4 text-sm text-gray-600">
-        By <a href="/staff" class="no-underline hover:underline">{author}</a>
+        By <a href="https://collincountyjournal.com/staff/" class="no-underline hover:underline">{author}</a>
       </p>
     )}
 
@@ -60,11 +63,25 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
 
     {image && (
       <>
-        <img
-          src={image}
-          alt={title}
-          class="mt-8 w-full rounded-xl border border-gray-200 object-cover"
-        />
+        <div
+          class={`mt-6 ${
+            heroWide
+              ? 'sm:-mx-4 lg:-mx-6'
+              : heroSize === 'compact'
+              ? 'mx-auto max-w-2xl'
+              : ''
+          }`}
+        >
+          <img
+            src={image}
+            alt={title}
+            class={`block w-full rounded-xl border border-gray-200 ${
+              imageFit === 'contain'
+                ? 'bg-white object-contain'
+                : 'object-cover'
+            }`}
+          />
+        </div>
         {imageCaption && (
           <p class="mt-2 text-sm text-gray-500">
             {imageCaption}
@@ -72,6 +89,8 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
         )}
       </>
     )}
+
+    <slot name="feature" />
 
     <AdSlot
       slot={import.meta.env.PUBLIC_ADSENSE_ARTICLE_TOP_SLOT}

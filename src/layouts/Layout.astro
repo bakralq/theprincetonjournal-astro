@@ -50,6 +50,12 @@ const normalizeCanonicalUrl = (value) => {
 };
 
 const canonicalUrl = normalizeCanonicalUrl(url || pathname);
+const ccjHomeUrl = 'https://collincountyjournal.com/';
+const ccjAboutUrl = 'https://collincountyjournal.com/about/';
+const ccjContactUrl = 'https://collincountyjournal.com/contact/';
+const ccjStaffUrl = 'https://collincountyjournal.com/staff/';
+const ccjPrivacyUrl = 'https://collincountyjournal.com/privacy/';
+const ccjTermsUrl = 'https://collincountyjournal.com/terms/';
 
 const websiteSchema =
   ogType === "website" && canonicalUrl === "https://theprincetonjournal.com/"
@@ -174,20 +180,20 @@ const maintenanceMessage = "Website down for maintenance. Check back again in a 
 
         <nav class="desktop-nav flex gap-6 text-sm font-medium">
           <a href="/">Home</a>
+          <a href={ccjHomeUrl}>Collin County Journal</a>
           <a href="/city-council-tracker">Council Tracker</a>
           <a href="/registry">Registry</a>
           <a href="/princeton-governance">Princeton Governance</a>
-          <a href="/us-news">US News</a>
         </nav>
       </div>
 
       <div id="mobile-menu" class="mobile-menu border-t border-gray-200">
         <nav class="mobile-nav mx-auto max-w-6xl px-6 py-4 flex flex-col gap-4 text-sm font-medium">
           <a href="/">Home</a>
+          <a href={ccjHomeUrl}>Collin County Journal</a>
           <a href="/city-council-tracker">Council Tracker</a>
           <a href="/registry">Registry</a>
           <a href="/princeton-governance">Princeton Governance</a>
-          <a href="/us-news">US News</a>
         </nav>
       </div>
     </header>
@@ -213,12 +219,13 @@ const maintenanceMessage = "Website down for maintenance. Check back again in a 
     <footer class="border-t border-gray-200 mt-20">
       <div class="mx-auto max-w-6xl px-6 py-10">
         <div class="flex flex-wrap gap-6 text-sm font-medium text-gray-700">
-          <a href="/about">About</a>
-          <a href="/staff">Staff</a>
-          <a href="/privacy">Privacy Policy</a>
+          <a href={ccjAboutUrl}>About</a>
+          <a href={ccjStaffUrl}>Staff</a>
+          <a href={ccjPrivacyUrl}>Privacy Policy</a>
           <a href="/whistleblower-protections">Whistleblower Protections</a>
-          <a href="/terms">Terms of Service</a>
-          <a href="/contact">Contact</a>
+          <a href={ccjTermsUrl}>Terms of Service</a>
+          <a href={ccjContactUrl}>Contact</a>
+          <a href="/support">Support</a>
           <a href="/subscribe">Subscribe</a>
         </div>
 

@@ -20,6 +20,8 @@ const postsData = sortedPosts.map((post) => ({
   date: post.data.date,
   publishedAt: post.data.publishedAt || null,
   image: post.data.image || null,
+  cardImageFit: post.data.cardImageFit || 'cover',
+  cardImageHeight: post.data.cardImageHeight || 'default',
   href: `/posts/${post.id.replace(/\.md$/, '')}`,
   content: post.body || '',
   readingTime: getReadingTime(post.body || '', post.data.readingTime),
@@ -93,6 +95,8 @@ const initialPosts = postsData.slice(0, 10);
           date={post.date}
           publishedAt={post.publishedAt}
           image={post.image}
+          imageFit={post.cardImageFit}
+          imageHeight={post.cardImageHeight}
           readingTime={post.readingTime}
           variant="horizontal"
         />
@@ -156,16 +160,16 @@ const initialPosts = postsData.slice(0, 10);
         >
           <div class="flex flex-col sm:flex-row">
             ${post.image ? `
-              <div class="sm:w-1/4 shrink-0">
+              <div class="shrink-0 ${post.cardImageFit === 'contain' ? 'sm:w-1/3' : 'sm:w-1/4'}">
                 <img
                   src="${post.image}"
                   alt="${post.title}"
-                  class="h-48 w-full object-cover"
+                  class="${post.cardImageHeight === 'tall' ? 'h-60 sm:h-64' : 'h-48'} w-full ${post.cardImageFit === 'contain' ? 'bg-white object-contain' : 'object-cover'}"
                 />
               </div>
             ` : ''}
 
-            <div class="p-6 ${post.image ? 'sm:w-3/4' : 'w-full'}">
+            <div class="p-6 ${post.image ? post.cardImageFit === 'contain' ? 'sm:w-2/3' : 'sm:w-3/4' : 'w-full'}">
 <p class="text-sm text-gray-500">${formatPrettyDate(post.date, post.publishedAt)} • ${post.readingTime} min read</p>
               <h2 class="mt-1 text-xl font-semibold">${post.title}</h2>
 <p class="mt-2 text-gray-600 text-sm">${truncateDescription(post.description, 140)}</p>

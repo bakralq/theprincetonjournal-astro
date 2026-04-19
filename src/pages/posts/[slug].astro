@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Place4CandidateCompare from '../../components/Place4CandidateCompare.astro';
 import { getPostDateObject, getPostTimestamp, getReadingTime } from '../../lib/posts';
 
 const SITE_URL = 'https://theprincetonjournal.com';
@@ -22,6 +23,7 @@ const readingTime = getReadingTime(rawContent, post.data.readingTime);
 
 const slug = post.id.replace(/\.md$/, '');
 const articleUrl = `${SITE_URL}/posts/${slug}`;
+const featureSlug = 'princeton-place-4-special-election-candidate-guide-2026';
 
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 
@@ -98,9 +100,13 @@ const articleSchema = {
   url={articleUrl}
   image={post.data.image}
   imageCaption={post.data.imageCaption}
+  imageFit={post.data.imageFit}
+  heroWide={post.data.heroWide}
+  heroSize={post.data.heroSize}
   preview={post.data.preview}
   readingTime={readingTime}
   nextPost={nextPostData}
 >
+  {slug === featureSlug && <Place4CandidateCompare slot="feature" />}
   <Content />
 </ArticleLayout>

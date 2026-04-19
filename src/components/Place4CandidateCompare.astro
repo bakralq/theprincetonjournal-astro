@@ -1,0 +1,557 @@
+---
+const candidates = [
+  {
+    name: 'Sharad Ramani',
+    image: '/images/place-4-election-2026/sharad-ramani.jpg',
+    lean: 'Oversight-heavy, fiscal, and detail-driven',
+    summary:
+      'Ramani is presenting the most explicitly financial and oversight-driven campaign in the race, with repeated focus on utility billing, PID scrutiny, transparency, and commercial growth.',
+    background:
+      '30+ years in global procurement and strategic sourcing, with experience managing large-scale budgets and contracts.',
+    experienceSignal:
+      'Not framed as a city-board insider. Framed instead as a resident advocate who has already pushed specific city issues into public view.',
+    focusAreas: [
+      'Fiscal oversight',
+      'Transparency',
+      'Utility billing reform',
+      'PID accountability',
+      'Commercial growth',
+    ],
+    publicPositions: [
+      'Publicly advocates for Winter Quarter Averaging and wastewater billing changes',
+      'Pushes for PID transparency and easier resident access to supporting documents',
+      'Frames council as a body that should scrutinize, not passively approve, staff proposals',
+      'Ties economic growth to a stronger commercial tax base and lower resident pressure',
+    ],
+    governingStyle:
+      'Data-driven, oversight-heavy, and corporate in tone. Strong on scrutiny, with the open question of how that style translates into coalition-building.',
+    politicalAffiliation:
+      'Not publicly emphasized.',
+    religiousAffiliation:
+      'Not publicly stated in the reviewed materials.',
+    endorsements:
+      'Public support signals include residents and issue advocates tied to utility-billing and transparency fights.',
+    facebookUrl: 'https://www.facebook.com/share/1Nnj7bGfMv/?mibextid=wwXIfr',
+    websiteUrl: 'https://sharadforcitycouncil.com/',
+    articleId: 'sharad-ramani',
+  },
+  {
+    name: 'Jaisen Rutledge',
+    image: '/images/place-4-election-2026/jaisen-rutledge.jpg',
+    lean: 'Systems, process, and collaborative governance',
+    summary:
+      'Rutledge is presenting the strongest process-and-governance case in the field, arguing that Princeton needs someone who understands how boards, staff relationships, and city systems actually work.',
+    background:
+      'Home Rule Charter Committee chair, former Community Development Corporation chair, nonprofit involvement, pastor, and longtime Princeton resident.',
+    experienceSignal:
+      'Most visible recent city-structure experience in the field through charter work and prior CDC leadership.',
+    focusAreas: [
+      'Governance structure',
+      'Transparency',
+      'Collaboration',
+      'Systems and accountability frameworks',
+      'Resident voice inside city process',
+    ],
+    publicPositions: [
+      'Emphasizes charter work, CDC leadership, and governance proposals as evidence of city-process familiarity',
+      'Repeats themes around KPIs, documentation standards, and measurable systems',
+      'Frames leadership as collaborative with staff and residents rather than reactive',
+      'Promotes town halls, advisory groups, and structured transparency tools',
+    ],
+    governingStyle:
+      'Process-focused, collaborative, and systems-builder in style. Strong on structure, with some voters possibly wanting more short-form priority answers.',
+    politicalAffiliation:
+      'Not publicly emphasized in the materials reviewed.',
+    religiousAffiliation:
+      'Publicly identifies as a faith-driven Christian leader in his campaign framing.',
+    endorsements:
+      'Strongest visible support signal is governing familiarity and civic involvement rather than a standout endorsements page.',
+    facebookUrl: 'https://www.facebook.com/share/1CJNMsTsXT/?mibextid=wwXIfr',
+    articleId: 'jaisen-rutledge',
+  },
+  {
+    name: 'Jan Goria',
+    image: '/images/place-4-election-2026/jan-goria.jpg',
+    lean: 'Neighborhood-first, growth-cautious, and direct',
+    summary:
+      'Goria is running the most visibly neighborhood-facing campaign, centering responsible growth, infrastructure, transparency, public safety, and preserving Princeton’s character.',
+    background:
+      'Community member with grassroots engagement, direct resident outreach, and campaign ties to local conservative and community support networks.',
+    experienceSignal:
+      'More grassroots and resident-facing than process-heavy, with the campaign built around direct contact and neighborhood pressure.',
+    focusAreas: [
+      'Responsible growth',
+      'Infrastructure',
+      'Preserving community character',
+      'Transparency',
+      'Public safety',
+    ],
+    publicPositions: [
+      'Promises town halls and direct resident contact before major votes',
+      'Leans hard into roads, traffic, safety, and the sense that growth has outrun infrastructure',
+      'Frames growth as something that should be managed without losing Princeton’s identity',
+      'Uses block walking and direct outreach as a central part of the campaign',
+    ],
+    governingStyle:
+      'Resident-focused, neighborhood-first, and growth-cautious. Strongest for voters who want a clearer brake pedal on growth pressure.',
+    politicalAffiliation:
+      'Republican-aligned public support is visible, including a Collin County GOP endorsement signal in the campaign material provided for this guide.',
+    religiousAffiliation:
+      'Publicly emphasizes Christian values in campaign-facing messaging and support material.',
+    endorsements:
+      'Visible support from local political and community figures, including Collin County GOP-aligned backing and endorsements highlighted on her campaign pages.',
+    facebookUrl: 'https://www.facebook.com/share/1Cm4WwMXuP/?mibextid=wwXIfr',
+    websiteUrl: 'https://www.jan4citycouncil.com/',
+    articleId: 'jan-goria',
+  },
+  {
+    name: 'Hassan Abdulkareem',
+    image: '/images/place-4-election-2026/hassan-abdulkareem.jpg',
+    lean: 'Accountability-driven outsider focused on daily life',
+    summary:
+      'Abdulkareem is presenting an outsider candidacy built around practical leadership, infrastructure, public safety, planning accountability, and the claim that Princeton already knows many of its problems but has not acted hard enough on them.',
+    background:
+      'Business professional and local general manager; Princeton resident since 2017, with campaign messaging saying he returned in 2024.',
+    experienceSignal:
+      'No prior city board or committee service publicly stated.',
+    focusAreas: [
+      'Infrastructure-first growth',
+      'Public safety staffing',
+      'Economic development',
+      'Local spending retention',
+      'Planning accountability',
+    ],
+    publicPositions: [
+      'Calls for a 5-year road improvement plan based on an existing pavement assessment',
+      'Raises concern over police staffing levels, saying the city has 47 officers total with 4 to 5 per shift',
+      'Advocates stronger zoning and subdivision standards, including lot size, setbacks, and usable space',
+      'Supports using Chapter 380 incentives to attract restaurants, entertainment, and local amenities',
+    ],
+    governingStyle:
+      'Accountability-driven, results-focused, and outsider in perspective.',
+    politicalAffiliation:
+      'Not publicly emphasized in the materials reviewed.',
+    religiousAffiliation:
+      'Publicly identifies as Muslim.',
+    endorsements:
+      'No major endorsements page was clearly visible in the reviewed materials. His case rests more on issue framing than on public endorsement volume.',
+    facebookUrl: 'https://www.facebook.com/share/18Mvgbsp2g/?mibextid=wwXIfr',
+    articleId: 'hassan-abdulkareem',
+  },
+];
+---
+
+<section class="place4-compare mt-8">
+  <div class="place4-compare-intro">
+    <p class="place4-compare-kicker">Candidate Overview</p>
+    <h2 class="place4-compare-title">Tap To Compare The Place 4 Candidates</h2>
+    <p class="place4-compare-text">
+      All four candidates are listed here first so readers can compare the field quickly before moving into the deeper breakdown below.
+    </p>
+  </div>
+
+  <div class="place4-grid">
+    {candidates.map((candidate) => (
+      <details class="place4-card">
+        <summary class="place4-summary">
+          <div class="place4-summary-copy">
+            <p class="place4-name">{candidate.name}</p>
+            <p class="place4-lean">{candidate.lean}</p>
+            <span class="place4-toggle">
+              <span class="place4-toggle-open">Open profile</span>
+              <span class="place4-toggle-close">Close profile</span>
+            </span>
+          </div>
+        </summary>
+
+        <div class="place4-body">
+          <img
+            src={candidate.image}
+            alt={candidate.name}
+            class="place4-photo"
+            loading="lazy"
+          />
+          <p class="place4-photo-note">
+            Image: Candidate campaign Facebook page.
+          </p>
+
+          <p class="place4-body-summary">{candidate.summary}</p>
+
+          <div class="place4-jump-row">
+            <a href={`#${candidate.articleId}`}>Read this candidate in the article</a>
+          </div>
+
+          <div class="place4-fact-grid">
+            <div>
+              <p class="place4-label">Background</p>
+              <p>{candidate.background}</p>
+            </div>
+            <div>
+              <p class="place4-label">Experience signal</p>
+              <p>{candidate.experienceSignal}</p>
+            </div>
+            <div>
+              <p class="place4-label">Governing style</p>
+              <p>{candidate.governingStyle}</p>
+            </div>
+            <div>
+              <p class="place4-label">Political affiliation</p>
+              <p>{candidate.politicalAffiliation}</p>
+            </div>
+            <div>
+              <p class="place4-label">Religious affiliation</p>
+              <p>{candidate.religiousAffiliation}</p>
+            </div>
+            <div>
+              <p class="place4-label">Endorsements / support signals</p>
+              <p>{candidate.endorsements}</p>
+            </div>
+          </div>
+
+          <div class="place4-list-block">
+            <p class="place4-label">Focus areas</p>
+            <ul>
+              {candidate.focusAreas.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="place4-list-block">
+            <p class="place4-label">Public positions</p>
+            <ul>
+              {candidate.publicPositions.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="place4-actions">
+            <a href={candidate.facebookUrl} target="_blank" rel="noopener noreferrer">
+              Facebook
+            </a>
+            {candidate.websiteUrl && (
+              <a href={candidate.websiteUrl} target="_blank" rel="noopener noreferrer">
+                Campaign website
+              </a>
+            )}
+          </div>
+        </div>
+      </details>
+    ))}
+  </div>
+
+  <div class="place4-next-step">
+    <p>Want to know which candidate lines up closest with what you want this seat to solve?</p>
+    <div>
+      <a href="#where-the-candidates-seem-to-lean">Compare where they seem to lean</a>
+      <a href="#what-this-means-for-voters">Go to what this means for voters</a>
+    </div>
+  </div>
+
+  <p class="place4-source-note">
+    Built from official city election information, public city board records, KERA reporting, campaign websites, and publicly available campaign messaging reviewed as of April 19, 2026.
+  </p>
+</section>
+
+<style>
+  .place4-compare {
+    margin-bottom: 2.5rem;
+  }
+
+  .place4-compare-intro {
+    border: 1px solid #e5e7eb;
+    border-radius: 2rem;
+    background:
+      radial-gradient(circle at top left, rgba(127, 29, 29, 0.1), transparent 36%),
+      linear-gradient(135deg, #fff7ed 0%, #ffffff 38%, #f8fafc 100%);
+    padding: 1.15rem 1.2rem;
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.07);
+  }
+
+  .place4-compare-kicker {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+
+  .place4-compare-title {
+    margin: 0.65rem 0 0;
+    font-size: clamp(1.8rem, 4vw, 2.7rem);
+    line-height: 1.05;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .place4-compare-text {
+    margin: 0.8rem 0 0;
+    font-size: 0.98rem;
+    line-height: 1.75;
+    color: #374151;
+  }
+
+  .place4-grid {
+    margin-top: 1rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .place4-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 1.75rem;
+    background: white;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .place4-card[open] {
+    border-color: #111827;
+    box-shadow: 0 26px 60px rgba(15, 23, 42, 0.12);
+  }
+
+  .place4-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1rem 1.05rem;
+  }
+
+  .place4-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .place4-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 1.1rem;
+    border: 1px solid #e5e7eb;
+    background: #f3f4f6;
+    margin-bottom: 0.5rem;
+  }
+
+  .place4-summary-copy {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .place4-name {
+    margin: 0;
+    font-size: 1.15rem;
+    line-height: 1.2;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .place4-lean {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.55;
+    color: #4b5563;
+  }
+
+  .place4-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: fit-content;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    padding: 0.38rem 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #111827;
+  }
+
+  .place4-card[open] .place4-toggle {
+    border-color: #111827;
+    background: #111827;
+    color: #fff;
+  }
+
+  .place4-toggle-close {
+    display: none;
+  }
+
+  .place4-card[open] .place4-toggle-open {
+    display: none;
+  }
+
+  .place4-card[open] .place4-toggle-close {
+    display: inline;
+  }
+
+  .place4-body {
+    border-top: 1px solid #e5e7eb;
+    padding: 1rem 1rem 1.15rem;
+  }
+
+  .place4-body-summary {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    line-height: 1.85;
+    color: #1f2937;
+  }
+
+  .place4-photo-note {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: #6b7280;
+  }
+
+  .place4-jump-row {
+    margin-top: 0.9rem;
+  }
+
+  .place4-jump-row a {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #111827;
+    text-decoration: none;
+  }
+
+  .place4-fact-grid {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .place4-fact-grid > div,
+  .place4-list-block {
+    border: 1px solid #e5e7eb;
+    border-radius: 1.15rem;
+    background: #f9fafb;
+    padding: 0.9rem 1rem;
+  }
+
+  .place4-label {
+    margin: 0 0 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #111827;
+  }
+
+  .place4-fact-grid p:last-child,
+  .place4-list-block ul {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: #1f2937;
+  }
+
+  .place4-list-block ul {
+    padding-left: 1.1rem;
+  }
+
+  .place4-list-block + .place4-list-block {
+    margin-top: 1rem;
+  }
+
+  .place4-actions {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .place4-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid #111827;
+    padding: 0.7rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #111827;
+    text-decoration: none;
+    transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+  }
+
+  .place4-actions a:hover {
+    background: #111827;
+    color: white;
+  }
+
+  .place4-next-step {
+    margin-top: 1rem;
+    border: 1px solid rgba(17, 24, 39, 0.14);
+    border-radius: 1.5rem;
+    background:
+      radial-gradient(circle at top left, rgba(185, 28, 28, 0.14), transparent 34%),
+      radial-gradient(circle at bottom right, rgba(29, 78, 216, 0.14), transparent 36%),
+      linear-gradient(135deg, #fff7ed 0%, #ffffff 42%, #eff6ff 100%);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    padding: 1.1rem 1.15rem;
+  }
+
+  .place4-next-step p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .place4-next-step div {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .place4-next-step a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid #111827;
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #111827;
+    text-decoration: none;
+  }
+
+  .place4-source-note {
+    margin: 1rem 0 0;
+    border: 1px solid #d1d5db;
+    border-left: 4px solid #111827;
+    border-radius: 1rem;
+    background: #f9fafb;
+    padding: 0.9rem 1rem;
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: #1f2937;
+  }
+
+  @media (min-width: 720px) {
+    .place4-compare-intro {
+      padding: 1.75rem;
+    }
+
+    .place4-fact-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

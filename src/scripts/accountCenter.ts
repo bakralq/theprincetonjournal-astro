@@ -48,7 +48,7 @@ const accountShell = (state: AccountState) => {
             You can post publicly or anonymously, but the account still stays attached behind the scenes for accountability and moderation.
           </p>
           <p class="mt-3 text-sm leading-7 text-gray-600">
-            By creating an account, you agree to the <a href="/privacy" class="font-semibold text-black underline decoration-black/30 underline-offset-4">Privacy Policy</a>, <a href="/whistleblower-protections" class="font-semibold text-black underline decoration-black/30 underline-offset-4">Whistleblower Protections</a>, and <a href="/terms" class="font-semibold text-black underline decoration-black/30 underline-offset-4">Terms of Service</a>.
+            By creating an account, you agree to the <a href="https://collincountyjournal.com/privacy/" class="font-semibold text-black underline decoration-black/30 underline-offset-4">Privacy Policy</a>, <a href="/whistleblower-protections" class="font-semibold text-black underline decoration-black/30 underline-offset-4">Whistleblower Protections</a>, and <a href="https://collincountyjournal.com/terms/" class="font-semibold text-black underline decoration-black/30 underline-offset-4">Terms of Service</a>.
           </p>
 
           <div class="mt-6 inline-flex rounded-full border border-gray-200 bg-gray-50 p-1">

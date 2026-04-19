@@ -26,14 +26,6 @@ const princetonGovernancePosts = sortedPosts
   )
   .slice(0, 3);
 
-const usNewsPosts = sortedPosts
-  .filter(
-    (post) =>
-      post.data.section === 'US News' &&
-      post.id !== topPost?.id
-  )
-  .slice(0, 3);
-
 const upcomingCouncilMeeting = [...cityCouncilMeetings]
   .filter((meeting) => meeting.status === 'upcoming')
   .sort(
@@ -90,7 +82,15 @@ const getMeetingStatusClasses = (status) =>
               <img
                 src={topPost.data.image}
                 alt={topPost.data.title}
-                class="h-72 w-full object-cover sm:h-80"
+                class={`w-full ${
+                  topPost.data.topStoryImageLayout === 'square'
+                    ? 'aspect-square object-cover sm:aspect-[4/3]'
+                    : topPost.data.cardImageFit === 'contain'
+                    ? topPost.data.cardImageHeight === 'tall'
+                      ? 'h-72 bg-white object-contain sm:h-80'
+                      : 'h-56 bg-white object-contain sm:h-64'
+                    : 'h-72 object-cover sm:h-80'
+                }`}
               />
             )}
 
@@ -213,6 +213,8 @@ const getMeetingStatusClasses = (status) =>
             date={post.data.date}
             publishedAt={post.data.publishedAt}
             image={post.data.image}
+            imageFit={post.data.cardImageFit}
+            imageHeight={post.data.cardImageHeight}
             readingTime={getReadingTime(post.body, post.data.readingTime)}
             variant="stacked"
           />
@@ -223,29 +225,46 @@ const getMeetingStatusClasses = (status) =>
     <section class="mt-16">
       <div class="flex items-center justify-between gap-2">
         <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
-          Latest U.S. News
+          Collin County Journal
         </h2>
         <a
-          href="/us-news"
+          href="https://collincountyjournal.com/"
           class="text-sm font-medium text-gray-600 hover:text-black whitespace-nowrap shrink-0"
         >
-          View all
+          Open CCJ
         </a>
       </div>
-      <div class="mt-6 grid gap-6 md:grid-cols-3">
-        {usNewsPosts.map((post) => (
-          <ArticleCard
-            title={post.data.title}
-            description={post.data.description}
-            href={`/posts/${post.id.replace(/\.md$/, '')}`}
-            date={post.data.date}
-            publishedAt={post.data.publishedAt}
-            image={post.data.image}
-            readingTime={getReadingTime(post.body, post.data.readingTime)}
-            variant="stacked"
-          />
-        ))}
-      </div>
+      <a
+        href="https://collincountyjournal.com/"
+        class="mt-6 block overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-red-50 via-white to-blue-100 transition hover:border-gray-300 hover:shadow-sm"
+      >
+        <div class="grid gap-0 md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
+          <div class="flex min-h-[220px] items-end bg-[radial-gradient(circle_at_top_left,rgba(185,28,28,0.18),transparent_44%),radial-gradient(circle_at_bottom_right,rgba(29,78,216,0.16),transparent_46%),linear-gradient(135deg,rgba(255,255,255,0.98),rgba(254,242,242,0.95),rgba(239,246,255,0.97))] p-6 sm:p-8">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
+                Countywide coverage
+              </p>
+              <h3 class="mt-3 max-w-sm text-3xl font-bold tracking-tight text-black">
+                Follow Collin County Journal beyond Princeton.
+              </h3>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-8">
+            <div class="inline-flex rounded-full border border-red-200 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-900">
+              Anna • Celina • Melissa • Prosper • U.S.
+            </div>
+
+            <p class="mt-4 text-lg leading-8 text-gray-700">
+              Collin County Journal carries the broader countywide and national-facing coverage lane, while The Princeton Journal stays focused on Princeton itself. Move between both and keep the full picture in view.
+            </p>
+
+            <div class="mt-6 inline-flex items-center rounded-full border border-black bg-black px-5 py-3 text-sm font-semibold text-white">
+              Open Collin County Journal
+            </div>
+          </div>
+        </div>
+      </a>
     </section>
   </main>
 </Layout>

@@ -1,10 +1,5 @@
 ---
-const monthlyUrl =
-  import.meta.env.PUBLIC_SUPPORT_MONTHLY_URL ||
-  'https://buy.stripe.com/cNibJ2d2B76OcmYbm99MY02';
-const annualUrl =
-  import.meta.env.PUBLIC_SUPPORT_YEARLY_URL ||
-  'https://buy.stripe.com/3cI7sM1jT76ObiU61P9MY03';
+const supportUrl = '/support';
 ---
 
 <section class="mt-14 rounded-[2rem] border border-gray-200 bg-stone-50 p-6 sm:p-8">
@@ -23,13 +18,13 @@ const annualUrl =
 
     <div class="flex flex-wrap gap-3">
       <a
-        href={monthlyUrl}
+        href={supportUrl}
         class="inline-flex items-center rounded-2xl border border-black bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
       >
         Support monthly
       </a>
       <a
-        href={annualUrl}
+        href={supportUrl}
         class="inline-flex items-center rounded-2xl border border-gray-300 px-5 py-3 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
       >
         See all options
