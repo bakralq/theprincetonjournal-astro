@@ -66,6 +66,11 @@ export type RegistryRecord = {
 
 export const defineRegistryRecord = (record: RegistryRecord): RegistryRecord => record;
 
+const removedFromCurrentZipSnapshot = new Set([
+  'daley-ladurrius-21210025',
+  'singh-anthony-steven-04314408',
+]);
+
 export const registryRecordTemplate: RegistryRecord = {
   id: 'lastname-firstname-unique-id',
   name: 'LASTNAME,FIRSTNAME',
@@ -1278,12 +1283,12 @@ export const registryRecords: RegistryRecord[] = [
     riskLevel: 'NOT REPORTED',
     registrationEnd: 'LIFETIME',
     verificationRequirement: 'QUARTERLY',
-    address: '5923 Wedge Mere Dr',
-    city: 'Princeton',
-    state: 'TX',
-    zip: '75407',
+    address: 'Transient',
+    city: '',
+    state: '',
+    zip: '',
     neighborhood: '',
-    status: 'Verified',
+    status: 'Transient',
     sourceAgency: 'COLLIN COUNTY SHERIFFS OFFICE',
     sourceUrl: '',
     notices: [
@@ -1294,11 +1299,7 @@ export const registryRecords: RegistryRecord[] = [
       imageUrl: '/images/registry/18251306.jpeg',
       reportedDate: '2025-11-19',
     },
-    lastUpdated: '2026-02-18',
-    location: {
-      lat: 33.084456,
-      lng: -96.505792,
-    },
+    lastUpdated: '2026-04-21',
     physicalDescription: {
       height: `5'4"`,
       weight: '140 lbs',
@@ -1308,6 +1309,11 @@ export const registryRecords: RegistryRecord[] = [
       shoeWidth: 'UNKNOWN',
     },
     events: [
+      {
+        date: '2026-04-21',
+        type: 'Change of Status',
+        agency: 'COLLIN COUNTY SHERIFFS OFFICE',
+      },
       {
         date: '2026-02-18',
         type: 'Verification',
@@ -6867,6 +6873,43 @@ export const registryRecords: RegistryRecord[] = [
     ],
   }),
   defineRegistryRecord({
+    id: 'elmore-michael-allan-relocation',
+    name: 'ELMORE,MICHAEL ALLAN',
+    aliases: [],
+    birthDate: '',
+    alternateBirthDates: [],
+    sid: '',
+    sex: 'Male',
+    race: 'Not reported',
+    ethnicity: 'Not reported',
+    riskLevel: 'NOT REPORTED',
+    registrationEnd: 'Not reported',
+    verificationRequirement: 'Not reported',
+    address: 'Relocation',
+    city: '',
+    state: '',
+    zip: '',
+    neighborhood: '',
+    status: 'Relocation',
+    sourceAgency: 'TEXAS DEPARTMENT OF PUBLIC SAFETY',
+    sourceUrl: '',
+    notices: [
+      "DPS Cannot guarantee the records you obtain through this site relate to the person about whom you are seeking information. Searches based on names, dates of birth and other alphanumeric identifiers are not always accurate. The only way to positively link someone to a criminal record is through fingerprint verification.",
+      "The registry contains information as reported by the law enforcement agency that served as the offender's last Texas registration authority. Registrants who leave the state will have their last reported state/country of intended residence reflected in the address portion of their record. Registration information will remain on the web site until the duty to register has expired or other relief allowed by statute is granted. (Art. 62.101 and 62.251 Tx CCP)",
+    ],
+    photo: {},
+    lastUpdated: '2026-04-21',
+    physicalDescription: {},
+    events: [
+      {
+        date: '2026-04-21',
+        type: 'Relocation status added to ZIP 75407 snapshot',
+        agency: 'TEXAS DEPARTMENT OF PUBLIC SAFETY',
+      },
+    ],
+    offenses: [],
+  }),
+  defineRegistryRecord({
     id: 'zamora-carlos-thomas-07853084',
     name: 'ZAMORA,CARLOS THOMAS',
     aliases: ['ZAMORA,CARLOS', 'ZAMORA,CARLOS T'],
@@ -6936,4 +6979,4 @@ export const registryRecords: RegistryRecord[] = [
       },
     ],
   }),
-];
+].filter((record) => !removedFromCurrentZipSnapshot.has(record.id));

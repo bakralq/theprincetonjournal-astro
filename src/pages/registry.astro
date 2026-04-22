@@ -4,7 +4,7 @@ import { registryRecords } from '../data/registry';
 
 const registryData = JSON.stringify(registryRecords);
 const officialRegistryZipUrl = 'https://sor.dps.texas.gov/Search/Default/SearchByZipCode';
-const registryLastReviewed = 'April 11, 2026';
+const registryLastReviewed = 'April 21, 2026';
 ---
 
 <Layout
@@ -97,6 +97,7 @@ const registryLastReviewed = 'April 11, 2026';
           <option value="Verified">Verified</option>
           <option value="Reported Information Not Verified">Reported Information Not Verified</option>
           <option value="Relocation">Relocation</option>
+          <option value="Transient">Transient</option>
         </select>
       </label>
 
@@ -127,8 +128,8 @@ const registryLastReviewed = 'April 11, 2026';
 
         <p class="registry-map-note">
           The map centers on Princeton, Texas and automatically plots any offenders that include latitude and longitude values.
-          Offenders marked as relocation are intentionally left off the map when the official registry does not provide a
-          current confirmed mappable address.
+          Offenders marked as relocation or transient are intentionally left off the map when the official registry does
+          not provide a current confirmed mappable address.
         </p>
       </div>
 
@@ -247,7 +248,7 @@ const registryLastReviewed = 'April 11, 2026';
           </summary>
           <div class="registry-resource-body">
             <p>
-              Learn what “verified,” “reported not verified,” and “relocation” mean, and use the offense guide when you want plain-language help with statutes and offense labels.
+              Learn what “verified,” “reported not verified,” “relocation,” and “transient” mean, and use the offense guide when you want plain-language help with statutes and offense labels.
             </p>
             <div class="registry-banner-links">
               <a href="/registry-data-guide">Read the quick guide</a>
