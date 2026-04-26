@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
-import AdSlot from '../components/AdSlot.astro';
 import { cityCouncilMeetings } from '../data/cityCouncilTracker';
 import { formatPostDate, getPostTimestamp, getReadingTime } from '../lib/posts';
 
@@ -185,12 +184,6 @@ const getMeetingStatusClasses = (status) =>
         </aside>
       )}
     </section>
-
-    <AdSlot
-      slot={import.meta.env.PUBLIC_ADSENSE_HOME_SLOT}
-      showDesktopScrollCues={true}
-      className="mx-auto mt-12 max-w-[40rem] lg:max-w-[42rem]"
-    />
 
     <section class="mt-16">
       <div class="flex items-center justify-between gap-2">

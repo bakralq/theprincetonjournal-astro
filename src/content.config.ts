@@ -10,6 +10,7 @@ const postsCollection = defineCollection({
     author: z.string(),
     image: z.string().optional(),
     imageCaption: z.string().optional(),
+    imageCaptionUrl: z.string().url().optional(),
     imageFit: z.enum(['cover', 'contain']).optional(),
     cardImageFit: z.enum(['cover', 'contain']).optional(),
     topStoryImageLayout: z.enum(['default', 'square']).optional(),

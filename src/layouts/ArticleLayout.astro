@@ -1,6 +1,5 @@
 ---
 import Layout from './Layout.astro';
-import AdSlot from '../components/AdSlot.astro';
 import ArticleInlineSubscribe from '../components/ArticleInlineSubscribe.astro';
 import SupportPrompt from '../components/SupportPrompt.astro';
 import {
@@ -19,6 +18,7 @@ const {
   url,
   image,
   imageCaption,
+  imageCaptionUrl,
   imageFit = 'cover',
   heroWide = false,
   heroSize = 'default',
@@ -83,23 +83,36 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
           />
         </div>
         {imageCaption && (
-          <p class="mt-2 text-sm text-gray-500">
-            {imageCaption}
-          </p>
+          imageCaptionUrl ? (
+            <p class="article-hero-caption">
+              <a href={imageCaptionUrl} target="_blank" rel="noopener noreferrer">
+                {imageCaption}
+              </a>
+            </p>
+          ) : (
+            <p class="article-hero-caption">
+              {imageCaption}
+            </p>
+          )
         )}
       </>
     )}
 
     <slot name="feature" />
 
-    <AdSlot
-      slot={import.meta.env.PUBLIC_ADSENSE_ARTICLE_TOP_SLOT}
-      className="mt-10 max-w-2xl"
-    />
-
     <article data-article-body data-published-at={articlePublishedIso} class="article-content mt-10 text-lg leading-8 text-gray-800">
       <slot />
     </article>
+
+    <button
+      type="button"
+      class="article-back-to-top"
+      data-article-back-to-top
+      aria-label="Back to top"
+      hidden
+    >
+      ↑
+    </button>
 
     <template id="articleInlineSubscribeTemplate">
       <ArticleInlineSubscribe />
@@ -248,21 +261,86 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
             .forEach((container) => injectInto(container));
         };
 
+        const installJumpNavigation = () => {
+          const jumpNav = document.querySelector('[data-jump-nav]');
+          const backToTopButton = document.querySelector('[data-article-back-to-top]');
+
+          if (!(jumpNav instanceof HTMLElement) || !(backToTopButton instanceof HTMLButtonElement)) {
+            return;
+          }
+
+          const topOffset = 112;
+          let isVisible = false;
+
+          const updateVisibility = () => {
+            const threshold = jumpNav.getBoundingClientRect().bottom + window.scrollY + 24;
+            const nextVisible = window.scrollY > threshold;
+
+            if (nextVisible === isVisible) {
+              return;
+            }
+
+            isVisible = nextVisible;
+            backToTopButton.hidden = !isVisible;
+            backToTopButton.classList.toggle('is-visible', isVisible);
+          };
+
+          jumpNav.querySelectorAll('a[href^="#"]').forEach((link) => {
+            link.addEventListener('click', (event) => {
+              const href = link.getAttribute('href');
+
+              if (!href || href === '#') {
+                return;
+              }
+
+              const target = document.querySelector(href);
+
+              if (!(target instanceof HTMLElement)) {
+                return;
+              }
+
+              event.preventDefault();
+
+              const top = target.getBoundingClientRect().top + window.scrollY - topOffset;
+
+              window.scrollTo({
+                top,
+                behavior: 'smooth',
+              });
+
+              if (history.replaceState) {
+                history.replaceState(null, '', href);
+              } else {
+                window.location.hash = href;
+              }
+            });
+          });
+
+          backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth',
+            });
+          });
+
+          window.addEventListener('scroll', updateVisibility, { passive: true });
+          updateVisibility();
+        };
+
         if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', installInlinePrompts, {
+          document.addEventListener('DOMContentLoaded', () => {
+            installInlinePrompts();
+            installJumpNavigation();
+          }, {
             once: true,
           });
         } else {
           installInlinePrompts();
+          installJumpNavigation();
         }
 
       })();
     </script>
-
-    <AdSlot
-      slot={import.meta.env.PUBLIC_ADSENSE_ARTICLE_BOTTOM_SLOT}
-      className="mt-12 max-w-2xl"
-    />
 
     <SupportPrompt />
 
