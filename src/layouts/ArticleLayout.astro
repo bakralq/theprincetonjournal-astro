@@ -2,6 +2,7 @@
 import Layout from './Layout.astro';
 import ArticleInlineSubscribe from '../components/ArticleInlineSubscribe.astro';
 import SupportPrompt from '../components/SupportPrompt.astro';
+import { getAuthorProfileUrl } from '../lib/authors';
 import {
   formatPostDate,
   getPostDateObject,
@@ -30,6 +31,7 @@ const formattedArticleDate = formatPostDate(
   hasExplicitPublishTime({ publishedAt }),
 );
 const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString();
+const authorProfileUrl = getAuthorProfileUrl(author);
 ---
 
 <Layout
@@ -50,7 +52,11 @@ const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString
 
     {author && (
       <p class="mt-4 text-sm text-gray-600">
-        By <a href="https://collincountyjournal.com/staff/" class="no-underline hover:underline">{author}</a>
+        By {authorProfileUrl ? (
+          <a href={authorProfileUrl} class="no-underline hover:underline">{author}</a>
+        ) : (
+          author
+        )}
       </p>
     )}
 

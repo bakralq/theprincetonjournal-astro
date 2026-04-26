@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import Place4CandidateCompare from '../../components/Place4CandidateCompare.astro';
+import { getAuthorProfile } from '../../lib/authors';
 import { getPostDateObject, getPostTimestamp, getReadingTime } from '../../lib/posts';
 
 const SITE_URL = 'https://theprincetonjournal.com';
@@ -24,6 +25,10 @@ const readingTime = getReadingTime(rawContent, post.data.readingTime);
 const slug = post.id.replace(/\.md$/, '');
 const articleUrl = `${SITE_URL}/posts/${slug}`;
 const featureSlug = 'princeton-place-4-special-election-candidate-guide-2026';
+const authorProfile = getAuthorProfile(post.data.author);
+const articleImageUrl = post.data.image
+  ? `https://theprincetonjournal.com${post.data.image}`
+  : null;
 
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 
@@ -71,13 +76,19 @@ const articleSchema = {
   }).toISOString(),
   author: {
     '@type': 'Person',
-    name: post.data.author,
+    name: authorProfile?.name ?? post.data.author,
+    ...(authorProfile && {
+      url: `${SITE_URL}/authors/${authorProfile.slug}`,
+    }),
   },
   publisher: {
     '@type': 'Organization',
     name: 'The Princeton Journal',
     url: SITE_URL,
   },
+  ...(articleImageUrl && {
+    image: [articleImageUrl],
+  }),
   mainEntityOfPage: {
     '@type': 'WebPage',
     '@id': articleUrl,
