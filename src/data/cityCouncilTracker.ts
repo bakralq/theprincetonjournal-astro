@@ -2476,11 +2476,12 @@ const april27AgendaItems: CouncilAgendaItem[] = [
     watchReason:
       'This is a meaningful governance and continuity decision because it affects who can step into management authority during a period of instability and active recruitment.',
     explainer:
-      'Leadership continuity matters more in a fast-growing city, not less. Council came out of executive session and approved making Chief James Waters the alternate city manager. Terrance Johnson seconded the motion, but the motion maker was not captured in the meeting record, so the tracker preserves the confirmed action without inventing a missing name.',
+      'Leadership continuity matters more in a fast-growing city, not less. Council came out of executive session and approved making Chief James Waters the alternate city manager. Bryan Washington made the motion and Terrance Johnson seconded it, giving the city a formal alternate management appointment during an active leadership transition.',
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved 6-0 after executive session.',
     voteNote:
-      'Terrance Johnson seconded the motion. The motion maker was not captured in the meeting record.',
+      'Motion by Bryan Washington. Second by Terrance Johnson.',
+    motionBy: 'Bryan Washington',
     secondBy: 'Terrance Johnson',
     voteRecords: createApril27SixZeroApproval(),
     outcomePositiveLabel: 'What approval means',
@@ -2510,11 +2511,12 @@ const april27AgendaItems: CouncilAgendaItem[] = [
     watchReason:
       'This was one of the meeting’s most watched land-use items because it turned a disputed Longneck Road case into an actual council decision.',
     explainer:
-      'The public hearing mattered because it moved the Longneck Road case from months of buildup into a real council outcome. The city’s own April 29 highlights page confirms the rezoning was approved, and the vote was 4-2 with Terrance Johnson and Cristina Todd voting no. The motion maker was not captured in the meeting record, so the tracker preserves the confirmed outcome and vote split without inventing that missing detail.',
+      'The public hearing mattered because it moved the Longneck Road case from months of buildup into a real council outcome. The city’s own April 29 highlights page confirms the rezoning was approved, and the vote was 4-2 with Terrance Johnson and Cristina Todd voting no. Steve Deffibaugh made the motion and Carolyn David-Graves seconded it.',
     voteMode: 'recorded-vote',
     voteHeadline: 'Approved after the continued public hearing on a 4-2 vote.',
     voteNote:
-      'Carolyn David-Graves seconded the motion. Terrance Johnson and Cristina Todd voted no. The motion maker was not captured in the meeting record.',
+      'Motion by Steve Deffibaugh. Second by Carolyn David-Graves. Terrance Johnson and Cristina Todd voted no.',
+    motionBy: 'Steve Deffibaugh',
     secondBy: 'Carolyn David-Graves',
     voteRecords: createApril27Pd46Vote(),
     outcomePositiveLabel: 'What approval means',
