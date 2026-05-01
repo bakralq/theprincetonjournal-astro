@@ -327,6 +327,189 @@ const createApril13ThreeTwoApproval = (): CouncilVoteRecord[] =>
     };
   });
 
+const april27Roster: CouncilMemberAttendance[] = [
+  {
+    name: 'Eugene Escobar Jr.',
+    seat: 'Mayor',
+    role: 'Mayor',
+    status: 'present',
+  },
+  {
+    name: 'Terrance Johnson',
+    seat: 'Place 1',
+    status: 'present',
+  },
+  {
+    name: 'Cristina Todd',
+    seat: 'Place 2',
+    status: 'present',
+  },
+  {
+    name: 'Bryan Washington',
+    seat: 'Place 3',
+    status: 'present',
+  },
+  {
+    name: 'Vacant',
+    seat: 'Place 4',
+    status: 'vacant',
+  },
+  {
+    name: 'Steve Deffibaugh',
+    seat: 'Place 5',
+    status: 'present',
+  },
+  {
+    name: 'Ben Long',
+    seat: 'Place 6',
+    status: 'present',
+  },
+  {
+    name: 'Carolyn David-Graves',
+    seat: 'Place 7',
+    status: 'present',
+  },
+];
+
+const createApril27SixZeroApproval = (): CouncilVoteRecord[] =>
+  april27Roster.map((member) => {
+    if (member.status === 'vacant') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'vacant',
+      };
+    }
+
+    if (member.seat === 'Mayor') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'not-voting',
+      };
+    }
+
+    return {
+      name: member.name,
+      seat: member.seat,
+      role: member.role,
+      status: 'yes',
+    };
+  });
+
+const createApril27FiveOneNoApproval = (noSeat: string): CouncilVoteRecord[] =>
+  april27Roster.map((member) => {
+    if (member.status === 'vacant') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'vacant',
+      };
+    }
+
+    if (member.seat === 'Mayor') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'not-voting',
+      };
+    }
+
+    if (member.seat === noSeat) {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'no',
+      };
+    }
+
+    return {
+      name: member.name,
+      seat: member.seat,
+      role: member.role,
+      status: 'yes',
+    };
+  });
+
+const createApril27FiveYesOneAbstain = (abstainSeat: string): CouncilVoteRecord[] =>
+  april27Roster.map((member) => {
+    if (member.status === 'vacant') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'vacant',
+      };
+    }
+
+    if (member.seat === 'Mayor') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'not-voting',
+      };
+    }
+
+    if (member.seat === abstainSeat) {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'abstain',
+      };
+    }
+
+    return {
+      name: member.name,
+      seat: member.seat,
+      role: member.role,
+      status: 'yes',
+    };
+  });
+
+const createApril27Pd46Vote = (): CouncilVoteRecord[] =>
+  april27Roster.map((member) => {
+    if (member.status === 'vacant') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'vacant',
+      };
+    }
+
+    if (member.seat === 'Mayor') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'not-voting',
+      };
+    }
+
+    if (member.seat === 'Place 1' || member.seat === 'Place 2') {
+      return {
+        name: member.name,
+        seat: member.seat,
+        role: member.role,
+        status: 'no',
+      };
+    }
+
+    return {
+      name: member.name,
+      seat: member.seat,
+      role: member.role,
+      status: 'yes',
+    };
+  });
+
 const march23AgendaItems: CouncilAgendaItem[] = [
   {
     code: 'C1',
@@ -1788,6 +1971,813 @@ const april13AgendaItems: CouncilAgendaItem[] = [
   },
 ];
 
+const april27AgendaItems: CouncilAgendaItem[] = [
+  {
+    code: 'C1',
+    itemNumber: '2026-082',
+    slug: 'april-27-historical-preservation-committee',
+    category: 'Work Session',
+    title: 'Discussion regarding creation of historical preservation committee',
+    importance: 'medium',
+    summary:
+      'Council discussed the idea of a historical preservation committee and indicated the next step is more research into classifications, structure, and what council wants to see before moving further.',
+    watchReason:
+      'This is still one of the clearer signals that Princeton may build a formal preservation structure before redevelopment pressure grows further.',
+    explainer:
+      'Unlike the earlier posted-but-not-discussed work-session items on March 23 and April 13, this topic was actually discussed on April 27. Based on the user-provided meeting notes, the conversation did not end with a final policy decision, but it did move the concept forward into a research-and-refinement stage. That matters because it turns preservation from a placeholder topic into an active governance question.',
+    voteMode: 'discussion',
+    voteHeadline: 'Discussed in work session; next step is more research and refinement.',
+    voteNote:
+      'User-provided notes indicate council wants more information on classifications, structure, and what members want the committee to cover before any formal action.',
+    outcomePositiveLabel: 'If it keeps moving',
+    outcomePositive:
+      'Princeton could eventually create a more formal process for documenting historic assets and advising on preservation questions.',
+    outcomeNegativeLabel: 'If it stalls again',
+    outcomeNegative:
+      'The city may keep talking about preservation without building an actual structure behind it.',
+    pros: [
+      'Keeps preservation policy from being decided only after older places are already gone.',
+      'Lets council refine what kind of preservation structure would actually fit Princeton.',
+    ],
+    cons: [
+      'Research phases can drag on without producing a concrete follow-up item.',
+      'A committee can become symbolic if council never gives it a clear lane.',
+    ],
+  },
+  {
+    code: 'C2',
+    itemNumber: '2026-083',
+    slug: 'april-27-short-term-rentals',
+    category: 'Work Session',
+    title: 'Discussion regarding short-term rentals',
+    importance: 'high',
+    summary:
+      'Council discussed short-term rentals and signaled that staff will now work on an ordinance for future consideration.',
+    watchReason:
+      'This is one of the clearest policy shifts on the agenda because it moves short-term rentals from general discussion toward actual ordinance drafting.',
+    explainer:
+      'Short-term rental debates affect neighborhoods, property owners, enforcement, and how the city handles issues like parking, noise, safety, and local contacts. Based on the user-provided notes, council agreed that the city should work on an ordinance, which is a meaningful step beyond simply talking about the issue. It does not settle the final rules, but it does mean Princeton is moving toward a more formal regulatory framework.',
+    voteMode: 'discussion',
+    voteHeadline: 'Discussed in work session; city will work on an ordinance next.',
+    voteNote:
+      'User-provided notes indicate council aligned on moving the issue into ordinance drafting rather than leaving it at a conceptual stage.',
+    outcomePositiveLabel: 'If ordinance drafting goes well',
+    outcomePositive:
+      'Residents and property owners could soon get clearer rules on what is allowed, how it is enforced, and what standards apply.',
+    outcomeNegativeLabel: 'If the process bogs down',
+    outcomeNegative:
+      'The city could still be left with growing short-term rental pressure but no adopted policy to manage it.',
+    pros: [
+      'Moves the city toward a real policy framework instead of open-ended discussion.',
+      'Creates a path for public debate over the actual ordinance language later.',
+    ],
+    cons: [
+      'The hard part is still ahead because ordinance details can divide council, neighbors, and owners.',
+      'Poorly drafted rules can create confusion or enforcement problems.',
+    ],
+  },
+  {
+    code: 'C3',
+    itemNumber: '2026-093',
+    slug: 'april-27-parc-update',
+    category: 'Work Session',
+    title: '2023 Parks Bond Project Update: Multi-Gen Facility and Branding',
+    importance: 'medium',
+    summary:
+      'This PARC and multi-gen facility update was listed on the work-session agenda, but it was not discussed on April 27.',
+    watchReason:
+      'PARC remains one of the city’s biggest public projects even when its update gets skipped.',
+    explainer:
+      'The official city highlights page said this item was listed but not discussed. That matters because the project is large enough that delayed public discussion can still affect how clearly residents understand cost, design, and next steps.',
+    voteMode: 'discussion',
+    voteHeadline: 'Listed for work session, but not discussed.',
+    voteNote:
+      'The city’s April 29 highlights page specifically lists this item among the posted work-session topics council did not discuss.',
+    outcomePositiveLabel: 'If it returns later',
+    outcomePositive:
+      'Residents could still get a more complete update on the project’s design, branding, and bond-funded direction.',
+    outcomeNegativeLabel: 'Because it was skipped',
+    outcomeNegative:
+      'One of the city’s biggest public projects went another meeting without a fresh public discussion.',
+    pros: [
+      'Still leaves room for a more focused future update.',
+      'Avoids forcing a rushed discussion if council was not ready.',
+    ],
+    cons: [
+      'Residents got less public context on a major parks bond project.',
+      'Delayed discussion can make it harder to follow project evolution in real time.',
+    ],
+  },
+  {
+    code: 'C4',
+    itemNumber: '2026-094',
+    slug: 'april-27-roadway-status-update',
+    category: 'Work Session',
+    title: 'Roadway Status Update',
+    importance: 'high',
+    summary:
+      'The roadway status update was posted for work session, but it was not discussed on April 27.',
+    watchReason:
+      'Roadway conditions and project timing are one of the most immediate quality-of-life issues for residents, so skipped updates still matter.',
+    explainer:
+      'The city’s own highlights page lists the roadway update among the items council did not discuss in work session. Given how often traffic, road condition, and construction timing come up in Princeton, missing a roadway update still leaves an information gap for residents trying to track where road work stands.',
+    voteMode: 'discussion',
+    voteHeadline: 'Listed for work session, but not discussed.',
+    voteNote:
+      'The official city highlights page identified this as one of the listed-but-not-discussed work-session items.',
+    outcomePositiveLabel: 'If it comes back later',
+    outcomePositive:
+      'Residents could still get a clearer project-by-project picture on roads, timing, and priorities.',
+    outcomeNegativeLabel: 'Because it was skipped',
+    outcomeNegative:
+      'A high-interest infrastructure update did not actually happen in public on April 27.',
+    pros: [
+      'Can still return later with more complete material.',
+      'Avoids treating a large infrastructure topic superficially.',
+    ],
+    cons: [
+      'Residents lost a chance for a live public road-status discussion.',
+      'Traffic and roadway concerns keep building even when updates get deferred.',
+    ],
+  },
+  {
+    code: 'C5',
+    itemNumber: '2026-098',
+    slug: 'april-27-ebike-regulations',
+    category: 'Work Session',
+    title: 'Discussion regarding e-bike regulations',
+    importance: 'medium',
+    summary:
+      'The e-bike regulations item was posted on the work-session agenda, but it was not discussed on April 27.',
+    watchReason:
+      'This is a smaller item than roads or zoning, but it still touches public-safety and quality-of-life rules that could grow in importance later.',
+    explainer:
+      'The official city highlights page lists e-bike regulations among the posted items council did not discuss. For now, the main takeaway is that Princeton still has not had the public policy conversation this agenda suggested might happen.',
+    voteMode: 'discussion',
+    voteHeadline: 'Listed for work session, but not discussed.',
+    voteNote:
+      'The official city highlights page lists this item among the skipped work-session topics.',
+    outcomePositiveLabel: 'If it returns later',
+    outcomePositive:
+      'Council could still build a clearer framework around e-bike use, safety, and enforcement.',
+    outcomeNegativeLabel: 'Because it was skipped',
+    outcomeNegative:
+      'No public direction was set on e-bike policy at this meeting.',
+    pros: [
+      'Leaves room for a more deliberate policy conversation later.',
+      'Could eventually help the city address safety issues before they spread.',
+    ],
+    cons: [
+      'Residents got no public update despite the item being posted.',
+      'The city still has no visible public direction from this meeting on the topic.',
+    ],
+  },
+  {
+    code: 'C6',
+    itemNumber: '2026-099',
+    slug: 'april-27-sex-offender-registration-ordinance',
+    category: 'Work Session',
+    title: 'Discussion regarding sex offender registration ordinance',
+    importance: 'high',
+    summary:
+      'The sex offender registration ordinance item was posted for work session, but it was not discussed on April 27.',
+    watchReason:
+      'This is a high-interest public-safety issue where residents are likely to care more about what did not happen than about a routine agenda omission.',
+    explainer:
+      'The official city highlights page lists this item among the work-session topics council did not discuss. That means a publicly sensitive ordinance topic stayed unresolved again, even though it was posted on the agenda. For tracking purposes, the important fact is not a new rule but the absence of public movement.',
+    voteMode: 'discussion',
+    voteHeadline: 'Listed for work session, but not discussed.',
+    voteNote:
+      'The official city highlights page lists this item among the posted work-session topics council did not take up.',
+    outcomePositiveLabel: 'If it returns later',
+    outcomePositive:
+      'Residents could still see a clearer public discussion on what the city can or cannot change locally.',
+    outcomeNegativeLabel: 'Because it was skipped',
+    outcomeNegative:
+      'The ordinance discussion remains unresolved without new public direction from April 27.',
+    pros: [
+      'Still leaves room for a more careful future discussion instead of a rushed one.',
+      'Can return later with more legal clarity or staff preparation.',
+    ],
+    cons: [
+      'Residents got no April 27 public discussion on a high-interest safety issue.',
+      'Repeated delays can deepen frustration and uncertainty.',
+    ],
+    relatedCoverage: {
+      title:
+        'Princeton reviewing sex offender ordinance changes after public pressure ahead of April 13 meeting',
+      href: '/posts/princeton-reviewing-sex-offender-ordinance-changes-ahead-of-april-13-meeting',
+    },
+  },
+  {
+    code: 'G1',
+    itemNumber: '2026-095',
+    slug: 'april-27-tax-collection-agreement',
+    category: 'Consent Agenda',
+    title: "Interlocal Cooperation Agreement for Ad Valorem Tax Collection Services with Collin County Tax Assessor's Office and the City",
+    importance: 'medium',
+    summary:
+      'Council approved the tax-collection interlocal agreement as part of the main consent-agenda motion with G1 and G2 only.',
+    watchReason:
+      'This affects a basic administrative system behind how the city handles property-tax collection.',
+    explainer:
+      'This is not the flashiest agenda item, but it still matters because property-tax collection agreements shape a basic city function that residents rely on in the background. On April 27, council approved it inside the consent-agenda motion that covered only G1 and G2 before the later plat items were pulled out for individual handling.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved as part of the G1-G2 consent motion on a 5-1 vote.',
+    voteNote:
+      'Motion by Cristina Todd. Second by Terrance Johnson. User-provided notes record Carolyn David-Graves as the lone no vote.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Terrance Johnson',
+    voteRecords: createApril27FiveOneNoApproval('Place 7'),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The city can continue moving forward with the tax-collection arrangement under the approved agreement.',
+    outcomeNegativeLabel: 'If it had failed',
+    outcomeNegative:
+      'Council likely would have needed to revisit the collection arrangement or seek revisions before moving forward.',
+    pros: [
+      'Keeps a core city tax-administration function moving.',
+      'Creates an open vote record on an otherwise technical agreement.',
+    ],
+    cons: [
+      'Administrative agreements can still carry cost or oversight questions that get little public discussion.',
+      'The agenda title alone does not explain why a no vote was cast.',
+    ],
+  },
+  {
+    code: 'G2',
+    itemNumber: '2026-084',
+    slug: 'april-27-april-13-minutes',
+    category: 'Consent Agenda',
+    title: 'Approval of April 13, 2026 City Council regular meeting minutes',
+    importance: 'low',
+    summary:
+      'Council approved the April 13 meeting minutes as part of the same 5-1 consent-agenda motion that covered G1 and G2.',
+    watchReason:
+      'Minutes are procedural, but they become the city’s formal written record of a prior meeting.',
+    explainer:
+      'Approving minutes can look routine, but it is still how the city locks in its official written account of prior meetings. On April 27, council approved the April 13 minutes inside the same G1-G2 consent motion, with Carolyn David-Graves recorded as the lone no vote according to the user-provided notes.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved as part of the G1-G2 consent motion on a 5-1 vote.',
+    voteNote:
+      'Motion by Cristina Todd. Second by Terrance Johnson. User-provided notes record Carolyn David-Graves as the lone no vote.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Terrance Johnson',
+    voteRecords: createApril27FiveOneNoApproval('Place 7'),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The April 13 minutes become part of the official city record in their approved form.',
+    outcomeNegativeLabel: 'If it had been delayed',
+    outcomeNegative:
+      'Council likely would have held the minutes for corrections or later approval.',
+    pros: [
+      'Keeps the city’s meeting record current.',
+      'Provides a formal point for corrections if needed before approval.',
+    ],
+    cons: [
+      'Minutes often get less public scrutiny than larger policy items.',
+      'A split vote on minutes can signal deeper disagreement without much explanation in the title alone.',
+    ],
+  },
+  {
+    code: 'G3',
+    itemNumber: '2026-087',
+    slug: 'april-27-banschbach-middle-school-final-plat',
+    category: 'Consent Agenda',
+    title: 'Final plat for Crossmill Lot 58X Block A for Banschbach Middle School',
+    importance: 'high',
+    summary:
+      'Council approved the Banschbach Middle School final plat without infrastructure on a recorded vote, with Ben Long abstaining.',
+    watchReason:
+      'This is one of the clearer growth-pressure items because it ties school expansion to road readiness, plats, and infrastructure timing in Crossmill.',
+    explainer:
+      'This final plat is one of the key school-growth items tied to the Crossmill area. Council approved it without infrastructure, meaning council passed the final plat itself but did not approve the infrastructure side of the item at that time. That keeps the plat moving while still separating the infrastructure piece from the vote.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved without infrastructure on a 5-1 vote with one abstention.',
+    voteNote:
+      'Motion by Cristina Todd. Second by Carolyn David-Graves. Ben Long abstained.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Carolyn David-Graves',
+    voteRecords: createApril27FiveYesOneAbstain('Place 6'),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The school plat can keep moving forward while the infrastructure condition remains separated from full plat approval.',
+    outcomeNegativeLabel: 'If it had failed or been delayed',
+    outcomeNegative:
+      'The school-related development timeline in Crossmill could have slowed or returned for revisions.',
+    pros: [
+      'Moves a major school site forward in the city process.',
+      'Keeps infrastructure concerns visible instead of pretending they are already finished.',
+    ],
+    cons: [
+      'Conditional or partial-style approvals can still leave residents confused about what is fully complete.',
+      'School timing stays tied to infrastructure and roadway readiness.',
+    ],
+    relatedCoverage: {
+      title:
+        'A New Middle School and Elementary School Are on the Way in Princeton',
+      href: '/posts/princeton-new-middle-school-elementary-crossmill/',
+    },
+  },
+  {
+    code: 'G4',
+    itemNumber: '2026-088',
+    slug: 'april-27-joyce-carrell-elementary-final-plat',
+    category: 'Consent Agenda',
+    title: 'Final plat for Crossmill Lot 27X Block 1 for Joyce Carrell Elementary School',
+    importance: 'high',
+    summary:
+      'Council approved the Joyce Carrell Elementary School final plat without infrastructure on a recorded vote, with Ben Long abstaining.',
+    watchReason:
+      'This is paired with the Banschbach plat as one of the clearest signs that school growth and infrastructure timing are now directly linked in Crossmill.',
+    explainer:
+      'Like the Banschbach item, this plat moves another Princeton ISD site forward while preserving the infrastructure caveat in the approval. In practical terms, council approved the final plat but not the infrastructure side of the item at that time. That matters because residents are not just watching school sites appear on paper. They are watching whether roads and supporting systems keep up too.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved without infrastructure on a 5-1 vote with one abstention.',
+    voteNote:
+      'Motion by Cristina Todd. Second by Carolyn David-Graves. Ben Long abstained.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Carolyn David-Graves',
+    voteRecords: createApril27FiveYesOneAbstain('Place 6'),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The elementary school plat can keep moving through the city process while infrastructure remains a distinct issue to watch.',
+    outcomeNegativeLabel: 'If it had failed or been delayed',
+    outcomeNegative:
+      'The school-site timeline in Crossmill could have slowed or come back with further questions.',
+    pros: [
+      'Advances another major school site inside a fast-growing area.',
+      'Keeps the infrastructure condition visible instead of burying it.',
+    ],
+    cons: [
+      'Residents may still be left asking what “without infrastructure” means in practice.',
+      'The school-opening path remains tied to unfinished surrounding systems.',
+    ],
+    relatedCoverage: {
+      title:
+        'A New Middle School and Elementary School Are on the Way in Princeton',
+      href: '/posts/princeton-new-middle-school-elementary-crossmill/',
+    },
+  },
+  {
+    code: 'G5',
+    itemNumber: '2026-089',
+    slug: 'april-27-crossmill-phase-1a-final-plat',
+    category: 'Consent Agenda',
+    title: 'Final plat for Crossmill Phase 1A subject to acceptance of Brookside Blvd.',
+    importance: 'high',
+    summary:
+      'Council tabled the Crossmill Phase 1A final plat to the May 11 meeting, with the city’s April 29 highlights page noting the item was tabled by the applicant.',
+    watchReason:
+      'This is one of the more important development-control points because it ties growth timing directly to Brookside Boulevard and the Crossmill buildout.',
+    explainer:
+      'The official agenda framed this item around Brookside Boulevard acceptance, and council formally tabled it to May 11. The city’s own highlights page adds that the item was tabled by the applicant. That makes the key public takeaway timing rather than rejection: this growth item is still alive, but it did not move on April 27.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Tabled to May 11, 2026 on a 6-0 vote.',
+    voteNote:
+      'Motion by Bryan Washington. Second by Carolyn David-Graves. The city’s April 29 highlights page says the item was tabled by the applicant.',
+    motionBy: 'Bryan Washington',
+    secondBy: 'Carolyn David-Graves',
+    voteRecords: createApril27SixZeroApproval(),
+    outcomePositiveLabel: 'What tabling means',
+    outcomePositive:
+      'Council kept the item alive for a near-term return instead of forcing a premature approval or denial.',
+    outcomeNegativeLabel: 'What it also means',
+    outcomeNegative:
+      'Residents still do not have a final April 27 outcome on one of the larger Crossmill items tied to Brookside timing.',
+    pros: [
+      'Gives the applicant and city more time to resolve timing or condition issues.',
+      'Avoids pushing through a plat before council is ready.',
+    ],
+    cons: [
+      'Delays public clarity on a major Crossmill item.',
+      'Can keep surrounding growth and infrastructure questions hanging longer.',
+    ],
+    relatedCoverage: {
+      title:
+        'Princeton’s Monday Agenda Is Packed: New Schools, Short Term Rentals, PD 46, Roads, PARC, Police Cameras, and the City Manager Search',
+      href: '/posts/princeton-monday-april-27-2026-city-council-agenda/',
+    },
+  },
+  {
+    code: 'G6',
+    itemNumber: '2026-090',
+    slug: 'april-27-whitewing-trails-phase-4a1-final-plat',
+    category: 'Consent Agenda',
+    title: 'Final plat for Whitewing Trails - Phase 4A-1',
+    importance: 'medium',
+    summary:
+      'Council approved the Whitewing Trails Phase 4A-1 final plat without infrastructure on a 6-0 vote.',
+    watchReason:
+      'This item adds to the broader pattern of neighborhood growth continuing while infrastructure questions stay in the background.',
+    explainer:
+      'Whitewing Trails keeps showing up as part of Princeton’s active growth pipeline. Council approved this phase without infrastructure, which means the plat moved but not with a clean everything-is-finished signal attached to it.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved without infrastructure on a 6-0 vote.',
+    voteNote:
+      'Motion by Cristina Todd. Second by Bryan Washington.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Bryan Washington',
+    voteRecords: createApril27SixZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'This phase can keep moving through the city process while infrastructure remains a distinct issue to keep watching.',
+    outcomeNegativeLabel: 'If it had failed or been delayed',
+    outcomeNegative:
+      'The phase would likely have come back later with more documentation or revised timing.',
+    pros: [
+      'Keeps the subdivision pipeline moving.',
+      'Maintains a public record that the phase was not simply approved as fully infrastructure-complete.',
+    ],
+    cons: [
+      'Residents may still get limited clarity on what the infrastructure caveat changes on the ground.',
+      'Growth keeps moving even when the supporting systems conversation stays complicated.',
+    ],
+  },
+  {
+    code: 'G7',
+    itemNumber: '2026-091',
+    slug: 'april-27-whitewing-trails-phase-3e-final-plat',
+    category: 'Consent Agenda',
+    title: 'Final plat for Whitewing Trails Phase 3E',
+    importance: 'medium',
+    summary:
+      'Council approved the Whitewing Trails Phase 3E final plat without infrastructure on a 6-0 vote.',
+    watchReason:
+      'This is another example of the city moving neighborhood phases forward while still separating them from a fully clean infrastructure picture.',
+    explainer:
+      'Like the other plat items that night, this vote matters less because of a dramatic debate and more because it shows how Princeton is handling growth in practice. The phase moved forward, but the approval language captured in the notes kept infrastructure from disappearing as a concern.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved without infrastructure on a 6-0 vote.',
+    voteNote:
+      'Motion by Cristina Todd. Second by Bryan Washington.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Bryan Washington',
+    voteRecords: createApril27SixZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The phase can continue moving while infrastructure remains a separately visible issue.',
+    outcomeNegativeLabel: 'If it had failed or been delayed',
+    outcomeNegative:
+      'The project phase would likely have needed more time or more revisions before returning.',
+    pros: [
+      'Keeps subdivision processing moving.',
+      'Preserves a more cautious public record than a blanket approval might.',
+    ],
+    cons: [
+      'The practical meaning of “without infrastructure” can still be hard for residents to parse.',
+      'Repeated conditional-style approvals can make growth harder to follow clearly.',
+    ],
+  },
+  {
+    code: 'G8',
+    itemNumber: '2026-092',
+    slug: 'april-27-eastridge-phase-8-final-plat',
+    category: 'Consent Agenda',
+    title: 'Final plat for Eastridge Phase 8',
+    importance: 'medium',
+    summary:
+      'Council approved the Eastridge Phase 8 final plat without infrastructure on a 6-0 vote.',
+    watchReason:
+      'This is another growth-through-plats item that contributes to the larger question of whether infrastructure is keeping pace with approvals.',
+    explainer:
+      'Eastridge Phase 8 moved forward on April 27, but the approval came without infrastructure. That keeps the public meaning grounded: this was movement, not a declaration that every supporting piece is already complete.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved without infrastructure on a 6-0 vote.',
+    voteNote:
+      'Motion by Carolyn David-Graves. Second by Cristina Todd.',
+    motionBy: 'Carolyn David-Graves',
+    secondBy: 'Cristina Todd',
+    voteRecords: createApril27SixZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The phase can keep moving in the city process while infrastructure remains a visible qualifier.',
+    outcomeNegativeLabel: 'If it had failed or been delayed',
+    outcomeNegative:
+      'The project phase likely would have returned with more work or more documentation before advancing.',
+    pros: [
+      'Allows the project phase to keep moving.',
+      'Retains a public acknowledgment that infrastructure is still part of the story.',
+    ],
+    cons: [
+      'Residents can still be left unclear on the real-world timeline behind the plat.',
+      'Conditional-feeling approvals can blur what is done and what is not.',
+    ],
+  },
+  {
+    code: 'I1',
+    itemNumber: 'Executive session action',
+    slug: 'april-27-alternate-city-manager-appointment',
+    category: 'Action Pertaining to Executive Session',
+    title: 'Appointment of Chief James Waters as alternate city manager for the City of Princeton',
+    importance: 'high',
+    summary:
+      'After executive session, council approved the appointment of Chief James Waters as alternate city manager on a 6-0 vote.',
+    watchReason:
+      'This is a meaningful governance and continuity decision because it affects who can step into management authority during a period of instability and active recruitment.',
+    explainer:
+      'Leadership continuity matters more in a fast-growing city, not less. Council came out of executive session and approved making Chief James Waters the alternate city manager. Terrance Johnson seconded the motion, but the motion maker was not captured in the meeting record, so the tracker preserves the confirmed action without inventing a missing name.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 6-0 after executive session.',
+    voteNote:
+      'Terrance Johnson seconded the motion. The motion maker was not captured in the meeting record.',
+    secondBy: 'Terrance Johnson',
+    voteRecords: createApril27SixZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The city has a formally approved alternate city manager in place while the broader management situation continues to evolve.',
+    outcomeNegativeLabel: 'If it had failed',
+    outcomeNegative:
+      'Council likely would have needed a different continuity plan or a return item for alternate management authority.',
+    pros: [
+      'Adds continuity during a period of leadership transition.',
+      'Creates a clear public vote record on who can fill that role.',
+    ],
+    cons: [
+      'The public may still want a fuller explanation of how the alternate role will be used.',
+      'Leadership reshuffling can also signal deeper instability rather than calm.',
+    ],
+  },
+  {
+    code: 'J1',
+    itemNumber: 'ORD-2026-04-27',
+    slug: 'april-27-pd46-longneck-rezoning',
+    category: 'Public Hearing',
+    title: 'Rezoning the property at 1503 Longneck Road from Single Family Estate (SF-E) to Planned Development 46 (PD-46)',
+    importance: 'high',
+    summary:
+      'Council approved the PD-46 rezoning after continuing the public hearing from March 23 on a 4-2 vote, with Terrance Johnson and Cristina Todd voting no.',
+    watchReason:
+      'This was one of the meeting’s most watched land-use items because it turned a disputed Longneck Road case into an actual council decision.',
+    explainer:
+      'The public hearing mattered because it moved the Longneck Road case from months of buildup into a real council outcome. The city’s own April 29 highlights page confirms the rezoning was approved, and the vote was 4-2 with Terrance Johnson and Cristina Todd voting no. The motion maker was not captured in the meeting record, so the tracker preserves the confirmed outcome and vote split without inventing that missing detail.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved after the continued public hearing on a 4-2 vote.',
+    voteNote:
+      'Carolyn David-Graves seconded the motion. Terrance Johnson and Cristina Todd voted no. The motion maker was not captured in the meeting record.',
+    secondBy: 'Carolyn David-Graves',
+    voteRecords: createApril27Pd46Vote(),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The Longneck Road property can now move forward under the PD-46 zoning structure instead of remaining under SF-E.',
+    outcomeNegativeLabel: 'What the opposition signals',
+    outcomeNegative:
+      'The split vote shows this was not a clean consensus item, and concerns about fit, process, or surrounding impacts did not disappear just because the ordinance passed.',
+    pros: [
+      'Creates a final council direction on a case that had already been delayed and watched closely.',
+      'Moves the property out of limbo and into a defined zoning outcome.',
+    ],
+    cons: [
+      'The split vote suggests lingering concern rather than broad agreement.',
+      'Public notes do not yet fully clarify every individual vote detail from the floor.',
+    ],
+    relatedCoverage: {
+      title:
+        'Inside the Legal Fight Over PD 46 and Princeton’s City Attorney Resignation',
+      href: '/posts/inside-the-legal-fight-over-pd-46-and-princetons-city-attorney-resignation/',
+    },
+  },
+  {
+    code: 'K1',
+    itemNumber: '2025-086',
+    slug: 'april-27-larry-thompson-ntmwd-reappointment',
+    category: 'Regular Agenda',
+    title: 'Reappointment of Larry Thompson to the North Texas Municipal Water District Board',
+    importance: 'medium',
+    summary:
+      'Council approved Larry Thompson’s reappointment to the North Texas Municipal Water District Board on a 6-0 vote.',
+    watchReason:
+      'Board representation at NTMWD matters because water and regional utility policy affect Princeton’s long-term growth and service capacity.',
+    explainer:
+      'Appointments like this can look routine, but regional utility boards matter in a fast-growing city. On April 27, council backed the reappointment unanimously, preserving continuity in Princeton’s representation at a board that touches long-term infrastructure and water issues.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 6-0.',
+    voteNote:
+      'Motion by Steve Deffibaugh. Second by Bryan Washington.',
+    motionBy: 'Steve Deffibaugh',
+    secondBy: 'Bryan Washington',
+    voteRecords: createApril27SixZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'Princeton keeps the same appointee in place on the NTMWD board.',
+    outcomeNegativeLabel: 'If it had failed',
+    outcomeNegative:
+      'Council would have needed a different appointment path or a new nominee.',
+    pros: [
+      'Maintains continuity in a regional board role tied to utilities and infrastructure.',
+      'Avoids unnecessary disruption in representation.',
+    ],
+    cons: [
+      'Routine appointment items can still get little public scrutiny.',
+      'The agenda alone does not explain competing options because none were presented here.',
+    ],
+  },
+  {
+    code: 'K2',
+    itemNumber: '2026-04-27-R06',
+    slug: 'april-27-mvcp-grant-application',
+    category: 'Regular Agenda',
+    title: 'Resolution authorizing an application for a Motor Vehicle Crime Prevention Authority grant',
+    importance: 'high',
+    summary:
+      'Council approved the Motor Vehicle Crime Prevention Authority grant application on a 6-0 vote.',
+    watchReason:
+      'This is one of the clearest public-safety technology and theft-response items on the agenda because it connects grant funding to enforcement tools the city wants to add or support.',
+    explainer:
+      'The grant item matters because it is tied to vehicle theft and catalytic-converter theft response, including technology and enforcement support that can directly affect how the city handles those crimes. On April 27, council approved the application unanimously, which means the city can continue pursuing outside funding rather than leaving the idea at the memo stage.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 6-0.',
+    voteNote:
+      'Motion by Steve Deffibaugh. Second by Carolyn David-Graves.',
+    motionBy: 'Steve Deffibaugh',
+    secondBy: 'Carolyn David-Graves',
+    voteRecords: createApril27SixZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The city can move forward with the grant application and keep building out its vehicle-crime response tools if funding is awarded.',
+    outcomeNegativeLabel: 'If it had failed',
+    outcomeNegative:
+      'The city would have lost or delayed this outside-funding path for vehicle-crime prevention support.',
+    pros: [
+      'Uses a grant route rather than relying only on local money.',
+      'Supports public-safety work tied to theft issues residents can feel directly.',
+    ],
+    cons: [
+      'Public-safety technology still raises oversight and transparency questions.',
+      'Approval of the application does not by itself answer how every tool would be governed if funded.',
+    ],
+  },
+  {
+    code: 'K3',
+    itemNumber: '2026-04-27-R01',
+    slug: 'april-27-whitewing-trails-pid-resolution',
+    category: 'Regular Agenda',
+    title: 'Resolution authorizing Whitewing Trails Public Improvement District No. 2 Improvement Areas 3A-3C',
+    importance: 'high',
+    summary:
+      'Council approved the Whitewing Trails PID resolution 6-0, but changed the authorization so it goes to the interim city manager instead of the mayor.',
+    watchReason:
+      'This item matters not just because it passed, but because council changed who the authorization power runs through.',
+    explainer:
+      'PID-related actions often look technical, but they shape how improvements and financing move in growth areas. On April 27, council approved this resolution unanimously, while also changing the authorization lane from the mayor to the interim city manager. That governance tweak matters because it changes where execution authority sits after the vote.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 6-0 with authorization shifted to the interim city manager.',
+    voteNote:
+      'Motion by Cristina Todd. Second by Bryan Washington. User-provided notes state the approval was amended so authorization went to the interim city manager rather than the mayor.',
+    motionBy: 'Cristina Todd',
+    secondBy: 'Bryan Washington',
+    voteRecords: createApril27SixZeroApproval(),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The resolution moves forward and the operational authorization now flows through the interim city manager instead of the mayor.',
+    outcomeNegativeLabel: 'If it had failed',
+    outcomeNegative:
+      'The Whitewing Trails PID action likely would have returned for revision or further direction.',
+    pros: [
+      'Moves the item forward while clarifying who carries the authorization.',
+      'Shows council was willing to modify execution language rather than just rubber-stamp the resolution.',
+    ],
+    cons: [
+      'PID items can still be hard for residents to interpret without support material.',
+      'A shift in authorization authority can signal deeper governance preferences that the agenda title does not explain.',
+    ],
+  },
+  {
+    code: 'K4',
+    itemNumber: '2026-04-27-R04',
+    slug: 'april-27-parks-building-ffe',
+    category: 'Regular Agenda',
+    title: 'Purchase of furniture, fixtures, and equipment for the Parks & Recreation Administrative and Maintenance Building',
+    importance: 'medium',
+    summary:
+      'Council approved the Parks and Recreation building furniture, fixtures, and equipment purchase on a 5-1 vote, with Terrance Johnson voting no.',
+    watchReason:
+      'This is a meaningful public-spending item because it moves a city facility from planning toward being physically equipped and operational.',
+    explainer:
+      'FF&E items can sound minor compared with roads or rezonings, but they still represent real capital spending and signal a facility moving toward use. On April 27, council approved the purchase 5-1, which means the project kept moving but not with total agreement.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Approved 5-1.',
+    voteNote:
+      'Motion by Bryan Washington. Second by Steve Deffibaugh. User-provided notes record Terrance Johnson as the lone no vote.',
+    motionBy: 'Bryan Washington',
+    secondBy: 'Steve Deffibaugh',
+    voteRecords: createApril27FiveOneNoApproval('Place 1'),
+    outcomePositiveLabel: 'What approval means',
+    outcomePositive:
+      'The city can move ahead with equipping the Parks and Recreation building from the approved budget source.',
+    outcomeNegativeLabel: 'What the split vote signals',
+    outcomeNegative:
+      'The 5-1 result shows at least one councilmember had enough concern to oppose the spending even though the item passed.',
+    pros: [
+      'Keeps a city facility moving toward actual operational readiness.',
+      'Creates a visible record on spending rather than burying the item in consent.',
+    ],
+    cons: [
+      'FF&E spending can still feel abstract to residents compared with more visible infrastructure needs.',
+      'A split vote signals unresolved concern over value, timing, or need.',
+    ],
+  },
+  {
+    code: 'K5',
+    itemNumber: '2026-096',
+    slug: 'april-27-city-manager-recruitment-process',
+    category: 'Regular Agenda',
+    title: 'Discussion and possible action regarding the City Manager recruitment process, including timeline, recruitment firm, and next steps',
+    importance: 'high',
+    summary:
+      'Council tabled the city manager recruitment-process item to the next meeting on a 6-0 vote.',
+    watchReason:
+      'This is one of the most important governance items on the agenda because the permanent city manager will shape how Princeton handles growth, staffing, and execution across departments.',
+    explainer:
+      'The city manager search is not just an HR topic. It is a power, continuity, and operations topic. On April 27, council did not choose a final direction and instead tabled the item to the next meeting, which means one of the city’s biggest leadership decisions stayed open.',
+    voteMode: 'recorded-vote',
+    voteHeadline: 'Tabled to the next meeting by a 6-0 vote.',
+    voteNote:
+      'Motion by Bryan Washington. Second by Steve Deffibaugh.',
+    motionBy: 'Bryan Washington',
+    secondBy: 'Steve Deffibaugh',
+    voteRecords: createApril27SixZeroApproval(),
+    outcomePositiveLabel: 'What tabling means',
+    outcomePositive:
+      'Council kept the process alive and gave itself more time rather than forcing a rushed decision.',
+    outcomeNegativeLabel: 'What it also means',
+    outcomeNegative:
+      'The city still did not settle a permanent recruitment path on April 27.',
+    pros: [
+      'Allows more time on a high-stakes leadership decision.',
+      'Avoids locking in a process before council is ready.',
+    ],
+    cons: [
+      'Leadership uncertainty continues longer.',
+      'Delays on city-manager decisions can ripple across many other city functions.',
+    ],
+  },
+  {
+    code: 'K6',
+    itemNumber: '2026-097',
+    slug: 'april-27-princeton-town-center-update',
+    category: 'Regular Agenda',
+    title: 'Discussion and review of the Princeton Town Center, including an update and associated incentive agreement',
+    importance: 'medium',
+    summary:
+      'Council received the Princeton Town Center update and associated discussion without a separate tracked vote.',
+    watchReason:
+      'Town Center remains one of the city’s more visible development stories, especially because it carries both project expectations and an incentive-agreement angle.',
+    explainer:
+      'The value of this item is less about a final yes-or-no vote and more about keeping a major development and incentive topic in public view. On April 27, the update and discussion happened, which means residents got movement in information rather than a fresh binding vote.',
+    voteMode: 'discussion',
+    voteHeadline: 'Update and discussion received; no separate roll-call vote tracked here.',
+    voteNote:
+      'User-provided notes indicate council completed the Town Center discussion and update segment without a separate final vote being captured in the tracker.',
+    outcomePositiveLabel: 'What discussion means',
+    outcomePositive:
+      'Council and the public at least received another public update on one of Princeton’s bigger development stories.',
+    outcomeNegativeLabel: 'What it does not mean',
+    outcomeNegative:
+      'An update is not the same thing as a final accountability checkpoint on incentives, timing, or delivery.',
+    pros: [
+      'Keeps the Town Center conversation visible in public.',
+      'Lets residents track development and incentive issues over time.',
+    ],
+    cons: [
+      'Discussion items can still leave a lot of uncertainty if no new action follows.',
+      'Without minutes or video context, the full tone of the discussion can be harder to capture than the fact that it happened.',
+    ],
+  },
+  {
+    code: 'K7',
+    itemNumber: '2026-085',
+    slug: 'april-27-future-agenda-requests',
+    category: 'Regular Agenda',
+    title: 'Request for items to be placed on a future agenda and not for discussion',
+    importance: 'medium',
+    summary:
+      'Councilmembers raised their requests and concerns during the future-agenda request period rather than taking a separate roll-call vote.',
+    watchReason:
+      'This is where later agendas often quietly start, even when no immediate policy action happens in the room that night.',
+    explainer:
+      'Future-agenda request items are less about a same-night result and more about what council wants to bring back. Based on the user-provided notes, members made their requests and concerns, which means this section still served as a pipeline-setting moment even without a separate yes-or-no vote.',
+    voteMode: 'procedural',
+    voteHeadline: 'Handled as the future-agenda request period; no separate roll-call vote tracked.',
+    voteNote:
+      'User-provided notes indicate councilmembers made their requests and concerns during this item.',
+    outcomePositiveLabel: 'If requests return later',
+    outcomePositive:
+      'Some of the concerns raised here could become future action or discussion items.',
+    outcomeNegativeLabel: 'If they do not return',
+    outcomeNegative:
+      'The concerns may remain informal without a later agenda slot attached to them.',
+    pros: [
+      'Gives councilmembers a visible path to queue up future issues.',
+      'Helps readers see where later agendas may come from.',
+    ],
+    cons: [
+      'The item can be important without giving the public much closure that night.',
+      'Without fuller notes, it is hard to capture every request as a clean formal action.',
+    ],
+  },
+];
+
 export const cityCouncilMeetings: CouncilMeeting[] = [
   {
     slug: 'march-23-2026',
@@ -1986,6 +2976,102 @@ export const cityCouncilMeetings: CouncilMeeting[] = [
       },
     ],
     agendaItems: april13AgendaItems,
+  },
+  {
+    slug: 'april-27-2026',
+    title: 'Princeton City Council Meeting Tracker: April 27, 2026',
+    date: '2026-04-27',
+    status: 'completed',
+    workSessionTime: '6:00 PM',
+    regularMeetingTime: '6:30 PM',
+    locationName: 'Princeton Municipal Center, Council Chambers',
+    locationAddress: '2000 East Princeton Drive',
+    locationCityStateZip: 'Princeton, Texas 75407',
+    summary:
+      'The April 27 meeting brought real work-session discussion on historical preservation and short-term rentals, approved PD-46 at Longneck Road, advanced most of the pulled plat items, made an alternate city manager appointment after executive session, and tabled both Crossmill Phase 1A and the city manager recruitment item to a later meeting.',
+    agendaSourceTitle: 'Official City Council work session and regular meeting agenda',
+    agendaSourceUrl: 'https://www.princetontx.gov/AgendaCenter/ViewFile/Agenda/_04272026-1684',
+    sourceNotes: [
+      'Tracker details are based on the official posted April 27, 2026 agenda PDF, the city’s April 29, 2026 council highlights page, and the meeting record supplied on April 30, 2026.',
+      'The official city highlights page confirms that C1 and C2 were discussed, C3 through C6 were not discussed, G1 and G2 passed on consent, G5 was tabled to May 11, G3, G4, and G6 through G8 were pulled and approved, and the Longneck PD-46 rezoning was approved.',
+      'Vote splits, motion makers, and seconds reflect the meeting record directly unless a detail was explicitly marked as unclear.',
+      'Where a specific detail was not captured in the meeting record, the tracker leaves only that missing piece unfilled instead of guessing.',
+    ],
+    attendanceNote:
+      'All seated officials were present for both the work session and the regular meeting. Place 4 remained vacant at the time of the meeting.',
+    councilMembers: april27Roster,
+    vacantSeats: [
+      'Place 4 was vacant at the time of the April 27, 2026 meeting.',
+    ],
+    closedSessionTopics: [
+      'Consultation with the city attorney regarding pending or contemplated litigation, settlement offers, or legal conflicts tied to agenda matters.',
+      'Sicily Laguna Azure, LLC v. City of Princeton, Texas et al.',
+      'North Collin Special Utility District v. City of Princeton, Texas.',
+      'Security devices or security audits.',
+      'Personnel matters involving the city manager search, city manager, and city attorney.',
+    ],
+    agendaSections: [
+      {
+        id: 'work-session',
+        title: 'Work Session',
+        description:
+          'The work session included two real policy discussions on historical preservation and short-term rentals, while four other listed topics did not get discussed that night.',
+        itemSlugs: [
+          'april-27-historical-preservation-committee',
+          'april-27-short-term-rentals',
+          'april-27-parc-update',
+          'april-27-roadway-status-update',
+          'april-27-ebike-regulations',
+          'april-27-sex-offender-registration-ordinance',
+        ],
+      },
+      {
+        id: 'consent',
+        title: 'Consent Agenda',
+        description:
+          'G1 and G2 passed inside the main consent motion, while G3 through G8 were pulled out for separate handling.',
+        itemSlugs: [
+          'april-27-tax-collection-agreement',
+          'april-27-april-13-minutes',
+          'april-27-banschbach-middle-school-final-plat',
+          'april-27-joyce-carrell-elementary-final-plat',
+          'april-27-crossmill-phase-1a-final-plat',
+          'april-27-whitewing-trails-phase-4a1-final-plat',
+          'april-27-whitewing-trails-phase-3e-final-plat',
+          'april-27-eastridge-phase-8-final-plat',
+        ],
+      },
+      {
+        id: 'executive-action',
+        title: 'Action Pertaining to Executive Session',
+        description:
+          'After executive session, council returned in open session and approved an alternate city manager appointment.',
+        itemSlugs: ['april-27-alternate-city-manager-appointment'],
+      },
+      {
+        id: 'public-hearing',
+        title: 'Public Hearing',
+        description:
+          'The Longneck Road PD-46 rezoning returned from March 23 and ended with a recorded 4-2 approval.',
+        itemSlugs: ['april-27-pd46-longneck-rezoning'],
+      },
+      {
+        id: 'regular-agenda',
+        title: 'Regular Agenda',
+        description:
+          'These were the main open-session action and discussion items after the consent and public-hearing portions.',
+        itemSlugs: [
+          'april-27-larry-thompson-ntmwd-reappointment',
+          'april-27-mvcp-grant-application',
+          'april-27-whitewing-trails-pid-resolution',
+          'april-27-parks-building-ffe',
+          'april-27-city-manager-recruitment-process',
+          'april-27-princeton-town-center-update',
+          'april-27-future-agenda-requests',
+        ],
+      },
+    ],
+    agendaItems: april27AgendaItems,
   },
 ];
 
