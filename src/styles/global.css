@@ -73,6 +73,17 @@ html.capacitor-app .site-header-inner {
   padding-bottom: 0.75rem;
 }
 
+.site-sticky-stack {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+}
+
+.site-header {
+  background: #fff;
+}
+
 .article-content p {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;

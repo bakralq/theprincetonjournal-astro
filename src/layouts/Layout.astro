@@ -162,55 +162,57 @@ const maintenanceMessage = "Website down for maintenance. Check back again in a 
   </main>
 ) : (
   <>
-    <header class="site-header border-b border-gray-200">
-      <div class="site-header-inner mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-        <a href="/" class="logo text-xl">
-          The Princeton Journal
-        </a>
+    <div class="site-sticky-stack">
+      <header class="site-header border-b border-gray-200">
+        <div class="site-header-inner mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+          <a href="/" class="logo text-xl">
+            The Princeton Journal
+          </a>
 
-        <button
-          class="menu-toggle text-2xl"
-          aria-label="Open navigation"
-          aria-expanded="false"
-          aria-controls="mobile-menu"
-          type="button"
-        >
-          ☰
-        </button>
+          <button
+            class="menu-toggle text-2xl"
+            aria-label="Open navigation"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+            type="button"
+          >
+            ☰
+          </button>
 
-        <nav class="desktop-nav flex gap-6 text-sm font-medium">
-          <a href="/">Home</a>
-          <a href={ccjHomeUrl}>Collin County Journal</a>
-          <a href="/city-council-tracker">Council Tracker</a>
-          <a href="/registry">Registry</a>
-          <a href="/princeton-governance">Princeton Governance</a>
-        </nav>
-      </div>
+          <nav class="desktop-nav flex gap-6 text-sm font-medium">
+            <a href="/">Home</a>
+            <a href={ccjHomeUrl}>Collin County Journal</a>
+            <a href="/city-council-tracker">Council Tracker</a>
+            <a href="/registry">Registry</a>
+            <a href="/princeton-governance">Princeton Governance</a>
+          </nav>
+        </div>
 
-      <div id="mobile-menu" class="mobile-menu border-t border-gray-200">
-        <nav class="mobile-nav mx-auto max-w-6xl px-6 py-4 flex flex-col gap-4 text-sm font-medium">
-          <a href="/">Home</a>
-          <a href={ccjHomeUrl}>Collin County Journal</a>
-          <a href="/city-council-tracker">Council Tracker</a>
-          <a href="/registry">Registry</a>
-          <a href="/princeton-governance">Princeton Governance</a>
-        </nav>
-      </div>
-    </header>
+        <div id="mobile-menu" class="mobile-menu border-t border-gray-200">
+          <nav class="mobile-nav mx-auto max-w-6xl px-6 py-4 flex flex-col gap-4 text-sm font-medium">
+            <a href="/">Home</a>
+            <a href={ccjHomeUrl}>Collin County Journal</a>
+            <a href="/city-council-tracker">Council Tracker</a>
+            <a href="/registry">Registry</a>
+            <a href="/princeton-governance">Princeton Governance</a>
+          </nav>
+        </div>
+      </header>
 
-    <a href="/support" class="support-ticker" aria-label="Support The Princeton Journal">
-      <div class="support-ticker-track">
-        <span>Support TPJ</span>
-        <span>Keep independent Princeton reporting going</span>
-        <span>Click here to keep TPJ going</span>
-        <span>Support TPJ</span>
-        <span>Keep independent Princeton reporting going</span>
-        <span>Click here to keep TPJ going</span>
-        <span>Support TPJ</span>
-        <span>Keep independent Princeton reporting going</span>
-        <span>Click here to keep TPJ going</span>
-      </div>
-    </a>
+      <a href="/support" class="support-ticker" aria-label="Support The Princeton Journal">
+        <div class="support-ticker-track">
+          <span>Support TPJ</span>
+          <span>Keep independent Princeton reporting going</span>
+          <span>Click here to keep TPJ going</span>
+          <span>Support TPJ</span>
+          <span>Keep independent Princeton reporting going</span>
+          <span>Click here to keep TPJ going</span>
+          <span>Support TPJ</span>
+          <span>Keep independent Princeton reporting going</span>
+          <span>Click here to keep TPJ going</span>
+        </div>
+      </a>
+    </div>
 
     <slot />
 
