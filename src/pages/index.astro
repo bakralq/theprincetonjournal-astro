@@ -1,8 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import AdSlot from '../components/AdSlot.astro';
 import ArticleCard from '../components/ArticleCard.astro';
+import OptimizedImage from '../components/OptimizedImage.astro';
 import { cityCouncilMeetings } from '../data/cityCouncilTracker';
+import { imageWidths } from '../lib/images.js';
 import { formatPostDate, getPostTimestamp, getReadingTime } from '../lib/posts';
 
 const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -78,7 +81,7 @@ const getMeetingStatusClasses = (status) =>
             class="mt-4 flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:border-gray-300 hover:shadow-sm"
           >
             {topPost.data.image && (
-              <img
+              <OptimizedImage
                 src={topPost.data.image}
                 alt={topPost.data.title}
                 class={`w-full ${
@@ -90,6 +93,10 @@ const getMeetingStatusClasses = (status) =>
                       : 'h-56 bg-white object-contain sm:h-64'
                     : 'h-72 object-cover sm:h-80'
                 }`}
+                widths={imageWidths.feature}
+                sizes="(min-width: 1280px) 50vw, 100vw"
+                loading="eager"
+                fetchpriority="high"
               />
             )}
 
@@ -185,6 +192,8 @@ const getMeetingStatusClasses = (status) =>
       )}
     </section>
 
+    <AdSlot className="mt-12" />
+
     <section class="mt-16">
       <div class="flex items-center justify-between gap-2">
         <h2 class="text-xl font-bold tracking-tight sm:text-2xl">
@@ -214,6 +223,8 @@ const getMeetingStatusClasses = (status) =>
         ))}
       </div>
     </section>
+
+    <AdSlot className="mt-12" />
 
     <section class="mt-16">
       <div class="flex items-center justify-between gap-2">

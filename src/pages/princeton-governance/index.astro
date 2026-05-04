@@ -1,8 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { formatPostDate, getPostTimestamp, getReadingTime } from '../../lib/posts';
+import { getOptimizedImagePath } from '../../lib/images.js';
 
 const posts = await getCollection('posts', ({ data }) =>
   !data.draft && data.section === 'Princeton Governance'
@@ -20,6 +22,7 @@ const postsData = sortedPosts.map((post) => ({
   date: post.data.date,
   publishedAt: post.data.publishedAt || null,
   image: post.data.image || null,
+  cardImage: post.data.image ? getOptimizedImagePath(post.data.image, 640, 'webp') : null,
   cardImageFit: post.data.cardImageFit || 'cover',
   cardImageHeight: post.data.cardImageHeight || 'default',
   href: `/posts/${post.id.replace(/\.md$/, '')}`,
@@ -86,20 +89,25 @@ const initialPosts = postsData.slice(0, 10);
       Showing {postsData.length} article{postsData.length === 1 ? '' : 's'}
     </p>
 
+    <AdSlot className="mt-8" />
+
     <div id="articlesList" class="mt-6 grid gap-6">
-      {initialPosts.map((post) => (
-        <ArticleCard
-          title={post.title}
-          description={post.description}
-          href={post.href}
-          date={post.date}
-          publishedAt={post.publishedAt}
-          image={post.image}
-          imageFit={post.cardImageFit}
-          imageHeight={post.cardImageHeight}
-          readingTime={post.readingTime}
-          variant="horizontal"
-        />
+      {initialPosts.map((post, index) => (
+        <>
+          <ArticleCard
+            title={post.title}
+            description={post.description}
+            href={post.href}
+            date={post.date}
+            publishedAt={post.publishedAt}
+            image={post.image}
+            imageFit={post.cardImageFit}
+            imageHeight={post.cardImageHeight}
+            readingTime={post.readingTime}
+            variant="horizontal"
+          />
+          {index === 4 && <AdSlot />}
+        </>
       ))}
     </div>
 
@@ -147,10 +155,34 @@ const initialPosts = postsData.slice(0, 10);
     }).format(new Date(publishedAt || `${date}T12:00:00`));
   }
 
+  function createAdSlot() {
+    const wrapper = document.createElement('div');
+
+    wrapper.innerHTML = `
+      <aside class="tpj-ad-slot" aria-label="Advertisement">
+        <p class="mb-2 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-gray-500">
+          Advertisement
+        </p>
+        <a
+          href="/contact"
+          class="flex min-h-[120px] items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-5 py-7 text-center transition hover:border-gray-500 hover:bg-white"
+        >
+          <div>
+            <p class="text-sm font-semibold text-gray-900">Want to advertise here?</p>
+            <p class="mt-1 text-xs leading-5 text-gray-500">Reach Princeton readers where they're already paying attention.</p>
+            <p class="mt-2 text-xs font-semibold text-gray-900 underline underline-offset-4">Click here to email us.</p>
+          </div>
+        </a>
+      </aside>
+    `;
+
+    return wrapper.firstElementChild;
+  }
+
   function renderCards(pagePosts) {
     articlesList.innerHTML = '';
 
-    pagePosts.forEach((post) => {
+    pagePosts.forEach((post, index) => {
       const wrapper = document.createElement('div');
 
       wrapper.innerHTML = `
@@ -159,17 +191,19 @@ const initialPosts = postsData.slice(0, 10);
           class="block overflow-hidden rounded-xl border border-gray-200 hover:shadow-lg transition"
         >
           <div class="flex flex-col sm:flex-row">
-            ${post.image ? `
+            ${post.cardImage ? `
               <div class="shrink-0 ${post.cardImageFit === 'contain' ? 'sm:w-1/3' : 'sm:w-1/4'}">
                 <img
-                  src="${post.image}"
+                  src="${post.cardImage}"
                   alt="${post.title}"
                   class="${post.cardImageHeight === 'tall' ? 'h-60 sm:h-64' : 'h-48'} w-full ${post.cardImageFit === 'contain' ? 'bg-white object-contain' : 'object-cover'}"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             ` : ''}
 
-            <div class="p-6 ${post.image ? post.cardImageFit === 'contain' ? 'sm:w-2/3' : 'sm:w-3/4' : 'w-full'}">
+            <div class="p-6 ${post.cardImage ? post.cardImageFit === 'contain' ? 'sm:w-2/3' : 'sm:w-3/4' : 'w-full'}">
 <p class="text-sm text-gray-500">${formatPrettyDate(post.date, post.publishedAt)} • ${post.readingTime} min read</p>
               <h2 class="mt-1 text-xl font-semibold">${post.title}</h2>
 <p class="mt-2 text-gray-600 text-sm">${truncateDescription(post.description, 140)}</p>
@@ -179,6 +213,11 @@ const initialPosts = postsData.slice(0, 10);
       `;
 
       articlesList.appendChild(wrapper);
+
+      if (index === 4) {
+        const adSlot = createAdSlot();
+        if (adSlot) articlesList.appendChild(adSlot);
+      }
     });
   }
 

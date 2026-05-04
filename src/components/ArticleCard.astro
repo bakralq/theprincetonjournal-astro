@@ -1,5 +1,7 @@
 ---
 import { formatPostDate } from '../lib/posts';
+import OptimizedImage from './OptimizedImage.astro';
+import { imageWidths } from '../lib/images.js';
 
 const {
   title,
@@ -35,10 +37,12 @@ const imageHeightClass = imageHeight === 'tall' ? 'h-60 sm:h-64' : 'h-48';
     <div class="flex flex-col sm:flex-row">
       {image && (
         <div class={`shrink-0 ${imageFit === 'contain' ? 'sm:w-1/3' : 'sm:w-1/4'}`}>
-          <img
+          <OptimizedImage
             src={image}
             alt={title}
             class={`${imageHeightClass} w-full ${imageFit === 'contain' ? 'bg-white object-contain' : 'object-cover'}`}
+            widths={imageWidths.card}
+            sizes="(min-width: 640px) 25vw, 100vw"
           />
         </div>
       )}
@@ -66,10 +70,12 @@ const imageHeightClass = imageHeight === 'tall' ? 'h-60 sm:h-64' : 'h-48';
     class="block overflow-hidden rounded-xl border border-gray-200 hover:shadow-lg transition"
   >
     {image && (
-      <img
+      <OptimizedImage
         src={image}
         alt={title}
         class={`${imageHeightClass} w-full ${imageFit === 'contain' ? 'bg-white object-contain' : 'object-cover'}`}
+        widths={imageWidths.card}
+        sizes="(min-width: 768px) 33vw, 100vw"
       />
     )}
 

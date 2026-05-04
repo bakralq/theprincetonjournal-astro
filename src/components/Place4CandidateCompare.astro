@@ -1,4 +1,7 @@
 ---
+import OptimizedImage from './OptimizedImage.astro';
+import { imageWidths } from '../lib/images.js';
+
 const candidates = [
   {
     name: 'Sharad Ramani',
@@ -165,11 +168,13 @@ const candidates = [
         </summary>
 
         <div class="place4-body">
-          <img
+          <OptimizedImage
             src={candidate.image}
             alt={candidate.name}
             class="place4-photo"
             loading="lazy"
+            widths={imageWidths.card}
+            sizes="(min-width: 768px) 25vw, 100vw"
           />
           <p class="place4-photo-note">
             Image: Candidate campaign Facebook page.

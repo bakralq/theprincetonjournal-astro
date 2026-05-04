@@ -68,6 +68,7 @@ export const defineRegistryRecord = (record: RegistryRecord): RegistryRecord => 
 
 const removedFromCurrentZipSnapshot = new Set([
   'daley-ladurrius-21210025',
+  'mondoux-alfred-christopher-05033880',
   'singh-anthony-steven-04314408',
 ]);
 

@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import Place4CandidateCompare from '../../components/Place4CandidateCompare.astro';
 import { getAuthorProfile } from '../../lib/authors';
+import { getOptimizedImagePath } from '../../lib/images.js';
 import { getPostDateObject, getPostTimestamp, getReadingTime } from '../../lib/posts';
 
 const SITE_URL = 'https://theprincetonjournal.com';
@@ -27,7 +28,7 @@ const articleUrl = `${SITE_URL}/posts/${slug}`;
 const featureSlug = 'princeton-place-4-special-election-candidate-guide-2026';
 const authorProfile = getAuthorProfile(post.data.author);
 const articleImageUrl = post.data.image
-  ? `https://theprincetonjournal.com${post.data.image}`
+  ? `https://theprincetonjournal.com${getOptimizedImagePath(post.data.image, 1200, 'webp')}`
   : null;
 
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
@@ -118,6 +119,7 @@ const articleSchema = {
   preview={post.data.preview}
   readingTime={readingTime}
   nextPost={nextPostData}
+  slug={slug}
 >
   {slug === featureSlug && <Place4CandidateCompare slot="feature" />}
   <Content />

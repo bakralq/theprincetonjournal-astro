@@ -1,8 +1,12 @@
 ---
 import Layout from './Layout.astro';
+import AdSlot from '../components/AdSlot.astro';
 import ArticleInlineSubscribe from '../components/ArticleInlineSubscribe.astro';
+import ArticlePollWidget from '../components/ArticlePollWidget.astro';
+import OptimizedImage from '../components/OptimizedImage.astro';
 import SupportPrompt from '../components/SupportPrompt.astro';
 import { getAuthorProfileUrl } from '../lib/authors';
+import { getOptimizedImagePath, imageWidths } from '../lib/images.js';
 import {
   formatPostDate,
   getPostDateObject,
@@ -25,6 +29,7 @@ const {
   heroSize = 'default',
   nextPost,
   readingTime,
+  slug,
 } = Astro.props;
 const formattedArticleDate = formatPostDate(
   { date, publishedAt },
@@ -32,13 +37,25 @@ const formattedArticleDate = formatPostDate(
 );
 const articlePublishedIso = getPostDateObject({ date, publishedAt }).toISOString();
 const authorProfileUrl = getAuthorProfileUrl(author);
+const ogImagePath = image
+  ? getOptimizedImagePath(image, 1200, 'webp')
+  : null;
+const pollConfigs = {
+  'princeton-talks-most-votes-least-runoff-2026': {
+    question: 'Who are you voting for in the Princeton runoff?',
+    firstChoiceLabel: 'Jan',
+    secondChoiceLabel: 'Jaisen',
+    notSureLabel: 'Not sure',
+  },
+};
+const pollConfig = slug ? pollConfigs[slug] : null;
 ---
 
 <Layout
   title={`${title} | The Princeton Journal`}
   description={description}
   url={url}
-  ogImage={image ? `https://theprincetonjournal.com${image}` : 'https://theprincetonjournal.com/tpj-logo.jpg'}
+  ogImage={ogImagePath ? `https://theprincetonjournal.com${ogImagePath}` : 'https://theprincetonjournal.com/tpj-logo.jpg'}
   ogType="article"
 >
   <main class="mx-auto max-w-3xl px-6 py-16">
@@ -78,7 +95,7 @@ const authorProfileUrl = getAuthorProfileUrl(author);
               : ''
           }`}
         >
-          <img
+          <OptimizedImage
             src={image}
             alt={title}
             class={`block w-full rounded-xl border border-gray-200 ${
@@ -86,6 +103,10 @@ const authorProfileUrl = getAuthorProfileUrl(author);
                 ? 'bg-white object-contain'
                 : 'object-cover'
             }`}
+            widths={imageWidths.hero}
+            sizes={heroWide ? '(min-width: 1024px) 900px, calc(100vw - 48px)' : '(min-width: 768px) 768px, calc(100vw - 48px)'}
+            loading="eager"
+            fetchpriority="high"
           />
         </div>
         {imageCaption && (
@@ -124,9 +145,14 @@ const authorProfileUrl = getAuthorProfileUrl(author);
       <ArticleInlineSubscribe />
     </template>
 
+    <template id="articleAdSlotTemplate">
+      <AdSlot compact={true} />
+    </template>
+
     <script is:inline>
       (() => {
         const template = document.getElementById('articleInlineSubscribeTemplate');
+        const adTemplate = document.getElementById('articleAdSlotTemplate');
         const storageKey = 'tpj-subscribe-modal-state';
         const pendingKey = 'tpj-newsletter-subscribe-pending';
 
@@ -210,6 +236,76 @@ const authorProfileUrl = getAuthorProfileUrl(author);
           return card instanceof HTMLElement ? card : null;
         };
 
+        const createAdSlot = () => {
+          if (!(adTemplate instanceof HTMLTemplateElement)) {
+            return null;
+          }
+
+          const wrapper = document.createElement('div');
+          wrapper.appendChild(adTemplate.content.cloneNode(true));
+          const ad = wrapper.firstElementChild;
+          return ad instanceof HTMLElement ? ad : null;
+        };
+
+        const isHeading = (element) =>
+          element instanceof HTMLElement &&
+          /^H[2-3]$/.test(element.tagName);
+
+        const headingText = (element) =>
+          element instanceof HTMLElement
+            ? element.textContent?.trim().toLowerCase() || ''
+            : '';
+
+        const findQuickReadEnd = (quickReadHeading) => {
+          let current = quickReadHeading.nextElementSibling;
+
+          while (current) {
+            if (isHeading(current)) break;
+
+            if (
+              current instanceof HTMLElement &&
+              ['UL', 'OL', 'P'].includes(current.tagName) &&
+              current.textContent?.trim()
+            ) {
+              return current;
+            }
+
+            current = current.nextElementSibling;
+          }
+
+          return quickReadHeading;
+        };
+
+        const installArticleAd = (container) => {
+          if (!(container instanceof HTMLElement) || container.dataset.articleAdInjected === 'true') {
+            return;
+          }
+
+          const ad = createAdSlot();
+          if (!ad) return;
+
+          const quickReadHeading = Array.from(
+            container.querySelectorAll(':scope > h2, :scope > h3')
+          ).find((element) => headingText(element).includes('quick read'));
+
+          if (quickReadHeading instanceof HTMLElement) {
+            const quickReadEnd = findQuickReadEnd(quickReadHeading);
+            quickReadEnd.insertAdjacentElement('afterend', ad);
+            container.dataset.articleAdInjected = 'true';
+            return;
+          }
+
+          const fallbackTargets = Array.from(
+            container.querySelectorAll(':scope > p, :scope > ul, :scope > ol')
+          ).filter((element) => element instanceof HTMLElement);
+
+          const fallbackAnchor = fallbackTargets[Math.min(2, fallbackTargets.length - 1)];
+          if (fallbackAnchor instanceof HTMLElement) {
+            fallbackAnchor.insertAdjacentElement('afterend', ad);
+            container.dataset.articleAdInjected = 'true';
+          }
+        };
+
         const injectInto = (container) => {
           if (!(container instanceof HTMLElement) || container.dataset.inlineSubscribeInjected === 'true') {
             return;
@@ -264,7 +360,10 @@ const authorProfileUrl = getAuthorProfileUrl(author);
         const installInlinePrompts = () => {
           document
             .querySelectorAll('[data-article-body]')
-            .forEach((container) => injectInto(container));
+            .forEach((container) => {
+              injectInto(container);
+              installArticleAd(container);
+            });
         };
 
         const installJumpNavigation = () => {
@@ -350,6 +449,16 @@ const authorProfileUrl = getAuthorProfileUrl(author);
 
     <SupportPrompt />
 
+    {pollConfig && slug && (
+      <ArticlePollWidget
+        slug={slug}
+        question={pollConfig.question}
+        firstChoiceLabel={pollConfig.firstChoiceLabel}
+        secondChoiceLabel={pollConfig.secondChoiceLabel}
+        notSureLabel={pollConfig.notSureLabel}
+      />
+    )}
+
     {nextPost && (
       <section class="mt-14 border-t border-gray-200 pt-8">
         <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
@@ -363,10 +472,12 @@ const authorProfileUrl = getAuthorProfileUrl(author);
           <div class="flex flex-col sm:flex-row">
             {nextPost.image && (
               <div class="sm:w-1/4 shrink-0">
-                <img
+                <OptimizedImage
                   src={nextPost.image}
                   alt={nextPost.title}
                   class="h-40 w-full object-cover"
+                  widths={imageWidths.card}
+                  sizes="(min-width: 640px) 25vw, 100vw"
                 />
               </div>
             )}

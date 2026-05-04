@@ -1,34 +1,194 @@
+---
 import Layout from '../layouts/Layout.astro';
+import {
+  advisoryCouncilMembers,
+  advisoryCouncilSettings,
+} from '../data/advisoryCouncil';
 
-const target = 'https://collincountyjournal.com/staff/';
+const showAdvisoryCouncil = advisoryCouncilSettings.enabled;
 ---
 
 <Layout
-  title="Redirecting to Staff | The Princeton Journal"
+  title="Staff | The Princeton Journal"
+  description="Meet The Princeton Journal staff and community advisory council."
   url="https://theprincetonjournal.com/staff"
-  noindex={true}
 >
-  <main class="mx-auto max-w-3xl px-6 py-20 text-center">
+  <main class="mx-auto max-w-5xl px-6 py-16">
     <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
-      Redirecting
+      The Princeton Journal
     </p>
 
-    <h1 class="mt-3 text-4xl font-bold tracking-tight">
-      Opening the shared staff page
+    <h1 class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+      Staff
     </h1>
 
-    <p class="mt-4 text-lg text-gray-700">
-      Staff information now lives on Collin County Journal so both publications point to the same page.
+    <p class="mt-4 max-w-3xl text-lg leading-8 text-gray-700">
+      The Princeton Journal is an independent local publication covering Princeton city government, growth, development, public safety, schools, and community life.
     </p>
 
-    <p class="mt-8">
-      <a href={target} class="font-semibold text-black underline underline-offset-4">
-        Continue to staff
-      </a>
-    </p>
+    <div class="mt-12 grid gap-8">
+      <section id="christian-j-remington" class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+        <details class="group">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 p-8 sm:p-10">
+            <div>
+              <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+                Editor
+              </p>
+
+              <h2 class="mt-3 text-3xl font-bold tracking-tight">
+                Christian J. Remington
+              </h2>
+
+              <p class="mt-3 max-w-2xl text-base leading-7 text-gray-600">
+                Founder, editor, and publisher of The Princeton Journal.
+              </p>
+            </div>
+
+            <span class="shrink-0 text-2xl text-gray-500 transition group-open:rotate-180">
+              ▾
+            </span>
+          </summary>
+
+          <div class="border-t border-gray-200 px-8 pb-8 pt-8 sm:px-10 sm:pb-10">
+            <div class="space-y-6 text-lg leading-8 text-gray-800">
+              <p>
+                Christian Jude Remington is the founder, editor, and publisher of The Princeton Journal. He covers Princeton city government, public meetings, development, infrastructure, public safety, schools, and the local decisions shaping daily life.
+              </p>
+
+              <p>
+                His reporting centers on public records, meeting documents, official data, direct sourcing, and clear explanations for residents who need to understand what is happening before decisions become permanent.
+              </p>
+
+              <p>
+                The Princeton Journal operates as an independent local news publication. Editorial decisions remain with the publication.
+              </p>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="juan-esquivel" class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+        <details class="group">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 p-8 sm:p-10">
+            <div>
+              <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+                Lead Developer
+              </p>
+
+              <h2 class="mt-3 text-3xl font-bold tracking-tight">
+                Juan Esquivel
+              </h2>
+
+              <p class="mt-3 max-w-2xl text-base leading-7 text-gray-600">
+                Lead Developer for Collin County Journal.
+              </p>
+            </div>
+
+            <span class="shrink-0 text-2xl text-gray-500 transition group-open:rotate-180">
+              ▾
+            </span>
+          </summary>
+
+          <div class="border-t border-gray-200 px-8 pb-8 pt-8 sm:px-10 sm:pb-10">
+            <div class="space-y-6 text-lg leading-8 text-gray-800">
+              <p>
+                Juan Esquivel is the Lead Developer for Collin County Journal, responsible for building and maintaining the technical systems that support the platform. He works within the Astro framework to implement site architecture, configure core systems, and ensure the platform functions reliably as content and traffic continue to grow.
+              </p>
+
+              <p>
+                He has developed and maintained key components of the site’s infrastructure, including dynamic content systems, API integrations, and database-backed functionality that enable structured publishing and real-time updates. His work includes configuring routing, optimizing performance, managing deployments, and resolving technical issues to keep the platform stable and efficient under daily use.
+              </p>
+
+              <p>
+                Juan is a computer science student at the University of Texas at Dallas, currently in his final year. He has several years of experience working across full-stack and backend systems, with a focus on JavaScript, TypeScript, Node, SQL, and modern web development frameworks.
+              </p>
+            </div>
+          </div>
+        </details>
+      </section>
+    </div>
+
+    {showAdvisoryCouncil && (
+      <section id="community-advisory-council" class="mt-16">
+        <div class="border-y border-gray-200 py-10">
+          <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+            Community Advisory Council
+          </p>
+
+          <div class="mt-4 grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+            <div>
+              <h2 class="text-4xl font-bold tracking-tight">
+                TPJ Community Advisory Council
+              </h2>
+
+              <p class="mt-4 text-lg leading-8 text-gray-700">
+                The council gives The Princeton Journal a wider field of local context. Members may share documents, quotes, technical background, public-record direction, community concerns, and subject-matter context that helps strengthen reporting.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5 text-sm leading-6 text-gray-700">
+              <p class="font-semibold text-black">
+                Editorial independence stays with TPJ.
+              </p>
+              <p class="mt-2">
+                Council members don't assign stories, review articles before publication, approve language, control coverage, or make editorial decisions. Membership doesn't mean endorsement by TPJ, and TPJ's coverage remains independent.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {advisoryCouncilMembers.map((member) => (
+            <article class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <div class="flex items-start gap-4">
+                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-lg font-bold text-gray-800">
+                  {member.initials}
+                </div>
+
+                <div>
+                  <h3 class="text-xl font-bold tracking-tight">
+                    {member.name}
+                  </h3>
+
+                  <p class="mt-2 text-sm font-medium uppercase tracking-wide text-gray-500">
+                    {member.role}
+                  </p>
+
+                  {member.note && (
+                    <p class="mt-2 inline-flex rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-gray-600">
+                      {member.note}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div class="mt-8 rounded-2xl border border-black bg-black p-7 text-white sm:flex sm:items-center sm:justify-between sm:gap-8">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-wide text-gray-300">
+              Want to apply?
+            </p>
+
+            <h3 class="mt-2 text-2xl font-bold tracking-tight">
+              Help TPJ understand Princeton better.
+            </h3>
+
+            <p class="mt-3 max-w-2xl text-base leading-7 text-gray-300">
+              Apply if you can provide useful context, records, lived experience, or subject-matter knowledge without expecting control over coverage.
+            </p>
+          </div>
+
+          <a
+            href="/community-advisory-council/apply/"
+            class="mt-6 inline-flex rounded-xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-gray-200 sm:mt-0"
+          >
+            Apply to join
+          </a>
+        </div>
+      </section>
+    )}
+
   </main>
-
-  <script is:inline define:vars={{ target }}>
-    window.location.replace(target);
-  </script>
 </Layout>
