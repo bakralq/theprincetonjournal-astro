@@ -67,7 +67,6 @@ export type RegistryRecord = {
 export const defineRegistryRecord = (record: RegistryRecord): RegistryRecord => record;
 
 const removedFromCurrentZipSnapshot = new Set([
-  'daley-ladurrius-21210025',
   'mondoux-alfred-christopher-05033880',
   'singh-anthony-steven-04314408',
 ]);
@@ -2158,7 +2157,7 @@ export const registryRecords: RegistryRecord[] = [
     riskLevel: 'NOT REPORTED',
     registrationEnd: 'LIFETIME',
     verificationRequirement: 'ANNUALLY',
-    address: '532 Hackney Dr.',
+    address: '532 HACKNEY DRIVE',
     city: 'Princeton',
     state: 'TX',
     zip: '75407',
@@ -2174,7 +2173,7 @@ export const registryRecords: RegistryRecord[] = [
       imageUrl: '/images/registry/21210025.jpeg',
       reportedDate: '2025-03-11',
     },
-    lastUpdated: '2025-05-14',
+    lastUpdated: '2026-05-09',
     location: {
       lat: 33.09956,
       lng: -96.511222,
