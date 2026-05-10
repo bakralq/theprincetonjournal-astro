@@ -1,0 +1,23 @@
+---
+const destination = 'https://collincountyjournal.com/unsubscribe/';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="refresh" content={`0; url=${destination}`} />
+    <title>Redirecting to Collin County Journal</title>
+    <script is:inline define:vars={{ destination }}>
+      window.location.replace(destination);
+    </script>
+  </head>
+  <body>
+    <p>
+      Email preferences are managed through Collin County Journal.
+      <a href={destination}>Open unsubscribe page</a>.
+    </p>
+  </body>
+</html>

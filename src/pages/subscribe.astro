@@ -30,6 +30,10 @@ import Layout from '../layouts/Layout.astro';
         class="mt-8 space-y-6 rounded-2xl border border-gray-200 p-6 shadow-sm"
       >
         <input type="hidden" name="form-name" value="newsletter-subscribe" />
+        <input type="hidden" name="source_site" value="TPJ" />
+        <input type="hidden" name="publication" value="The Princeton Journal" />
+        <input type="hidden" name="signup_source" value="subscribe-page" />
+        <input type="hidden" name="subscription_preference" value="princeton" />
 
         <p class="hidden">
           <label>
@@ -40,7 +44,7 @@ import Layout from '../layouts/Layout.astro';
 
         <div>
           <label class="mb-2 block text-sm font-medium text-gray-700">
-            Your Email
+            Your Email <span class="text-red-600">*</span>
           </label>
           <input
             type="email"

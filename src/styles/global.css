@@ -1156,6 +1156,18 @@ html.capacitor-app .site-header-inner {
   align-items: center;
 }
 
+.article-inline-subscribe-required {
+  grid-column: 1 / -1;
+  margin-bottom: -0.25rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #374151;
+}
+
+.article-inline-subscribe-required span {
+  color: #dc2626;
+}
+
 .article-inline-subscribe-input {
   min-width: 0;
   border: 1px solid #d1d5db;

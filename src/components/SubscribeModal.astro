@@ -47,6 +47,10 @@ const {
             class="space-y-5"
           >
             <input type="hidden" name="form-name" value="newsletter-subscribe" />
+            <input type="hidden" name="source_site" value="TPJ" />
+            <input type="hidden" name="publication" value="The Princeton Journal" />
+            <input type="hidden" name="signup_source" value="modal" />
+            <input type="hidden" name="subscription_preference" value="princeton" />
 
             <p class="hidden">
               <label>
@@ -57,7 +61,7 @@ const {
 
             <div>
               <label for="subscribeModalEmail" class="mb-2 block text-sm font-semibold text-gray-700">
-                Email address
+                Email address <span class="text-red-600">*</span>
               </label>
               <input
                 id="subscribeModalEmail"

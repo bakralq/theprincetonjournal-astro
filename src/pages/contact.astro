@@ -46,7 +46,7 @@ import Layout from '../layouts/Layout.astro';
 
         <div>
           <label class="mb-2 block text-sm font-medium text-gray-700">
-            Your Email
+            Your Email <span class="text-red-600">*</span>
           </label>
           <input
             type="email"
@@ -59,7 +59,7 @@ import Layout from '../layouts/Layout.astro';
 
 <div>
   <label class="mb-2 block text-sm font-medium text-gray-700">
-    Subject
+    Subject <span class="text-red-600">*</span>
   </label>
   <select
     name="subject"
@@ -85,7 +85,7 @@ import Layout from '../layouts/Layout.astro';
 
         <div>
           <label class="mb-2 block text-sm font-medium text-gray-700">
-            Message
+            Message <span class="text-red-600">*</span>
           </label>
           <textarea
             name="message"
